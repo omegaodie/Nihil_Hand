@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 
+
 class Enemy
 {
 public:
@@ -15,13 +16,32 @@ public:
 
 	void Enemy::Move();
 
-	/*bool*/void Enemy::Update();//return bool if alive or dead, leaving it void for now 
+	void Enemy::Init(sf::Clock);
+
+	bool* alive;
+
+	/*bool*/void Enemy::Update(sf::Clock);//return bool if alive or dead, leaving it void for now 
+
+	void Enemy::Animate();
 
 	int* life;
 
-	sf::Vector2f* location;
+	
 
-	bool* alive;  
+	sf::Image* e_image;//e for enemy
+
+	sf::Vector2f* e_location;
+
+	sf::Sprite* e_sprite;
+
+	sf::Texture* e_texture;
+
+	sf::IntRect* e_current_frame;
+
+	int timer;
+
+	float e_sprite_counterX, e_sprite_counterY;
+
 
 };
 

@@ -4,6 +4,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Enemy.h"
+#include <SFML/System/Clock.hpp>
 
 class Game
 {
@@ -16,9 +17,12 @@ class Game
 
 		bool* getIsRunning();
 
+		sf::Clock* clock;
+
 	private:
 		bool isRunning;
 		Enemy* the_Enemy;
+		
 
 };
 

@@ -3,8 +3,9 @@
 
 int main(){
 
-	sf::RenderWindow window(sf::VideoMode(640, 480), "SFML Application");
-	Game *the_Game = new Game();
+	sf::RenderWindow window(sf::VideoMode(640, 480), "SFML Application");//where we draw things
+	window.setFramerateLimit(60);
+	Game *the_Game = new Game();//our game, everything happens here
 
 	while (window.isOpen()){
 
@@ -16,7 +17,7 @@ int main(){
 		}
 
 		window.clear();
-		the_Game->Run(window);
+		the_Game->Run(window);// we are passing  REFERENCE to the window down to the objects they draw on it themselves
 		window.display();
 	}
 
