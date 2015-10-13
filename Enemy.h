@@ -28,19 +28,20 @@ public:
 
 	
 
-	sf::Image* e_image;//e for enemy
+	sf::Image* e_image;//we load an image from file
 
-	sf::Vector2f* e_location;
+	sf::Vector2f* e_location;//where the sprite is positioned
 
-	sf::Sprite* e_sprite;
+	sf::Sprite* e_sprite;//what gets drawn
 
-	sf::Texture* e_texture;
+	sf::Texture* e_texture;//what we draw on the sprite
 
-	sf::IntRect* e_current_frame;
+	sf::IntRect* e_current_frame;// this is the rectangle we use for the spritesheet
 
-	int timer;
+	int timer; //  set with clock and then referenced for frame change
 
-	float e_sprite_counterX, e_sprite_counterY;
+	float e_sprite_counterX, e_sprite_counterY, e_sprite_height, e_sprite_width;//which sprite-sheet cell we are on currently
+	// defined by co-ordinates
 
 
 };
