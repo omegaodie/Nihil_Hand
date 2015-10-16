@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "Game.h"
 
+
 int main(){
 
 	sf::RenderWindow window(sf::VideoMode(640, 480), "SFML Application");//where we draw things

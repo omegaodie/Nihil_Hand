@@ -4,6 +4,8 @@
 
 #include <SFML/Graphics.hpp>
 #include "Enemy.h"
+#include "Menu.h"
+#include <vector>
 #include <SFML/System/Clock.hpp>
 
 class Game
@@ -21,6 +23,7 @@ class Game
 
 	private:
 		bool isRunning;
+		Menu* theMenu;
 		Enemy* the_Enemy;
 		
 
