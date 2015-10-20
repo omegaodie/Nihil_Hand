@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include "Game.h"
 
+// This is a comment
+
 int main(){
 
 	sf::RenderWindow window(sf::VideoMode(640, 480), "SFML Application");
