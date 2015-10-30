@@ -15,39 +15,28 @@ Ship::Ship(float x, float y)
 	shipSpeed = 1.0f;
 }
 
-void Ship::Update(sf::RenderWindow &w)
+void Ship::Update(sf::RenderWindow &w, POINT p)
 {
-	POINT p;
-	GetCursorPos(&p);
 	float dx = (p.x - w.getPosition().x) - shipPos.x;
 	float dy = (p.y - w.getPosition().y) - shipPos.y;
 	float dlength = sqrt((dx*dx) + (dy*dy));
-	shipVelocity.x = (dx / dlength) / 25 * shipSpeed;
-	shipVelocity.y = (dy / dlength) / 25 * shipSpeed;
-	shipPos += shipVelocity;
+	if (dlength == 0)
+		dlength = 0.00000001;		// Fail-safe to prevent divide by 0 on the next 2 lines
+	shipVelocity.x = (dx / dlength) / 5 * shipSpeed;
+	shipVelocity.y = (dy / dlength) / 5 * shipSpeed;
+	shipPos += shipVelocity;	// Get vector between current location and cursor, normalize, and add
 	if (shipPos.x < 26)
-		shipPos.x = 27;
+		shipPos.x = 26;
 	if (shipPos.y < 35)
-		shipPos.y = 36;
-	if (shipPos.x > w.getSize().x)
-		shipPos.x = w.getSize().x;
+		shipPos.y = 35;
+	if (shipPos.x > w.getSize().x - 13)
+		shipPos.x = w.getSize().x - 13;
 	if (shipPos.y > w.getSize().y)
-		shipPos.y = w.getSize().y;
-	FireBullet();
-}
-
-void Ship::FireBullet()
-{
-	
+		shipPos.y = w.getSize().y;		// Prevents ship following cursor out the window
 }
 
 void Ship::Draw(sf::RenderWindow &w)
 {
 	shipSprite.setPosition(shipPos);
 	w.draw(shipSprite);
-}
-
-sf::Vector2f Ship::GetShipPos()
-{
-	return shipPos;
 }

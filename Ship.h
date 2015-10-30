@@ -18,6 +18,7 @@
 #include <iostream> 
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include "Bullet.h"
 
 class Ship
 {
@@ -30,8 +31,6 @@ public:
 	sf::Vector2f shipPos;
 	sf::Vector2f shipVelocity;
 	float shipSpeed;
-	void Update(sf::RenderWindow &w);
+	void Update(sf::RenderWindow &w, POINT p);
 	void Draw(sf::RenderWindow &w);
-	void FireBullet();
-	sf::Vector2f GetShipPos();
 };
