@@ -91,6 +91,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\image1.jpg" />
+    <Image Include="resources\isKlick.jpg" />
+    <Image Include="resources\notKlick.png" />
+    <Image Include="resources\player.png" />
     <Image Include="resources\runningcat.png" />
     <Image Include="resources\sprite_sheet_1.jpg" />
   </ItemGroup>

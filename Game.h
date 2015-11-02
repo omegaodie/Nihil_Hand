@@ -17,16 +17,12 @@ class Game
 
 		void Game::Run(sf::RenderWindow &w);
 
-		bool* getIsRunning();
-
 		sf::Clock* clock;
 
 	private:
-		bool isRunning;
 		Menu* theMenu;
-		Enemy* the_Enemy;
-		
-
+		int gameState;
+		enum GameState { MENU_RUNNING = 0, GAME_RUNNING = 1, END = 2 };
 };
 
 #endif 

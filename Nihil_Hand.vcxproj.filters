@@ -67,5 +67,14 @@
     <Image Include="resources\image1.jpg">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="resources\player.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\isKlick.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\notKlick.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
