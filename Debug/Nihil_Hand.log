@@ -1,0 +1,17 @@
+﻿Build started 02/11/2015 11:49:46.
+     1>Project "C:\Users\Odon Flanagan\Desktop\projects\Nihil_Hand\Nihil_Hand.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Button.cpp Enemy.cpp Game.cpp Main.cpp Menu.cpp
+         Menu.cpp
+     1>c1xx : fatal error C1083: Cannot open source file: 'Menu.cpp': No such file or directory
+         Main.cpp
+         Game.cpp
+         Enemy.cpp
+         Button.cpp
+     1>c1xx : fatal error C1083: Cannot open source file: 'Button.cpp': No such file or directory
+         Generating Code...
+     1>Done Building Project "C:\Users\Odon Flanagan\Desktop\projects\Nihil_Hand\Nihil_Hand.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:02.54
