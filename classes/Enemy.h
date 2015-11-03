@@ -2,13 +2,14 @@
 #define ___ENEMY_H__
 
 #include <SFML/Graphics.hpp>
-
+#include <vector>
+#include <SFML/System/Clock.hpp>
 
 class Enemy
 {
 public:
-	Enemy::Enemy(float x, float y);
-	Enemy::~Enemy();
+	Enemy(float x, float y);
+	~Enemy();
 
 
 	void Enemy::Draw(sf::RenderWindow &w);
