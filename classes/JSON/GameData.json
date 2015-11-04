@@ -1,0 +1,25 @@
+{
+"global_settings" : 
+     {       
+        "texture_image_file" :  "Tower.png",
+        "tower_rotation_origin" : 
+        {        
+			"x" :  31,
+            "y" :  55
+        },
+        "tower_positions": [
+        {
+			"x": 800,
+            "y": 845
+        },
+		{
+			"x": 735,
+            "y": 790  
+		},
+        {
+			"x": 678,
+            "y": 552
+        }      
+        ]    
+	}
+}
