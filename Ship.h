@@ -25,9 +25,9 @@ public:
 	Ship::Ship();
 	Ship::Ship(float x, float y);
 	Ship::~Ship();
-	sf::Texture shipTexture;
-	sf::Sprite shipSprite;
-	sf::Vector2f shipPos;
+	sf::Texture shipTexture; // yo thomas Private man class variables need to be private
+	sf::Sprite shipSprite; // you can blame Daire for me fuckin wit ur work
+	sf::Vector2f shipPos;  //im code reviewing ;)
 	sf::Vector2f shipVelocity;
 	float shipSpeed;
 	void Update(sf::RenderWindow &w);
