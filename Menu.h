@@ -21,10 +21,7 @@ private:
 	//std::vector<sf::Image*> m_image;//m for menu
 	sf::Image* m_image, *btnClik, *btnNotClik;
 
-	Button* btn1;
-	Button* btn2;
-
-
+	Button *btn1, *btn2;
 
 	//std::vector<sf::Sprite*> m_sprites;
 	sf::Sprite*  m_sprite;

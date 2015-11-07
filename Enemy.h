@@ -2,26 +2,41 @@
 #define ___ENEMY_H__
 
 #include <SFML/Graphics.hpp>
+//#include "AnimatedSprite.h"
+#include "GameData.h"
 
 
-class Enemy
+
+class Enemy //: public AnimatedSprite
 {
 public:
 	Enemy::Enemy(float x, float y);
+	Enemy::Enemy();
 	Enemy::~Enemy();
-
 
 	void Enemy::Draw(sf::RenderWindow &w);
 
-	void Enemy::Move();
+	void Enemy::Init(sf::Clock);
+	void Enemy::Init();
 
-	/*bool*/void Enemy::Update();//return bool if alive or dead, leaving it void for now 
+	bool* alive;
+	bool levelStarted;
+
+	void Enemy::Update(sf::Clock);//return bool if alive or dead, leaving it void for now 
+	void Enemy::Update();
+
+	//void Enemy::Animate();
 
 	int* life;
 
-	sf::Vector2f* location;
+	std::clock_t timeAtLastFire;	// Time the last bullet was shot
+	std::clock_t timeNow;			// Current time
 
-	bool* alive;  
+	sf::Texture enemyTexture;
+	sf::Sprite enemySprite;
+	sf::Vector2f enemyVelocity[10];
+	sf::Vector2f enemyPosition[10];
+	GameData* gd;
 
 };
 

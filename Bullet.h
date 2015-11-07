@@ -1,5 +1,4 @@
 #pragma once
-#include "stdafx.h"
 #pragma comment(lib,"sfml-graphics-d.lib") 
 #pragma comment(lib,"sfml-audio-d.lib") 
 #pragma comment(lib,"sfml-system-d.lib") 
@@ -18,7 +17,6 @@
 #include <iostream> 
 #define _USE_MATH_DEFINES
 #include <math.h>
-#include "Ship.h"
 
 class Bullet
 {
