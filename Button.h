@@ -6,7 +6,7 @@
 #define ___BUTTON_H__
 
 #include <SFML/Graphics.hpp>
-
+#include "AnimatedSprite.h"
 
 class Button {
 public:

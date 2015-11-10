@@ -1,4 +1,3 @@
-//#include "stdafx.h"
 #include "Bullet.h"
 
 Bullet::Bullet()
@@ -8,11 +7,13 @@ Bullet::Bullet()
 
 Bullet::Bullet(float x, float y, bool alive)
 {
-	bulletTexture.loadFromFile("shipSheet.png", sf::IntRect(134, 283, 3, 9));	// Set bullet texture
-	bulletSprite.setTexture(bulletTexture);
+	playerBulletTexture.loadFromFile("resources/shipSheet.png", sf::IntRect(134, 283, 3, 9));	// Set bullet texture
+	enemyBulletTexture.loadFromFile("resources/shipSheet.png", sf::IntRect(210, 284, 8, 8));
+	playerBulletSprite.setTexture(playerBulletTexture);
+	enemyBulletSprite.setTexture(enemyBulletTexture);
 	bulletSource = sf::Vector2f(x, y);		// Set initial position of the bullet source
 	timeAtLastFire = std::clock();
-	fireRate = 5;	// Set fire rate here
+	fireRate = 50;	// Set fire rate here
 	MAX_BULLETS = 200;		// Set max number of bullets here
 	for (int i = 0; i < MAX_BULLETS; i++)
 	{
@@ -22,14 +23,20 @@ Bullet::Bullet(float x, float y, bool alive)
 
 void Bullet::Update(sf::RenderWindow &w, POINT p)
 {
-	float dx = (p.x - w.getPosition().x) - bulletSource.x - 8.5f;
-	float dy = (p.y - w.getPosition().y) - bulletSource.y - 34;
-	float dlength = sqrt((dx*dx) + (dy*dy));
+	dx = (p.x - w.getPosition().x) - bulletSource.x - 8.5f;
+	dy = (p.y - w.getPosition().y) - bulletSource.y - 34;
+	px = (p.x - w.getPosition().x) - 8.5f;
+	py = (p.y - w.getPosition().y) - 34;
+	dlength = sqrt((dx*dx) + (dy*dy));
 	if (dlength == 0)
 		dlength = 0.0000001f;	// Fail-safe to prevent divide by 0 on the next 2 lines
-	bulletSourceVelocity.x = (dx / dlength) / 5;
-	bulletSourceVelocity.y = (dy / dlength) / 5;
-	bulletSource += bulletSourceVelocity;	// Get vector between current location and cursor, normalize, and add
+	bulletSourceVelocity.x = (dx / dlength) * 5;
+	bulletSourceVelocity.y = (dy / dlength) * 5;
+	if (sqrt(((bulletSource.x - px)*(bulletSource.x - px)) + ((bulletSource.y - py)*(bulletSource.y - py))) <= 4)	// Prevents the bullet source vibrating around
+	{																												// the cursor when close to it
+		bulletSource = sf::Vector2f(p.x - w.getPosition().x - 8.5f, p.y - w.getPosition().y - 34);
+	}
+	else bulletSource += bulletSourceVelocity;	// Get vector between current location and cursor, normalize, and add
 	timeNow = std::clock();
 	if (bulletSource.x < 18)
 		bulletSource.x = 18;
@@ -58,15 +65,15 @@ void Bullet::Draw(sf::RenderWindow &w)
 	{
 		if (bulletFiredA[i] == true)
 		{
-			bulletSprite.setPosition(bulletPosA[i]);	// Draw a bullet at each location in the array, if they're alive
-			w.draw(bulletSprite);
+			playerBulletSprite.setPosition(bulletPosA[i]);	// Draw a bullet at each location in the array, if they're alive
+			w.draw(playerBulletSprite);
 		}
 	}
 }
 
 bool Bullet::FireBullet(sf::Vector2f bulletS)
 {
-	if (GetKeyState(VK_LBUTTON) < 0 && timeNow - timeAtLastFire >= fireRate)	// If left-click is pressed
+	if (GetAsyncKeyState(VK_LBUTTON) < 0 && timeNow - timeAtLastFire >= fireRate)	// If left-click is pressed
 	{
 		timeAtLastFire = std::clock();
 		for (int i = 0; i < MAX_BULLETS; i++)
@@ -76,12 +83,12 @@ bool Bullet::FireBullet(sf::Vector2f bulletS)
 				bulletFiredA[i] = true; bulletFiredA[i + 1] = true;	// Shoot a pair of bullets
 				bulletPosA[i].x = bulletSource.x + 4; bulletPosA[i].y = bulletSource.y;		// Set bullet sources next to each other
 				bulletPosA[i + 1].x = bulletSource.x - 4; bulletPosA[i + 1].y = bulletSource.y;
-				bulletVelocityA[i] = sf::Vector2f(0, -0.5f); bulletVelocityA[i + 1] = sf::Vector2f(0, -0.5f);	// Bullets fire in a straight line
+				bulletVelocityA[i] = sf::Vector2f(0, -7.5f); bulletVelocityA[i + 1] = sf::Vector2f(0, -7.5f);	// Bullets fire in a straight line
 				return true;
 			}
 		}	
 	}
-	else if (GetKeyState(VK_RBUTTON) < 0 && timeNow - timeAtLastFire >= fireRate)	// If right-click is pressed
+	else if (GetAsyncKeyState(VK_RBUTTON) < 0 && timeNow - timeAtLastFire >= fireRate)	// If right-click is pressed
 	{
 		timeAtLastFire = std::clock();
 		for (int i = 0; i < MAX_BULLETS; i++)
@@ -89,8 +96,9 @@ bool Bullet::FireBullet(sf::Vector2f bulletS)
 			if (bulletFiredA[i] == false)
 			{
 				bulletFiredA[i] = true; bulletFiredA[i + 1] = true;
-				bulletPosA[i] = bulletSource; bulletPosA[i + 1] = bulletSource; // Bullets share same source
-				bulletVelocityA[i] = sf::Vector2f(0.1f, -0.5f); bulletVelocityA[i + 1] = sf::Vector2f(-0.1f, -0.5f); // Bullets fly off forward, at opposite angles, creates "V" shape
+				bulletPosA[i].x = bulletSource.x + 4; bulletPosA[i].y = bulletSource.y;		// Set bullet sources next to each other
+				bulletPosA[i + 1].x = bulletSource.x - 4; bulletPosA[i + 1].y = bulletSource.y;
+				bulletVelocityA[i] = sf::Vector2f(1.5f, -7.5f); bulletVelocityA[i + 1] = sf::Vector2f(-1.5f, -7.5f); // Bullets fly off forward, at opposite angles, creates "V" shape
 				return true;
 			}
 		}

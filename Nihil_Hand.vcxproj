@@ -51,11 +51,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Odon Flanagan\Desktop\Nihil_Hand_COMBINE\classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SFML_SDK)/include;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SFML_SDK)/lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -65,26 +67,42 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Odon Flanagan\Desktop\Nihil_Hand_COMBINE\classes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SFML_SDK)/include;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>sfml-graphics.lib;sfml-window.lib;sfml-system.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SFML_SDK)/lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="classes\AnimatedSprite.cpp" />
-    <ClCompile Include="classes\Animation.cpp" />
-    <ClCompile Include="classes\Bullet.cpp" />
-    <ClCompile Include="classes\Button.cpp" />
-    <ClCompile Include="classes\Enemy.cpp" />
-    <ClCompile Include="classes\Game.cpp" />
-    <ClCompile Include="classes\Level.cpp" />
-    <ClCompile Include="classes\Main.cpp" />
-    <ClCompile Include="classes\Menu.cpp" />
-    <ClCompile Include="classes\Ship.cpp" />
+    <ClCompile Include="AnimatedSprite.cpp" />
+    <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Enemy.cpp">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SFML_SDK)/include;C:\Users\Tomas\Desktop\jsoncons-master\jsoncons-master\src\jsoncons;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SFML_SDK)/include;C:\Users\Tomas\Desktop\jsoncons-master\jsoncons-master\src\jsoncons;</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameData.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Player.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AnimatedSprite.h" />
+    <ClInclude Include="Animation.h" />
+    <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameData.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\image1.jpg" />
@@ -96,15 +114,7 @@
     <Image Include="resources\sprite_sheet_1.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="classes\AnimatedSprite.h" />
-    <ClInclude Include="classes\Animation.h" />
-    <ClInclude Include="classes\Bullet.h" />
-    <ClInclude Include="classes\Button.h" />
-    <ClInclude Include="classes\Enemy.h" />
-    <ClInclude Include="classes\Game.h" />
-    <ClInclude Include="classes\Level.h" />
-    <ClInclude Include="classes\Menu.h" />
-    <ClInclude Include="classes\Ship.h" />
+    <None Include="GameData.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

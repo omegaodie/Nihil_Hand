@@ -3,11 +3,13 @@
 
 
 #include <SFML/Graphics.hpp>
+//#include "Enemy.h"
 #include "Menu.h"
-#include "Level.h"
+#include "Player.h"
+#include "Bullet.h"
+#include "Enemy.h"
 #include <vector>
 #include <SFML/System/Clock.hpp>
-#include "AnimatedSprite.h"
 
 class Game
 {
@@ -17,12 +19,13 @@ class Game
 		void Game::Init();
 
 		void Game::Run(sf::RenderWindow &w);
-
 		sf::Clock* clock;
 
 	private:
 		Menu* theMenu;
-		Level* theLevel;
+		Player* thePlayer;
+		Bullet* theBullets;
+		Enemy* theEnemies;
 		int gameState;
 		enum GameState { MENU_RUNNING = 0, GAME_RUNNING = 1, END = 2 };
 };

@@ -1,5 +1,4 @@
 #pragma once
-//#include "stdafx.h"
 #pragma comment(lib,"sfml-graphics-d.lib") 
 #pragma comment(lib,"sfml-audio-d.lib") 
 #pragma comment(lib,"sfml-system-d.lib") 
@@ -18,7 +17,6 @@
 #include <iostream> 
 #define _USE_MATH_DEFINES
 #include <math.h>
-#include "Ship.h"
 
 class Bullet
 {
@@ -27,8 +25,10 @@ public:
 	Bullet::Bullet(float x, float y, bool);
 	Bullet::~Bullet();
 
-	sf::Texture bulletTexture;		// The bullet's texture
-	sf::Sprite bulletSprite;		// The bullet's sprite
+	sf::Texture playerBulletTexture;		// The bullet's texture
+	sf::Texture enemyBulletTexture;
+	sf::Sprite playerBulletSprite;		// The bullet's sprite
+	sf::Sprite enemyBulletSprite;
 
 	sf::Vector2f bulletPosA[200];	// Array of bullet positions
 	sf::Vector2f bulletSource;		// Position of where the bullets get shot from
@@ -44,4 +44,5 @@ public:
 	void Update(sf::RenderWindow &w, POINT p);		// Update bullet positions, bullet source position, check if off-screen
 	void Draw(sf::RenderWindow &w);					// Draw bullets
 	bool FireBullet(sf::Vector2f bulletSource);		// Fire the bullets
+	float dx, dy, px, py, dlength;
 };

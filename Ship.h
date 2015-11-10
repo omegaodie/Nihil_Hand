@@ -1,5 +1,5 @@
 #pragma once
-//#include "stdafx.h"
+#include "stdafx.h"
 #pragma comment(lib,"sfml-graphics-d.lib") 
 #pragma comment(lib,"sfml-audio-d.lib") 
 #pragma comment(lib,"sfml-system-d.lib") 
@@ -26,16 +26,11 @@ public:
 	Ship::Ship();
 	Ship::Ship(float x, float y);
 	Ship::~Ship();
-	
-	void Update(sf::RenderWindow &w, POINT p);
-	void alt_Update(sf::RenderWindow &w, sf::Vector2f p);
-	void Draw(sf::RenderWindow &w);
-
-
-private:
 	sf::Texture shipTexture;
 	sf::Sprite shipSprite;
 	sf::Vector2f shipPos;
 	sf::Vector2f shipVelocity;
 	float shipSpeed;
+	void Update(sf::RenderWindow &w, POINT p);
+	void Draw(sf::RenderWindow &w);
 };
