@@ -10,6 +10,7 @@
 #include "Enemy.h"
 #include <vector>
 #include <SFML/System/Clock.hpp>
+#include "GameData.h"
 
 class Game
 {
@@ -20,6 +21,8 @@ class Game
 
 		void Game::Run(sf::RenderWindow &w);
 		sf::Clock* clock;
+		GameData theGameData = GameData();
+		const GameData& gd = theGameData;
 
 	private:
 		Menu* theMenu;

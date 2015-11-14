@@ -15,14 +15,14 @@ class Player
 {
 public:
 	Player::Player();
-	Player::Player(float spawnX, float spawnY);
+	Player::Player(float spawnX, float spawnY, const GameData &gd);
 	Player::~Player();
 	void Update(sf::RenderWindow &w, POINT p);
 	void Draw(sf::RenderWindow &w);
 
 
 private:
-	GameData* gd;
+	const GameData & gd;
 	sf::Texture* shipTexture, enemyTexture;
 	sf::Sprite* shipSprite, enemySprite;
 	sf::Vector2f shipPos, enemyPos[5];

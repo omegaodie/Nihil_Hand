@@ -1,25 +1,22 @@
 #include "Enemy.h"
 
-Enemy::Enemy(){
+Enemy::Enemy(const GameData &gdata) : gd(gdata){
 	levelStarted = false;
-	gd = new GameData();
-	bullet = new Bullet();
+	bullet = new Bullet(gd);
 	enemySprite = new sf::Sprite();
-	enemyTexture = gd->m_EnemyTexture;
+	enemyTexture = gd.m_EnemyTexture;
 	//enemyTexture.loadFromFile("resources/shipSheet.png", sf::IntRect(156, 304, 28, 26));
 	enemySprite->setTexture(*enemyTexture);
 	enemySprite->setRotation(180);
 	for (int i = 0; i < 10; i++)
 	{
-		enemyPosition[i] = sf::Vector2f(gd->enemySpawnWaveOne[i].x + 50, gd->enemySpawnWaveOne[i].y - 30);
+		enemyPosition[i] = sf::Vector2f(gd.enemySpawnWaveOne[i].x + 50, gd.enemySpawnWaveOne[i].y - 30);
 		enemyVelocity[i] = sf::Vector2f(0, 3.0f);
 		enemyAlive[i] = true;
 	}
 }
 
-Enemy::Enemy(float x, float y){
-	//e_location = new sf::Vector2f(x, y);*/
-}
+
 
 void Enemy::Init()
 {
@@ -48,7 +45,7 @@ void Enemy::Draw(sf::RenderWindow &w){// animateion logic here
 			w.draw(*enemySprite);
 		}
 	}
-	if (timeNow - timeAtLastFire > gd->waveTwoSpawnTime)
+	if (timeNow - timeAtLastFire > gd.waveTwoSpawnTime)
 	{
 		for (int i = 5; i < 10; i++)
 		{
@@ -73,7 +70,7 @@ void Enemy::Update()
 	{
 		enemyPosition[i] += enemyVelocity[i];
 	}
-	if (timeNow - timeAtLastFire >= gd->waveTwoSpawnTime)
+	if (timeNow - timeAtLastFire >= gd.waveTwoSpawnTime)
 	{
 		for (int i = 5; i < 10; i++)
 		{

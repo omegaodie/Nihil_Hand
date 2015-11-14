@@ -4,7 +4,7 @@
 
 int main(){
 
-	sf::RenderWindow window(sf::VideoMode(640, 480), "SFML Application");//where we draw things
+	sf::RenderWindow window(sf::VideoMode(640, 480, 32U), "SFML Application");//where we draw things
 	window.setFramerateLimit(60);
 	Game *the_Game = new Game();//our game, everything happens here
 

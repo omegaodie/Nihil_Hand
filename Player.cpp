@@ -1,16 +1,10 @@
 #include "Player.h"
 
-Player::Player()
+Player::Player(float spawnX, float spawnY, const GameData &gdata) : 
+gd(gdata)
 {
-	
-}
-
-Player::Player(float spawnX, float spawnY)
-{
-	gd = new GameData();
 	shipSprite = new sf::Sprite();
-	//shipTexture.loadFromFile("resources/shipSheet.png", sf::IntRect(42, 3, 39, 36));
-	shipTexture = gd->m_PlayerTexture;
+	shipTexture = gd.m_PlayerTexture;
 	shipSprite->setTexture(*shipTexture);
 	shipSprite->setOrigin(26, 35);
 	shipPos = sf::Vector2f(spawnX, spawnY);

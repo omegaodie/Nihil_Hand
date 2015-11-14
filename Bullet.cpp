@@ -1,16 +1,15 @@
 #include "Bullet.h"
-
-Bullet::Bullet()
-{
+Bullet::Bullet(const GameData &gdata) : gd(gdata){
 
 }
 
-Bullet::Bullet(float x, float y, bool alive)
+Bullet::Bullet(float x, float y, bool alive, const GameData &gdata) :
+gd(gdata)
 {
-	playerBulletTexture.loadFromFile("resources/shipSheet.png", sf::IntRect(134, 283, 3, 9));	// Set bullet texture
-	enemyBulletTexture.loadFromFile("resources/shipSheet.png", sf::IntRect(210, 284, 8, 8));
-	playerBulletSprite.setTexture(playerBulletTexture);
-	enemyBulletSprite.setTexture(enemyBulletTexture);
+	playerBulletTexture = (gd.m_PlayerBulletTexture);	// Set bullet texture
+	enemyBulletTexture = (gd.m_EnemyBulletTexture);
+	playerBulletSprite.setTexture(*playerBulletTexture);
+	enemyBulletSprite.setTexture(*enemyBulletTexture);
 	bulletSource = sf::Vector2f(x, y);		// Set initial position of the bullet source
 	timeAtLastFire = std::clock();
 	fireRate = 50;	// Set fire rate here

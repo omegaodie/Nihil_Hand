@@ -11,8 +11,9 @@
 class Enemy //: public AnimatedSprite
 {
 public:
-	Enemy::Enemy(float x, float y);
-	Enemy::Enemy();
+
+
+	Enemy::Enemy(const GameData &gd);
 	Enemy::~Enemy();
 
 	void Enemy::Draw(sf::RenderWindow &w);
@@ -44,7 +45,7 @@ private:
 	sf::Vector2f enemyPosition[10];
 	bool enemyAlive[10];
 
-	GameData* gd; 
+	const GameData& gd; 
 	Bullet* bullet;
 
 };

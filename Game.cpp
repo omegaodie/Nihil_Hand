@@ -1,15 +1,12 @@
 #include"Game.h"
 
 Game::Game(){
-	//the_Enemy = new Enemy(10, 25);
 	clock = new sf::Clock();
-	theMenu = new Menu();
-	thePlayer = new Player(308.5f, 334);
-	theBullets = new Bullet(300, 300, false);
-	theEnemies = new Enemy();
-	
+	theMenu = new Menu(gd);
+	thePlayer = new Player(308.5f, 334, gd);
+	theBullets = new Bullet(300, 300, false, gd);
+	theEnemies = new Enemy(gd);
 	theMenu->Init();
-	//the_Enemy->Init(*clock);
 	gameState = MENU_RUNNING;
 }
 	
@@ -42,7 +39,6 @@ void Game::Run(sf::RenderWindow &w){
 		break;
 		case GAME_RUNNING:
 		{
-			//theMenu->DrawBackground(w);
 			thePlayer->Update(w, p);
 			thePlayer->Draw(w);				 // Level state
 			theBullets->Update(w, p);

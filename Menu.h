@@ -9,7 +9,7 @@
 class Menu
 {
 public:
-	Menu();
+	Menu(const GameData &gdata);
 	~Menu();
 
 	void Init();
@@ -18,13 +18,14 @@ public:
 	void Run(sf::RenderWindow &w, sf::Event &eve);
 	void DrawButtons(sf::RenderWindow &w, sf::Event &eve);
 
+	const GameData& gd; 
 private:
 
 	sf::Image* m_image, *btnClik, *btnNotClik;
 
 	Button *btn1, *btn2;
 
-	GameData* gd;
+	
 
 	sf::Sprite*  m_sprite;
 

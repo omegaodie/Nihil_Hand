@@ -11,14 +11,14 @@
 
 class Button {
 public:
-	Button();
+	Button(const GameData & gdata);
 	void Init(sf::Vector2f* pos);
 	void checkClick(sf::Vector2i);
 	void setState(bool b);
 	bool sendItUp();
 	void exist(sf::RenderWindow &w, sf::Event &eve);
 private:
-	GameData* gd;
+	const GameData& gd;
 	sf::Sprite* btn_Spr;
 	sf::Vector2f* btn_Pos;
 	sf::Texture* btn_texture_notclicked;

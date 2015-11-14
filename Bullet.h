@@ -17,16 +17,17 @@
 #include <iostream> 
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include "GameData.h"
 
 class Bullet
 {
 public:
-	Bullet::Bullet();
-	Bullet::Bullet(float x, float y, bool);
+	Bullet::Bullet(const GameData &gdata);
+	Bullet::Bullet(float x, float y, bool, const GameData &gdata);
 	Bullet::~Bullet();
 
-	sf::Texture playerBulletTexture;		// The bullet's texture
-	sf::Texture enemyBulletTexture;
+	sf::Texture* playerBulletTexture;		// The bullet's texture
+	sf::Texture* enemyBulletTexture;
 	sf::Sprite playerBulletSprite;		// The bullet's sprite
 	sf::Sprite enemyBulletSprite;
 
@@ -36,6 +37,8 @@ public:
 	sf::Vector2f bulletVelocityA[200];		// Array of bullet velocity
 	bool bulletFiredA[200];
 
+
+	const GameData& gd;
 	float fireRate;		// Rate that bullets can be shot
 	std::clock_t timeAtLastFire;	// Time the last bullet was shot
 	std::clock_t timeNow;			// Current time

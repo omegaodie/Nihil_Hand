@@ -1,20 +1,21 @@
 #include "Button.h"
 //
 //I AM REPORT THE HARASS!!
-Button::Button() {
+Button::Button(const GameData &gdata) : gd(gdata)
+{
 
 }
 
 void Button::Init(sf::Vector2f* pos){
-	gd = new GameData();
 	btn_Pos = pos;
 	current = false;
 	btn_Spr = new sf::Sprite();
-	btn_texture_notclicked = gd->m_Button1Texture;
-	btn_texture_clicked = gd->m_Button2Texture;
-	btn_current = btn_texture_notclicked;
+	btn_texture_notclicked = gd.m_Button1Texture;
+	btn_texture_clicked = gd.m_Button2Texture;
+	btn_current = btn_texture_clicked;
 	setState(false);// false for not clicked
 	btn_Spr->setPosition(*pos);
+	btn_Spr->setTexture(*btn_current, true);
 }
 
 void Button::checkClick(sf::Vector2i mousePos) {
@@ -38,16 +39,13 @@ void Button::setState(bool b) {
 	}	
 }
 
-void Button::exist(sf::RenderWindow &w, sf::Event &eve){
-	btn_Spr->setTexture(*btn_current, true);
+void Button::exist(sf::RenderWindow &w, sf::Event &eve){	
 	w.draw(*btn_Spr);
-	while (w.pollEvent(eve)){
 		//process mouse/key events in here
-		if (eve.type == sf::Event::MouseButtonPressed && eve.type != sf::Event::MouseEntered){
+		if (eve.type == sf::Event::MouseButtonPressed ){ //&& eve.type != sf::Event::MouseEntered){
 				sf::Vector2i mousePos = sf::Vector2i(eve.mouseButton.x, eve.mouseButton.y);
 				checkClick(mousePos);
 		}
-	}
 }
 
 bool Button::sendItUp(){
