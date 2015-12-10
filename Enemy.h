@@ -1,18 +1,20 @@
 #ifndef __ENEMY_H__
 #define ___ENEMY_H__
 
+using namespace std;
+
 #include <SFML/Graphics.hpp>
-//#include "AnimatedSprite.h"
 #include "GameData.h"
 #include "Bullet.h"
 
 
 
-class Enemy //: public AnimatedSprite
+class Enemy 
 {
 public:
-	Enemy::Enemy(float x, float y);
-	Enemy::Enemy();
+
+
+	Enemy::Enemy(const GameData &gd, int i);
 	Enemy::~Enemy();
 
 	void Enemy::Draw(sf::RenderWindow &w);
@@ -20,31 +22,30 @@ public:
 	void Enemy::Init(sf::Clock);
 	void Enemy::Init();
 
+	sf::Vector2f* Enemy::GetPos();
+
+
+	void Enemy::Update(sf::Clock);//return bool if alive or dead, leaving it void for now 
+	void Enemy::FireBullets();
+
+	//void Enemy::Animate();
+private:
+	int* life;
 	bool* alive;
 	bool levelStarted;
 
-	void Enemy::Update(sf::Clock);//return bool if alive or dead, leaving it void for now 
-	void Enemy::Update();
-	bool Enemy::FireBullets();
-	void Enemy::HitDetection();
+	Bullet* theBullets;
 
-	//void Enemy::Animate();
+	sf::Int32 timeAtLastFire;	// Time the last bullet was shot
+	sf::Int32 timeNow;			// Current time
 
-	int* life;
+	sf::Texture* enemyTexture;
+	sf::Sprite* enemySprite;
+	sf::Vector2f enemyVelocity;
+	sf::Vector2f enemyPosition;
+	bool enemyAlive;
 
-	std::clock_t timeAtLastFire;	// Time the last bullet was shot
-	std::clock_t timeNow;			// Current time
-
-	sf::Texture enemyTexture;
-	sf::Texture enemyBulletTexture;
-	sf::Sprite enemySprite;
-	sf::Sprite enemyBulletSprite;
-	sf::Vector2f enemyVelocity[10];
-	sf::Vector2f enemyPosition[10];
-	bool enemyAlive[10];
-
-	GameData* gd; 
-	Bullet* bullet;
+	const GameData& gd; 
 
 };
 

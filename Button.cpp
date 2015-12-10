@@ -1,27 +1,27 @@
 #include "Button.h"
 //
 //I AM REPORT THE HARASS!!
-Button::Button() {
+Button::Button(const GameData &gdata) : gd(gdata)
+{
 
 }
 
-void Button::Init(sf::String s, sf::Vector2f* pos, sf::Image* klik, sf::Image* notklick){
-	btn_string = s;
+void Button::Init(sf::Vector2f* pos){
 	btn_Pos = pos;
-	btn_image_Clicked = klik;
-	btn_image_notClicked = notklick;
 	current = false;
 	btn_Spr = new sf::Sprite();
-	btn_texture = new sf::Texture();
-	btn_Box = new sf::IntRect();
+	btn_texture_notclicked = gd.m_Button1Texture;
+	btn_texture_clicked = gd.m_Button2Texture;
+	btn_current = btn_texture_clicked;
 	setState(false);// false for not clicked
 	btn_Spr->setPosition(*pos);
+	btn_Spr->setTexture(*btn_current, true);
 }
 
 void Button::checkClick(sf::Vector2i mousePos) {
-	if (mousePos.x > btn_Pos->x && mousePos.x<(btn_Pos->x + btn_texture->getSize().x))
+	if (mousePos.x > btn_Pos->x && mousePos.x<(btn_Pos->x + btn_texture_notclicked->getSize().x))//images are the same size
 	{
-		if (mousePos.y>btn_Pos->y && mousePos.y<(btn_Pos->y + btn_texture->getSize().y)) {
+		if (mousePos.y>btn_Pos->y && mousePos.y<(btn_Pos->y + btn_texture_notclicked->getSize().y)) {
 			current = !current;
 		}
 	}
@@ -32,30 +32,22 @@ void Button::checkClick(sf::Vector2i mousePos) {
 
 void Button::setState(bool b) {
 	if (b){
-		btn_texture->loadFromImage(*btn_image_Clicked, *btn_Box);
+		btn_current = btn_texture_clicked;
 	}
 	else{
-		btn_texture->loadFromImage(*btn_image_notClicked, *btn_Box);
+		btn_current = btn_texture_notclicked;
 	}	
 }
 
-void Button::exist(sf::RenderWindow &w, sf::Event &eve){
-	btn_Spr->setTexture(*btn_texture, true);
+void Button::exist(sf::RenderWindow &w, sf::Event &eve){	
 	w.draw(*btn_Spr);
-	while (w.pollEvent(eve)){
 		//process mouse/key events in here
-		if (eve.type == sf::Event::MouseButtonPressed && eve.type != sf::Event::MouseEntered){
+		if (eve.type == sf::Event::MouseButtonPressed ){ //&& eve.type != sf::Event::MouseEntered){
 				sf::Vector2i mousePos = sf::Vector2i(eve.mouseButton.x, eve.mouseButton.y);
 				checkClick(mousePos);
 		}
-	}
 }
 
-int Button::sendItUp(){
-	if (current == false){
-		return 0;
-	}
-	else{
-		return 1;
-	}
+bool Button::sendItUp(){
+	return current;
 }

@@ -21,15 +21,38 @@ public:
 	GameData::GameData();
 
 	// Textures
-	std::string m_playerShipTextureFile;
-	std::string m_enemyTextureFile;
+	std::string m_shipTextureFile;
+	std::string m_MenuBackgroundFile;
+	std::string m_lvl1BackGround;
+	std::string m_Button1File;
+	std::string m_Button2File;
+
+
+	//sprite textures
+	sf::Texture* m_PlayerBulletTexture; 
+	sf::Texture* m_EnemyBulletTexture;
+	sf::Texture* m_EnemyTexture;
+	sf::Texture* m_PlayerTexture;
+	sf::Texture* m_lvl1BackGroundTexture;
+	sf::Texture* m_Button1Texture;
+	sf::Texture* m_Button2Texture;
+	sf::Texture* m_MenuBackgroundTexture;
 
 	// Enemy spawn positions
 	float waveOneSpawnTime;
 	float waveTwoSpawnTime;
 	sf::Vector2f enemySpawnWaveOne[5];
 	sf::Vector2f enemySpawnWaveTwo[5];
+
+	//player Spawn Location
+	sf::Vector2f* playerSpawnLevelOne;
 	
+
+	//playerBulletEnemy widthshtuff
+	sf::Vector2f* m_PlayerDimensions;
+	sf::Vector2f* m_EnemyDimensions;
+	sf::Vector2f* m_BulletDimensions;
+
 
 };
 

@@ -3,12 +3,13 @@
 
 #include <SFML/Graphics.hpp>
 #include "Button.h"
+#include "GameData.h"
 
 
 class Menu
 {
 public:
-	Menu();
+	Menu(const GameData &gdata);
 	~Menu();
 
 	void Init();
@@ -17,16 +18,18 @@ public:
 	void Run(sf::RenderWindow &w, sf::Event &eve);
 	void DrawButtons(sf::RenderWindow &w, sf::Event &eve);
 
+	const GameData& gd; 
 private:
-	//std::vector<sf::Image*> m_image;//m for menu
+
 	sf::Image* m_image, *btnClik, *btnNotClik;
 
 	Button *btn1, *btn2;
 
-	//std::vector<sf::Sprite*> m_sprites;
+	
+
 	sf::Sprite*  m_sprite;
 
-	//std::vector<sf::Texture*> m_textures;
+
 	sf::Texture* m_texture;
 
 	std::vector<Button*> m_Btns;

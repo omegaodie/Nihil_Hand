@@ -1,25 +1,20 @@
 #include "Menu.h"
 
-Menu::Menu(){
+Menu::Menu(const GameData &gdata) :
+gd(gdata)
+{
 }
 
-void Menu::Init(){
+void Menu::Init()
+{
+	m_sprite = new sf::Sprite();
 	exitClick = 0;
 	GameClick = 0;
-	m_image = new sf::Image();
-	btnClik = new sf::Image();
-	btnNotClik = new sf::Image();
-	m_texture = new sf::Texture();
-	m_sprite = new sf::Sprite();
-	btn1 = new Button();
-	/////this will be replaced by calls to JSonloader////////////
-	m_image->loadFromFile("resources/image1.jpg");
-	btnClik->loadFromFile("resources/isKlick.jpg");
-	btnNotClik->loadFromFile("resources/notKlick.png");
-	sf::Vector2f* posBt = new sf::Vector2f(200, 200);
-	/////this will be replaced by calls to JSonloader////////////
-	btn1->Init("Holo", posBt, btnClik, btnNotClik);
+	m_texture = gd.m_MenuBackgroundTexture;
+	btn1 = new Button(gd);
+	btn1->Init(new sf::Vector2f(150, 150));
 	m_Btns.push_back(btn1);
+	m_sprite->setTexture(*m_texture, true);
 }
 
 void Menu::Run(sf::RenderWindow &w, sf::Event &eve){
@@ -32,12 +27,11 @@ int Menu::state(){
 }
 
 void Menu::DrawBackground(sf::RenderWindow &w){
-	m_texture->loadFromImage(*m_image, sf::IntRect(x, 0, w.getSize().x, w.getSize().y));
-	if (x + w.getSize().x < m_image->getSize().x){
-		x += 5;
+	if (m_sprite->getPosition().x + w.getSize().x < m_texture->getSize().x){
+		m_sprite->setPosition((sf::Vector2f(m_sprite->getPosition().x + 5, m_sprite->getPosition().y)));
 	}
 	else{
-		x = 0;
+		m_sprite->setPosition((sf::Vector2f(0, m_sprite->getPosition().y)));
 	}
 
 	m_sprite->setTexture(*m_texture, true);

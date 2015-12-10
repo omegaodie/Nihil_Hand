@@ -1,121 +1,118 @@
-{   
-     "global_settings" : 
-     {           
-        "texture_background_file" :  "GameScreen/Background.png",
-        "texture_atlas_image_file" :  "GameScreen/GameAtlas.png",
-        "texture_atlas_plist_file" :  "GameScreen/GameAtlas.plist",
-        "tower" : 
-        {
-            "tower_base_file" :  "TowerBase.png",
-            "tower_gun_file" :  "Tower.png",
-            "tower_width" :  62,
-            "tower_height" : 53,
-            "firing_delay" :  800,
-            "tower_rotation_speed" :  3,
-            "tower_rotation_origin" :  
-            {
-                "x" :  31,
-                "y" :  55
-            },
-            "number_of_tower_bases" :  3,
-            "tower_bases": [
-             {
-                "x": 410,
-                "y": 47
-             },
-             {
-                "x": 365,
-                "y": 184  
-             },
-             {
-                "x": 430,
-                "y": 269
-            }      
-           ]    
+{
+    "level_1": {
+        "wave_1": {
+            "spawn_time": 0 ,
+			"textures" : {
+				"enemy_texture" : 
+					{
+						"t" : "resources/shipSheet.png",
+						"x" : 156,
+						"y" : 304,
+						"w" : 28,
+						"h" : 26
+				},
+				"player_bullet": 
+					{
+						"t" : "resources/shipSheet.png", 
+						"x" : 134,
+						"y" : 283,
+						"w" : 3,
+						"h" : 9
+				},
+				"enemy_bullet" : {
+						"t" : "resources/shipSheet.png", 
+						"x" : 210, 
+						"y" : 284,
+						"w" : 8,
+						"h" : 8
+				},
+				"player_texture" :{
+						"t" : "resources/shipSheet.png",
+						"x" : 42,
+						"y" : 3,
+						"w" : 39,
+						"h" : 36
+				},
+				"lvl_1_texture": {
+						"t" : "resources/lvl_1_bckG.png",
+						"x" : 0,
+						"y" : 0,
+						"w" : 1782,
+						"h" : 600
+				},
+				"button1_texture" : 
+					{
+						"t" : "resources/menu_Button1.png",
+						"x" : 0,
+						"y" : 0,
+						"w" : 209,
+						"h" : 208
+					},
+				"button2_texture" : 
+					{
+						"t" : "resources/menu_Button2.png",
+						"x" : 0,
+						"y" : 0,
+						"w" : 209,
+						"h" : 208
+					},
+				"menu_Background" :
+					{
+						"t" : "resources/menu_Background.png",
+						"x" : 0,
+						"y" : 0,
+						"w" : 1280,
+						"h" : 720
+					}
+			},			
+            "enemy": [
+                {
+                    "x": 50,
+                    "y": 0
+                },
+                {
+                    "x": 150,
+                    "y": 0
+                },
+                {
+                    "x": 250,
+                    "y": 0
+                },
+                {
+                    "x": 350,
+                    "y": 0
+                },
+                {
+                    "x": 450,
+                    "y": 0
+                }
+            ]
         },
-        "projectile" : 
-        {
-            "projectile_file" :  "Hive.png",
-            "projectile_centre" :  
-            {
-                "x" :  6,
-                "y" :  9
-            },
-            "max_num_projectiles" :  20,
-            "time_to_live" :  2,
-            "velocity" :  5
-        },
-        "ai": 
-        {            
-            "ai_image_file" : "GameScreen/BearWalking.png",  
-            "ai_plist_file" :  "GameScreen/BearWalking.plist",            
-            "max_num_ai" :  24,                        
-            "ai_spawn_interval" : 1,
-            "ai_scale" :  0.3,
-            "ai_velocity" :  0.1,   
-            "ai_time_delay" :  1,            
-            "ai_start_position" : 
-            {
-                "x": -25,
-                "y": 470
-            },                            
-            "ai_walking_spritesheet" : 
-            {
-                "rows": 9,
-                "columns": 4,
-                "width": 232,
-                "height": 282  
-            },            
-            "ai_waypoints" : [                                                    
-            {
-                "x": 63,
-                "y": 455  
-            },
-            {
-                "x": 150,
-                "y": 424  
-            },
-            {
-                "x": 230,
-                "y": 384  
-            },
-            {
-                "x": 300,
-                "y": 333  
-            },
-            {
-                "x": 360,
-                "y": 295  
-            },
-            {
-                "x": 424,
-                "y": 207  
-            },
-            {
-                "x": 505,
-                "y": 255  
-            },
-            {
-                "x": 603,
-                "y": 234 
-            },
-            {
-                "x": 638,
-                "y": 329 
-            },
-            {
-                "x": 684,
-                "y": 400 
-            },
-            {
-                "x": 732,
-                "y": 455 
-            },
-            {
-                "x": 763,
-                "y": 500 
-            }
-            ]              
-        }                                                        
-    } 
+        "wave_2": {
+            "spawn_time":  600 ,
+
+            "enemy": [
+                {
+                    "x": 50,
+                    "y": 0
+                },
+                {
+                    "x": 150,
+                    "y": -100
+                },
+                {
+                    "x": 250,
+                    "y": -200
+                },
+                {
+                    "x": 350,
+                    "y": -100
+                },
+                {
+                    "x": 450,
+                    "y": 0
+                }
+            ]
+        }
+    }
 }

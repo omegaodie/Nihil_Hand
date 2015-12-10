@@ -1,17 +1,19 @@
 #include "Player.h"
 
-Player::Player()
+Player::Player(float spawnX, float spawnY, const GameData &gdata) : 
+gd(gdata)
 {
-
-}
-
-Player::Player(float spawnX, float spawnY)
-{
-	shipTexture.loadFromFile("resources/shipSheet.png", sf::IntRect(42, 3, 39, 36));
-	shipSprite.setTexture(shipTexture);
-	shipSprite.setOrigin(26, 35);
+	shipSprite = new sf::Sprite();
+	shipTexture = gd.m_PlayerTexture;
+	shipSprite->setTexture(*shipTexture);
+	shipSprite->setOrigin(26, 35);
 	shipPos = sf::Vector2f(spawnX, spawnY);
 	shipSpeed = 5.0f;
+}
+
+
+sf::Vector2f* Player::GetPos(){
+	return &shipPos;
 }
 
 void Player::Update(sf::RenderWindow &w, POINT p)
@@ -42,6 +44,6 @@ void Player::Update(sf::RenderWindow &w, POINT p)
 
 void Player::Draw(sf::RenderWindow &w)
 {
-	shipSprite.setPosition(shipPos);
-	w.draw(shipSprite);
+	shipSprite->setPosition(shipPos);
+	w.draw(*shipSprite);
 }

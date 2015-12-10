@@ -6,24 +6,23 @@
 #define ___BUTTON_H__
 
 #include <SFML/Graphics.hpp>
-#include "AnimatedSprite.h"
+#include "GameData.h"
 
 class Button {
 public:
-	Button();
-	void Init(sf::String s, sf::Vector2f* pos, sf::Image* klik, sf::Image* notklick);
+	Button(const GameData & gdata);
+	void Init(sf::Vector2f* pos);
 	void checkClick(sf::Vector2i);
 	void setState(bool b);
-	int sendItUp();
+	bool sendItUp();
 	void exist(sf::RenderWindow &w, sf::Event &eve);
 private:
+	const GameData& gd;
 	sf::Sprite* btn_Spr;
 	sf::Vector2f* btn_Pos;
-	sf::Image* btn_image_notClicked;
-	sf::Image* btn_image_Clicked;
-	sf::Texture* btn_texture;
-	sf::String btn_string;
-	sf::IntRect* btn_Box;//for texture
+	sf::Texture* btn_texture_notclicked;
+	sf::Texture* btn_texture_clicked;
+	sf::Texture* btn_current;
 
 	bool current;
 };

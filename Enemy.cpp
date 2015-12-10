@@ -1,115 +1,63 @@
 #include "Enemy.h"
 
-Enemy::Enemy(){
+
+Enemy::Enemy(const GameData &gdata, int i) : gd(gdata){
 	levelStarted = false;
-	gd = new GameData();
-	bullet = new Bullet();
-	enemyTexture.loadFromFile("resources/shipSheet.png", sf::IntRect(156, 304, 28, 26));
-	enemySprite.setTexture(enemyTexture);
-	enemySprite.setRotation(180);
-	for (int i = 0; i < 10; i++)
-	{
-		enemyPosition[i] = sf::Vector2f(gd->enemySpawnWaveOne[i].x + 50, gd->enemySpawnWaveOne[i].y - 30);
-		enemyVelocity[i] = sf::Vector2f(0, 3.0f);
-		enemyAlive[i] = true;
-	}
+	
+	timeNow = 0;
+	enemySprite = new sf::Sprite();
+	enemyTexture = gd.m_EnemyTexture;
+	enemySprite->setTexture(*enemyTexture);
+	enemySprite->setRotation(180);
+	enemyPosition = sf::Vector2f(gd.enemySpawnWaveOne[i].x + 50, gd.enemySpawnWaveOne[i].y - 30);
+	enemyVelocity = sf::Vector2f(0, 0.50f);
+	enemyAlive = true;
+	theBullets = new Bullet(gdata, enemyPosition.x, enemyPosition.y, false);
 }
 
-Enemy::Enemy(float x, float y){
-	//e_location = new sf::Vector2f(x, y);*/
+void Enemy::FireBullets(){
+	theBullets->FireBullet(enemyPosition);
 }
+
+sf::Vector2f* Enemy::GetPos(){
+	return &enemyPosition;
+}
+
 
 void Enemy::Init()
 {
 
 }
 
-//void Enemy::Init(sf::Clock c){
-//	/*e_image = new sf::Image();
-//	e_texture = new sf::Texture();
-//	e_sprite = new sf::Sprite();
-//	e_current_frame = new sf::IntRect();
-//	e_image->loadFromFile("resources/runningcat.png");
-//	e_sprite_counterX = 0;
-//	e_sprite_counterY = 0;
-//	timer = c.getElapsedTime().asMilliseconds();*/
-//
-//}
-//
-//
+
 void Enemy::Draw(sf::RenderWindow &w){// animateion logic here
-	for (int i = 0; i < 5; i++)
+	if (enemyAlive == true)
 	{
-		if (enemyAlive[i] == true)
-		{
-			enemySprite.setPosition(enemyPosition[i]);
-			w.draw(enemySprite);
+		enemySprite->setPosition(enemyPosition);
+			w.draw(*enemySprite);
 		}
-	}
-	if (timeNow - timeAtLastFire > gd->waveTwoSpawnTime)
+	if (timeNow - timeAtLastFire > gd.waveTwoSpawnTime)
 	{
-		for (int i = 5; i < 10; i++)
+		if (enemyAlive == true)
 		{
-			if (enemyAlive[i] == true)
-			{
-				enemySprite.setPosition(enemyPosition[i]);
-				w.draw(enemySprite);
-			}
+			enemySprite->setPosition(enemyPosition);
+			w.draw(*enemySprite);
 		}
 	}
 }
 
-void Enemy::Update()
+void Enemy::Update(sf::Clock c)
 {
-	timeNow = std::clock();
+	timeNow = c.getElapsedTime().asMilliseconds();
 	if (levelStarted == false)
 	{
-		timeAtLastFire = std::clock();
+		timeAtLastFire = 0;
 		levelStarted = true;
 	}
-	for (int i = 0; i < 5; i++)
-	{
-		enemyPosition[i] += enemyVelocity[i];
-	}
-	if (timeNow - timeAtLastFire >= gd->waveTwoSpawnTime)
-	{
-		for (int i = 5; i < 10; i++)
-		{
-			enemyPosition[i] += enemyVelocity[i];
-		}
-	}
-	HitDetection();
-}
+	enemyPosition += enemyVelocity;
 
-void Enemy::HitDetection()
-{
-	
+	if (timeNow - timeAtLastFire >= gd.waveTwoSpawnTime)
+	{
+		enemyPosition += enemyVelocity;
+	}
 }
-
-//
-//
-//void Enemy::Update(sf::Clock c){
-//	
-//	/*if (timer + 80 < c.getElapsedTime().asMilliseconds()){
-//		timer = c.getElapsedTime().asMilliseconds();
-//		if (e_sprite_counterX < 1){
-//			e_sprite_counterX++;
-//		}
-//		else{
-//			e_sprite_counterX = 0;
-//			if (e_sprite_counterY < 2){
-//				e_sprite_counterY++;
-//			}
-//			else{
-//				e_sprite_counterY = 0;
-//			}
-//		}
-//	}*/
-//	//Animate();
-//	//e_texture->loadFromImage(*e_image, *e_current_frame);
-//}
-//
-//void Enemy::Animate(){
-//
-//	//e_current_frame = new sf::IntRect(e_sprite_counterX * 512, e_sprite_counterY * 256, 512, 256);
-//}
