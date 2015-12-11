@@ -56,6 +56,6 @@ int Button::sendItUp(){
 		return 0;
 	}
 	else{
-		return 1;
+		return 2;
 	}
 }

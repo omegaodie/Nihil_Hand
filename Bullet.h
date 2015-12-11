@@ -24,10 +24,11 @@ class Bullet
 {
 public:
 	Bullet::Bullet();
-	Bullet::Bullet(float x, float y, bool);
+	Bullet::Bullet(float x, float y, bool, float speed);
 	Bullet::~Bullet();
 	Enemy* enemy;
 	Player* player;
+	float shipSpeed;
 
 	sf::Texture playerBulletTexture;		// The player bullet texture
 	sf::Texture enemyBulletTexture;			// The enemy bullet texture
@@ -41,10 +42,12 @@ public:
 	sf::Vector2f enemyBulletPosA[200];	// Array of bullet positions
 	sf::Vector2f enemyBulletSource[10];		// Position of where the bullets get shot from
 	sf::Vector2f enemyBulletVelocityA[200];		// Array of bullet velocity
-	bool bulletFiredA[200];
+	bool bulletFiredA[300];
+	bool enemyBulletFired[200];
 
 	float fireRate;		// Rate that bullets can be shot
 	std::clock_t timeAtLastFire;	// Time the last bullet was shot
+	std::clock_t timeAtLastEnemyFire;
 	std::clock_t timeNow;			// Current time
 	int MAX_ENEMY_BULLETS;	// Max number of enemy bullets
 	int MAX_PLAYER_BULLETS;	// Max number of player bullets
@@ -52,6 +55,7 @@ public:
 	void Bullet::Update(sf::RenderWindow &w, POINT p);		// Update bullet positions, bullet source position, check if off-screen
 	void Bullet::Draw(sf::RenderWindow &w);					// Draw bullets
 	bool Bullet::FireBullet(sf::Vector2f bulletSource);		// Fire the bullets
+	bool Bullet::FireEnemyBullet();							// Fire enemy bullets
 	void Bullet::HitDetection();
 	void Bullet::EnemyHitDetection();						// Detect enemies hit by player bullets
 	void Bullet::PlayerHitDectection();						// Detect player hit by enemy bullets

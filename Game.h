@@ -3,11 +3,13 @@
 
 
 #include <SFML/Graphics.hpp>
-//#include "Enemy.h"
 #include "Menu.h"
 #include "Player.h"
 #include "Bullet.h"
 #include "Enemy.h"
+#include "Shop.h"
+#include "Collision.h"
+#include "Training.h"
 #include <vector>
 #include <SFML/System/Clock.hpp>
 
@@ -26,8 +28,11 @@ class Game
 		Player* thePlayer;
 		Bullet* theBullets;
 		Enemy* theEnemies;
+		Shop* theShop;
+		Training* trainingRoom;
+		Collision* theCollisions;
 		int gameState;
-		enum GameState { MENU_RUNNING = 0, GAME_RUNNING = 1, END = 2 };
+		enum GameState { MENU_RUNNING = 0, SHOP_RUNNING = 1, GAME_RUNNING = 2, TRAINING_MODE = 3, END = 4, };
 };
 
 #endif 

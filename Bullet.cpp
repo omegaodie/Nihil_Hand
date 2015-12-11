@@ -5,7 +5,7 @@ Bullet::Bullet()
 
 }
 
-Bullet::Bullet(float x, float y, bool alive)
+Bullet::Bullet(float x, float y, bool alive, float speed)
 {
 	enemy = new Enemy();
 	player = new Player();
@@ -15,12 +15,16 @@ Bullet::Bullet(float x, float y, bool alive)
 	enemyBulletSprite.setTexture(enemyBulletTexture);
 	playerBulletSource = sf::Vector2f(x, y);		// Set initial position of the bullet source
 	timeAtLastFire = std::clock();
-	fireRate = 50;	// Set fire rate here
+	timeAtLastEnemyFire = std::clock();
+	fireRate = 35;	// Set fire rate here
 	MAX_PLAYER_BULLETS = 100;		// Set max number of bullets here
+	MAX_ENEMY_BULLETS = 200;
 	for (int i = 0; i < MAX_PLAYER_BULLETS; i++)
 	{
 		bulletFiredA[i] = alive;	// Set all bullets to not alive
+		enemyBulletFired[i] = alive;
 	}
+	shipSpeed = 5.0f * speed;
 }
 
 void Bullet::Update(sf::RenderWindow &w, POINT p)
@@ -32,10 +36,10 @@ void Bullet::Update(sf::RenderWindow &w, POINT p)
 	dlength = sqrt((dx*dx) + (dy*dy));
 	if (dlength == 0)
 		dlength = 0.0000001f;	// Fail-safe to prevent divide by 0 on the next 2 lines
-	playerbulletSourceVel.x = (dx / dlength) * 5;
-	playerbulletSourceVel.y = (dy / dlength) * 5;
+	playerbulletSourceVel.x = (dx / dlength) * shipSpeed;
+	playerbulletSourceVel.y = (dy / dlength) * shipSpeed;
 	if (sqrt(((playerBulletSource.x - px)*(playerBulletSource.x - px))
-		+ ((playerBulletSource.y - py)*(playerBulletSource.y - py))) <= 4)	// Prevents the bullet source vibrating around
+		+ ((playerBulletSource.y - py)*(playerBulletSource.y - py))) <= shipSpeed)	// Prevents the bullet source vibrating around
 	{																		// the cursor when close to it
 		playerBulletSource = sf::Vector2f(p.x - w.getPosition().x - 8.5f, p.y - w.getPosition().y - 34);
 	}
@@ -51,6 +55,7 @@ void Bullet::Update(sf::RenderWindow &w, POINT p)
 		playerBulletSource.y = w.getSize().y - 30.0f;	// Prevents bullet source following cursor out the window
 
 	FireBullet(playerBulletSource);	// Fire the bullets
+	FireEnemyBullet();
 	for (int i = 0; i < MAX_PLAYER_BULLETS; i++)
 	{
 		if (bulletFiredA[i] == true)
@@ -58,6 +63,15 @@ void Bullet::Update(sf::RenderWindow &w, POINT p)
 			playerBulletPosA[i] += playerBulletVelocityA[i];	// Update position of living bullets
 			if (playerBulletPosA[i].y < -20)
 				bulletFiredA[i] = false;	// If the bullets go off the top of the screen, they die
+		}
+	}
+	for (int i = 0; i < MAX_ENEMY_BULLETS; i++)
+	{
+		if (enemyBulletFired[i] == true)
+		{
+			enemyBulletPosA[i] += enemyBulletVelocityA[i];	// Update position of living bullets
+			if (enemyBulletPosA[i].y > 600)
+				enemyBulletFired[i] = false;	// If the bullets go off the top of the screen, they die
 		}
 	}
 	HitDetection();
@@ -79,6 +93,14 @@ void Bullet::Draw(sf::RenderWindow &w)
 			w.draw(playerBulletSprite);
 		}
 	}
+	for (int i = 0; i < MAX_ENEMY_BULLETS; i++)
+	{
+		if (enemyBulletFired[i] == true)
+		{
+			enemyBulletSprite.setPosition(enemyBulletPosA[i]);	// Draw a bullet at each location in the array, if they're alive
+			w.draw(enemyBulletSprite);
+		}
+	}
 }
 
 bool Bullet::FireBullet(sf::Vector2f bulletS)
@@ -93,7 +115,7 @@ bool Bullet::FireBullet(sf::Vector2f bulletS)
 				bulletFiredA[i] = true; bulletFiredA[i + 1] = true;	// Shoot a pair of bullets
 				playerBulletPosA[i].x = playerBulletSource.x + 4; playerBulletPosA[i].y = playerBulletSource.y;		// Set bullet sources next to each other
 				playerBulletPosA[i + 1].x = playerBulletSource.x - 4; playerBulletPosA[i + 1].y = playerBulletSource.y;
-				playerBulletVelocityA[i] = sf::Vector2f(0, -7.5f); playerBulletVelocityA[i + 1] = sf::Vector2f(0, -7.5f);	// Bullets fire in a straight line
+				playerBulletVelocityA[i] = sf::Vector2f(0, -15.0f); playerBulletVelocityA[i + 1] = sf::Vector2f(0, -15.f);	// Bullets fire in a straight line
 				return true;
 			}
 		}	
@@ -108,7 +130,7 @@ bool Bullet::FireBullet(sf::Vector2f bulletS)
 				bulletFiredA[i] = true; bulletFiredA[i + 1] = true;
 				playerBulletPosA[i].x = playerBulletSource.x + 4; playerBulletPosA[i].y = playerBulletSource.y;		// Set bullet sources next to each other
 				playerBulletPosA[i + 1].x = playerBulletSource.x - 4; playerBulletPosA[i + 1].y = playerBulletSource.y;
-				playerBulletVelocityA[i] = sf::Vector2f(1.5f, -7.5f); playerBulletVelocityA[i + 1] = sf::Vector2f(-1.5f, -7.5f); // Bullets fly off forward, at opposite angles, creates "V" shape
+				playerBulletVelocityA[i] = sf::Vector2f(1.5f, -15.0f); playerBulletVelocityA[i + 1] = sf::Vector2f(-1.5f, -15.0f); // Bullets fly off forward, at opposite angles, creates "V" shape
 				return true;
 			}
 		}
@@ -116,17 +138,43 @@ bool Bullet::FireBullet(sf::Vector2f bulletS)
 	return false;
 }
 
+bool Bullet::FireEnemyBullet()
+{
+	/*if (timeNow - timeAtLastEnemyFire >= 1000)
+	{
+		timeAtLastEnemyFire = std::clock();
+		for (int i = 0; i < 10; i++)
+		{
+			for (int b = 0; b < MAX_ENEMY_BULLETS; b++)
+			{
+				if (enemyBulletFired[b] == false)
+				//if (i <= 10)
+				{
+					enemyBulletFired[b] = true;
+					//enemyBulletSource[i] = enemy->enemyPosition[i];
+					enemyBulletPosA[i] = sf::Vector2f(100 + (50 * i), 50);
+					enemyBulletVelocityA[i] = sf::Vector2f(0, 1.5f);
+					goto skip;
+				}
+			}
+		skip:;
+		}		
+	}
+	return true;*/
+	return true;
+}
+
 void Bullet::EnemyHitDetection()
 {
 	for (int b = 0; b < MAX_PLAYER_BULLETS; b++)	// Cycles through all bullets
 	{
-		if (bulletFiredA[b] == true)	// Checks if they're even alive first
+		if (bulletFiredA[b] == false)	// Checks if they're even alive first
 		{
 			for (int i = 0; i < 10; i++)	// Checks against all enemies
 			{
-				if (enemy->enemyAlive[i] == true	// Checks if the enemy's alive, then if the bullets within the enemy
+				if (enemy->enemyAlive[i] == true	// Checks if the enemies alive, then if the bullets within the enemy
 					&& playerBulletPosA[b].x + 3 > enemy->enemyPosition[i].x && playerBulletPosA[b].x < enemy->enemyPosition[i].x + 28
-					&& playerBulletPosA[b].y + 9 > enemy->enemyPosition[i].y && playerBulletPosA[b].y < enemy->enemyPosition[i].y + 26)*/
+					&& playerBulletPosA[b].y + 9 > enemy->enemyPosition[i].y && playerBulletPosA[b].y < enemy->enemyPosition[i].y + 26)
 				{
 					enemy->enemyAlive[i] = false;	
 					bulletFiredA[b] = false;		// Kills the enemy and the bullet

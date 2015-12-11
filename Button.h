@@ -2,6 +2,7 @@
 // source: http://en.sfml-dev.org/forums/index.php?topic=5950.0
 // owner: asdatapel
 //i've made it better though, don't like what he did at all really
+#pragma once
 #ifndef __BUTTON_H__
 #define ___BUTTON_H__
 

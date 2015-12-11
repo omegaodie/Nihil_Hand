@@ -27,7 +27,7 @@
             ]
         },
         "wave_2": {
-            "spawn_time":  3000 ,
+            "spawn_time":  600 ,
 
             "enemy": [
                 {
