@@ -8,6 +8,7 @@
 #include <istream>
 #include <sstream>
 
+#include "Enemy.h"
 // FMOD include
 
 #pragma comment(lib, "fmodex_vc.lib")
@@ -17,7 +18,11 @@
 class Training
 {
 private:
-	sf::Texture shopTexture; sf::Sprite shopSprite;
+	Enemy* myEnemy;
+	sf::Texture shopTexture, arrowLeftTexture, arrowRightTexture, 
+		testFloorTexture, wallDownTexture, wallUpTexture, droneTexture, sweeperTexture, sentryTexture;
+	sf::Sprite shopSpr, arrowLeftSpr, arrowRightSpr, 
+		testFloorSpr, wallDownSpr, wallUpSpr, droneSpr, sweeperSpr, sentrySpr, enemyDisplaySpr[3];
 	sf::Vector2f shopAreaPos;
 
 	/*sf::Font shopReturnFont;
@@ -30,11 +35,14 @@ private:
 	bool muteMusicToggle;
 	
 public:
-	Training::Training();
+	Training::Training(Enemy* enemy);
 	Training::~Training();
 	void Run(sf::RenderWindow &w, sf::Event &eve);
 	void Draw(sf::RenderWindow &w);
 	FMOD::Channel *musicChannel;
+	sf::Vector2f arrowLeftPos, arrowRightPos;
+	int currentEnemy;
+	float leftHits, rightHits;
 };
 
 #endif

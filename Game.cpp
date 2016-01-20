@@ -4,14 +4,17 @@ Game::Game(){
 	//the_Enemy = new Enemy(10, 25);
 	clock = new sf::Clock();
 	theMenu = new Menu();
+	thePlayer = new Player();
 	//thePlayer = new Player(308.5f, 334);
 	//theBullets = new Bullet(300, 300, false);
 	theEnemies = new Enemy();
 	//theBullets = new Bullet();
 	theShop = new Shop();
 	//theCollisions = new Collision(theBullets, theEnemies);
-	trainingRoom = new Training();
+	//trainingRoom = new Training(theEnemies);
 	
+	back = new sf::Texture();
+	back->loadFromFile("resources/lvl_1_bckG.png");
 	
 	theMenu->Init();
 	//the_Enemy->Init(*clock);
@@ -33,16 +36,12 @@ void Game::Run(sf::RenderWindow &w){
 		// Escape key : exit 
 		if ((eve.type == sf::Event::KeyPressed) && (eve.key.code == sf::Keyboard::Escape))
 			w.close();
-		theShop->MuteSounds(eve);
+		if (gameState == SHOP_RUNNING) { theShop->MuteSounds(eve); }
+		if (gameState == GAME_RUNNING || gameState == TRAINING_MODE) { theCollisions->FireSpell(eve); }
 		if (gameState != MENU_RUNNING && gameState != SHOP_RUNNING) {
-			if (gameState == TRAINING_MODE)
-			{
-				thePlayer->ReturnToShop(eve, 3);
-			}
-			else
-			{
-				thePlayer->ReturnToShop(eve, 0);
-			}
+			if (thePlayer->playerHealth <= 0) { thePlayer->QuitGameOver(eve); }
+			if (gameState == TRAINING_MODE) { thePlayer->ReturnToShop(eve, 3); }
+			else { thePlayer->ReturnToShop(eve, 0); }
 		}
 		
 
@@ -74,10 +73,12 @@ void Game::Run(sf::RenderWindow &w){
 					"%\nHitbox Size: " << std::setprecision(2) << playerStats.at(9) * 100 << "%\nDrop Rate: x" << playerStats.at(10) <<
 					"\nMagnetism Chance: " << std::setprecision(3) << playerStats.at(11) * 100 << "%" << std::endl;
 				// OUTPUTTING PLAYER STATS: FINISH
-				thePlayer = new Player(308.5f, 334, playerStats.at(3), playerStats.at(4), playerStats.at(8), playerStats.at(9));
+				thePlayer = new Player(308.5f, 334, playerStats.at(3), playerStats.at(4), playerStats.at(8), playerStats.at(9), theShop->playerScore);
 				theBullets = new Bullet(300, 300, false, playerStats.at(8));
 				theEnemies = new Enemy(2);
-				theCollisions = new Collision(theEnemies, theBullets, thePlayer, playerStats.at(0));
+				theCollisions = new Collision(theEnemies, theBullets, thePlayer, trainingRoom, 2, playerStats.at(0), 
+					playerStats.at(1), playerStats.at(2), playerStats.at(3), playerStats.at(5), playerStats.at(6));
+				theShop->musicPlaying = false;
 				gameState = GAME_RUNNING;
 			}
 			if (theShop->state() == 3)
@@ -92,48 +93,58 @@ void Game::Run(sf::RenderWindow &w){
 					"%\nHitbox Size: " << std::setprecision(2) << playerStats.at(9) * 100 << "%\nDrop Rate: x" << playerStats.at(10) <<
 					"\nMagnetism Chance: " << std::setprecision(3) << playerStats.at(11) * 100 << "%" << std::endl;
 				// OUTPUTTING PLAYER STATS: FINISH
-				thePlayer = new Player(308.5f, 334, playerStats.at(3), playerStats.at(4), playerStats.at(8), playerStats.at(9));
+				thePlayer = new Player(308.5f, 334, playerStats.at(3), playerStats.at(4), playerStats.at(8), playerStats.at(9), theShop->playerScore);
 				theBullets = new Bullet(300, 300, false, playerStats.at(8));
 				theEnemies = new Enemy(3);
-				theCollisions = new Collision(theEnemies, theBullets, thePlayer, playerStats.at(0));
+				trainingRoom = new Training(theEnemies);
 				trainingRoom->musicChannel->setMute(false);
+				theCollisions = new Collision(theEnemies, theBullets, thePlayer, trainingRoom, 3, playerStats.at(0),
+					playerStats.at(1), playerStats.at(2), playerStats.at(3), playerStats.at(5), playerStats.at(6));
+				theShop->musicPlaying = false;
 				gameState = TRAINING_MODE;
 			}
 		}
 		break;
 		case GAME_RUNNING:
 		{
-			//theMenu->DrawBackground(w);
-			thePlayer->Update(w, p);
-			thePlayer->Draw(w, 0);				 // Level state
-			theBullets->Update(w, p);
-			theBullets->Draw(w);
-			theBullets->HitDetection();
-			theEnemies->Update(2);
-			theEnemies->Draw(w, 2);
-			theCollisions->CheckForCollision();
+			if (thePlayer->playerHealth > 0)
+			{
+				theBullets->Update(w, p);
+				theEnemies->Update(2);
+				theEnemies->Draw(w, 2);
+				theCollisions->CheckForCollision(w);
+				thePlayer->Update(w, p);
+				thePlayer->Draw(w, 0);				 // Level state
+			}
+			if (thePlayer->playerHealth <= 0) { thePlayer->DrawGameOver(w); }
 			if (thePlayer->state() == 2)
 			{
+				theShop->SetPlayerScore(thePlayer->playerScore);
 				theShop->GameStart = 0;
+				theShop->musicChannel->setMute(false);
 				gameState = SHOP_RUNNING;
 			}
 		}
 		break;
 		case TRAINING_MODE:
 		{
+			trainingRoom->Run(w, eve);
 			theEnemies->Update(3);
 		    theEnemies->Draw(w, 3);
-			trainingRoom->Run(w, eve);
+			theCollisions->CheckForCollision(w);
 			thePlayer->Update(w, p);
+			theCollisions->DrawShield(w);
+			theCollisions->TestWallCollisions();
 			thePlayer->Draw(w, 3);				 // Level state
 			theBullets->Update(w, p);
-			theBullets->Draw(w);
-			theBullets->HitDetection();
-			theCollisions->CheckForCollision();
 			if (thePlayer->state() == 2)
 			{
 				theShop->GameStart = 0;
 				trainingRoom->musicChannel->setMute(true);
+				theEnemies->musicChannel->setMute(true);
+				theEnemies->musicPlaying = false;
+				theShop->SetPlayerScore(thePlayer->playerScore);
+				theShop->musicChannel->setMute(false);
 				gameState = SHOP_RUNNING;
 			}
 		}

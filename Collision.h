@@ -20,23 +20,44 @@
 #include "Bullet.h"
 #include "Enemy.h"
 #include "Player.h"
+#include "Training.h"
 
 class Collision
 {
 private:
-	
-
 	Bullet* myBullets;
 	Enemy* myEnemies;
 	Player* myPlayer;
-	float playerDmg;
+	Training* myTest;
+	float playerDmg, shieldPower, chargePower;
+	bool mercyInvuln, shieldActive, chargeActive;
+	int spells, blastPower, mercyPower, myMode;
+	sf::Font spellFont;
+	sf::Text spellText;
+	std::string spellString;
+
+	sf::Texture droneExplosionTexture;
+	sf::Texture shieldTexture;
+	sf::Texture invulnTexture;
+	sf::Sprite droneExplosionSprite;
+	sf::Sprite shieldSprite;
+	sf::Sprite invulnSprite;
+	sf::Vector2f droneExplosionPos[10];
+	bool droneExplosionInUse[10];
+	sf::Vector2f sentryDirections[8];
+
+	bool Collision::TrainingCollisions();
+	bool Collision::EnemyFiring();			// Manage the enemies firing bullets
+	void Collision::CleanBullets();			// Clear bullets that have gone off-screen
+	
+	
 public:
 	Collision::Collision();
-	Collision::Collision(Enemy* enemies, Bullet* bullets, Player* player, float playerDamage);
+	Collision::Collision(Enemy* enemies, Bullet* bullets, Player* player, Training* test, int mode, float playerDamage, int blastDamage, float chargeStat, float shieldStat, float mercyStat, int maxSpells);
 	Collision::~Collision();
 
-	void Collision::CheckForCollision();
-	bool Collision::EnemyFiring();
-
-	
+	void Collision::CheckForCollision(sf::RenderWindow &w);	// Check for collisions between the player, enemies, and bullets
+	void Collision::FireSpell(sf::Event &eve);		// Use a spell
+	void Collision::DrawShield(sf::RenderWindow &w);	// Draw the shield
+	bool Collision::TestWallCollisions();	// Collision against the training room walls
 };

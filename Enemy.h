@@ -14,6 +14,8 @@
 
 class Enemy //: public AnimatedSprite
 {
+private:
+	sf::Sprite enemySprites[3];
 public:
 	Enemy::Enemy(float x, float y);
 	Enemy::Enemy();
@@ -31,22 +33,47 @@ public:
 	void Enemy::Update(sf::Clock);//return bool if alive or dead, leaving it void for now 
 	void Enemy::Update(int mode);
 	bool Enemy::FireBullets();
+	void Enemy::TrainingEnemies(int enemyType);
 
 	//void Enemy::Animate();
 
 	int* life;
 
+	std::vector<float> enemyWaveStats;
+	std::vector<std::vector<float>> enemyWaveVector;
+
 	std::clock_t timeAtLastFire;	// Time the last bullet was shot
 	std::clock_t timeNow;			// Current time
 
-	sf::Texture enemyTexture;
-	sf::Texture enemyBulletTexture;
-	sf::Sprite enemySprite;
-	sf::Sprite enemyBulletSprite;
-	sf::Vector2f enemyVelocity[10];
-	sf::Vector2f enemyPosition[10];
-	int enemyHealth[10];
-	bool enemyAlive[10];
+	sf::Texture droneTexture;
+	sf::Texture droneBulletTexture;
+	sf::Texture sweeperTexture;
+	sf::Texture sweeperBulletTexture;
+	sf::Texture sentryTexture;
+	sf::Texture sentryBulletTexture;
+	
+	sf::Sprite droneSprite;
+	sf::Sprite droneBulletSprite;
+	sf::Sprite sweeperSprite;
+	sf::Sprite sweeperBulletSprite;
+	sf::Sprite sentrySprite;
+	sf::Sprite sentryBulletSprite;
+
+	std::vector<float> droneOffSet;
+	std::vector<sf::Vector2f> droneSideSpd;
+	bool droneDir[100]; // Direction a drone is moving. True for right, false for left.
+	
+	std::vector<sf::Vector2f> enemyPosition;	// Vector of enemy positions
+	std::vector<sf::Vector2f> enemyVelocity;	// Vector of enemy velocities
+	std::vector<float> enemyWaveSpawns;		// Spawn times for enemy waves
+	std::vector<float> enemyHealth;			// Vector of enemy health
+	std::vector<int> enemyType;			// Vector of enemy type (0 = Drone, 1 = Sweeper, 2 = Sentry)
+	bool enemyAlive[200];	// Vectors of bool isn't working quite right
+	int enemiesSpawned;
+	int currentWave;	// Wave to be spawned next
+	bool wavesSpawn[30];
+	int droneHP, sweeperHP, sentryHP, healthTypes[3];
+	int enemiesMade;
 
 	GameData* gd; 
 

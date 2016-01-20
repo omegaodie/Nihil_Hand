@@ -2,10 +2,10 @@
 
 Player::Player()
 {
-
+	playerScore = 0;
 }
 
-Player::Player(float spawnX, float spawnY, float shieldDef, float HP, float speed, float hitBox)
+Player::Player(float spawnX, float spawnY, float shieldDef, float HP, float speed, float hitBox, int points)
 {
 	shipTexture.loadFromFile("resources/shipSheet.png", sf::IntRect(42, 3, 39, 36));
 	shipSprite.setTexture(shipTexture);
@@ -13,6 +13,7 @@ Player::Player(float spawnX, float spawnY, float shieldDef, float HP, float spee
 	shipPos = sf::Vector2f(spawnX, spawnY);
 	shipSpeed = 5.0f * speed;
 	playerHealth = HP;
+	playerScore = points;
 
 	HUDFont.loadFromFile("C:\\Windows\\Fonts\\OCRAEXT.TTF");
 	HUDplayerHealth.setString("HP: 100");
@@ -20,6 +21,22 @@ Player::Player(float spawnX, float spawnY, float shieldDef, float HP, float spee
 	HUDplayerHealth.setCharacterSize(16);
 	HUDplayerHealth.setColor(sf::Color::White);
 	HUDplayerHealth.setPosition(5, 457);
+
+	gameOverTexture.loadFromFile("resources/gameOverText.png");
+	gameOverSprite.setTexture(gameOverTexture);
+	gameOverSprite.setPosition((640 / 2) - (gameOverTexture.getSize().x / 2), 100);
+
+	gameOverText.setString("Press RETURN to return to the shop.");
+	gameOverText.setFont(HUDFont);
+	gameOverText.setCharacterSize(16);
+	gameOverText.setColor(sf::Color::White);
+	gameOverText.setPosition(150, 430);
+
+	HUDplayerScore.setString("Score: 0");
+	HUDplayerScore.setFont(HUDFont);
+	HUDplayerScore.setCharacterSize(16);
+	HUDplayerScore.setColor(sf::Color::White);
+	HUDplayerScore.setPosition(500, 457);
 
 	returnToShopText.setString("Press ENTER to enter the shop.");
 	returnToShopText.setFont(HUDFont);
@@ -62,11 +79,6 @@ void Player::Update(sf::RenderWindow &w, POINT p)
 		shipPos.x = w.getSize().x - 13;
 	if (shipPos.y > w.getSize().y)
 		shipPos.y = w.getSize().y;		// Prevents ship following cursor out the window
-
-	if (playerHealth <= 0)
-	{
-		gameMode = 2;
-	}
 }
 
 void Player::Draw(sf::RenderWindow &w, int mode)
@@ -74,11 +86,17 @@ void Player::Draw(sf::RenderWindow &w, int mode)
 	shipSprite.setPosition(shipPos);
 	w.draw(shipSprite);
 
-	std::stringstream ss;
-	ss << playerHealth;
-	healthString = ss.str();
+	std::stringstream ss1;
+	ss1 << playerHealth;
+	healthString = ss1.str();
 	HUDplayerHealth.setString("HP: " + healthString);
 	w.draw(HUDplayerHealth);
+
+	std::stringstream ss2;
+	ss2 << playerScore;
+	scoreString = ss2.str();
+	HUDplayerScore.setString("Score: " + scoreString);
+	w.draw(HUDplayerScore);
 
 	if (mode == 3 && shipPos.x > 0 && shipPos.x < 130 && shipPos.y > 430 && shipPos.y < 430 + 122)
 	{
@@ -122,4 +140,19 @@ void Player::ReturnToShop(sf::Event &eve, int mode)
 
 	}
 		//muteMusicToggle = true;
+}
+
+void Player::QuitGameOver(sf::Event &eve)
+{
+
+	if (eve.type == sf::Event::KeyPressed && eve.key.code == sf::Keyboard::Return)
+	{
+		gameMode = 2;
+	}
+}
+
+void Player::DrawGameOver(sf::RenderWindow &w)
+{
+	w.draw(gameOverSprite);
+	w.draw(gameOverText);
 }

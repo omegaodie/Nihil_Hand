@@ -9,7 +9,7 @@
 #include <sstream>
 
 #include "Button.h"
-//#include "Player.h"
+#include "Player.h"
 
 // FMOD include
 
@@ -33,20 +33,26 @@ private:
 	sf::Font shopFont;
 	sf::Text strengthDescText;	// Strength description text
 	sf::Text strengthStatsText; // Text for stats in Strength
+	sf::Text strengthCostText;	// Cost of next Strength upgrade
 	sf::Text intelligenceDescText;
 	sf::Text intelligenceStatsText;
+	sf::Text intelligenceCostText;
 	sf::Text vitalityDescText;
 	sf::Text vitalityStatsText;
+	sf::Text vitalityCostText;
 	sf::Text spiritDescText;
 	sf::Text spiritStatsText;
+	sf::Text spiritCostText;
 	sf::Text agilityDescText;
 	sf::Text agilityStatsText;
+	sf::Text agilityCostText;
 	sf::Text luckDescText;
 	sf::Text luckStatsText;
+	sf::Text luckCostText;
 
 	sf::Text playerScoreText;
 	std::stringstream scoreStream;
-	std::string scoreString;
+	std::string scoreString, strengthString, intelligenceString, vitalityString, spiritString, agilityString, luckString;
 
 	sf::Image *buy_image, *sell_image;
 
@@ -75,10 +81,10 @@ private:
 	FMOD::System *FMODsys;
 	FMOD_RESULT result;
 	FMOD::Sound *shopMusic, *upgradeSound, *downgradeSound;
-	bool musicPlaying, muteMusic, muteSoundFX, muteReverb, mute3DSound;
+	
 	bool muteMusicToggle, muteSoundFXToggle, muteReverbToggle, mute3DSoundToggle;
 	FMOD::Channel *channel;
-	FMOD::Channel *musicChannel;
+	
 
 
 	void Shop::DrawShop(sf::RenderWindow &w);
@@ -89,11 +95,15 @@ public:
 
 	Shop::Shop();
 
+	void Shop::SetPlayerScore(int points);
+
 	void Shop::Run(sf::RenderWindow &w, sf::Event &eve);
 
 	int Shop::state(); int GameStart;
 
 	void Shop::MuteSounds(sf::Event &eve);
+	FMOD::Channel *musicChannel;
+	bool musicPlaying, muteMusic, muteSoundFX, muteReverb, mute3DSound;
 
 	void Shop::checkClick(sf::Vector2i mousePos);
 

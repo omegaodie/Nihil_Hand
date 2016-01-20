@@ -2,7 +2,6 @@
 
 Shop::Shop()
 {
-	
 	result = FMOD::System_Create(&FMODsys);
 
 	if (result != FMOD_OK)
@@ -65,6 +64,11 @@ Shop::Shop()
 	strengthStatsText.setCharacterSize(16);
 	strengthStatsText.setColor(sf::Color::White);
 	strengthStatsText.setPosition(10, 45);
+	strengthCostText.setString("Cost:\n0");
+	strengthCostText.setFont(shopFont);
+	strengthCostText.setCharacterSize(14);
+	strengthCostText.setColor(sf::Color::White);
+	strengthCostText.setPosition(400, 47);
 
 	intelligenceDescText.setString("Intelligence: Non-offensive Spells become more effective");
 	intelligenceDescText.setFont(shopFont);
@@ -76,6 +80,11 @@ Shop::Shop()
 	intelligenceStatsText.setCharacterSize(16);
 	intelligenceStatsText.setColor(sf::Color::White);
 	intelligenceStatsText.setPosition(10, 115);
+	intelligenceCostText.setString("Cost:\n0");
+	intelligenceCostText.setFont(shopFont);
+	intelligenceCostText.setCharacterSize(14);
+	intelligenceCostText.setColor(sf::Color::White);
+	intelligenceCostText.setPosition(400, 117);
 
 	vitalityDescText.setString("Vitality: Life capacity and mercy invincibility duration increases.");
 	vitalityDescText.setFont(shopFont);
@@ -87,6 +96,11 @@ Shop::Shop()
 	vitalityStatsText.setCharacterSize(16);
 	vitalityStatsText.setColor(sf::Color::White);
 	vitalityStatsText.setPosition(10, 185);
+	vitalityCostText.setString("Cost:\n0");
+	vitalityCostText.setFont(shopFont);
+	vitalityCostText.setCharacterSize(14);
+	vitalityCostText.setColor(sf::Color::White);
+	vitalityCostText.setPosition(400, 187);
 
 	spiritDescText.setString("Spirit: Spell capacity and chance of surviving a hit with 1 HP increases.");
 	spiritDescText.setFont(shopFont);
@@ -98,6 +112,11 @@ Shop::Shop()
 	spiritStatsText.setCharacterSize(16);
 	spiritStatsText.setColor(sf::Color::White);
 	spiritStatsText.setPosition(10, 255);
+	spiritCostText.setString("Cost:\n0");
+	spiritCostText.setFont(shopFont);
+	spiritCostText.setCharacterSize(14);
+	spiritCostText.setColor(sf::Color::White);
+	spiritCostText.setPosition(400, 257);
 
 	agilityDescText.setString("Agility: Movement speed increases and hitbox size decreases.");
 	agilityDescText.setFont(shopFont);
@@ -109,6 +128,11 @@ Shop::Shop()
 	agilityStatsText.setCharacterSize(16);
 	agilityStatsText.setColor(sf::Color::White);
 	agilityStatsText.setPosition(10, 325);
+	agilityCostText.setString("Cost:\n0");
+	agilityCostText.setFont(shopFont);
+	agilityCostText.setCharacterSize(14);
+	agilityCostText.setColor(sf::Color::White);
+	agilityCostText.setPosition(400, 327);
 
 	luckDescText.setString("Luck: Drop rate increases and items may float towards the player.");
 	luckDescText.setFont(shopFont);
@@ -120,6 +144,11 @@ Shop::Shop()
 	luckStatsText.setCharacterSize(16);
 	luckStatsText.setColor(sf::Color::White);
 	luckStatsText.setPosition(10, 395);
+	luckCostText.setString("Cost:\n0");
+	luckCostText.setFont(shopFont);
+	luckCostText.setCharacterSize(14);
+	luckCostText.setColor(sf::Color::White);
+	luckCostText.setPosition(400, 397);
 
 	playerScoreText.setString("Points: 0");
 	playerScoreText.setFont(shopFont);
@@ -236,7 +265,9 @@ Shop::Shop()
 	//m_Btns.push_back(buyBtn);
 	//sellBtn->Init("Sell", sellPos, sell_image, sell_image);
 	//m_Btns.push_back(sellBtn);
+
 	playerScore = 100000;
+	//playerScore = 0;
 
 	statBoughtBool[0] = true;
 	statBoughtBool[6] = true;
@@ -303,14 +334,43 @@ void Shop::MuteSounds(sf::Event &eve)
 	}
 	if (eve.type == sf::Event::KeyReleased && eve.key.code == sf::Keyboard::Num1)
 		muteMusicToggle = true;
+	if ((eve.type == sf::Event::KeyPressed) && (eve.key.code == sf::Keyboard::A))
+	{
+		int y = 0;
+	}
 }
 
 void Shop::DrawShop(sf::RenderWindow &w)
 {
 	std::stringstream ss;
+	std::stringstream ss1;
+	std::stringstream ss2;
+	std::stringstream ss3;
+	std::stringstream ss4;
+	std::stringstream ss5;
+	std::stringstream ss6;
 	ss << playerScore;
 	scoreString = ss.str();
 	playerScoreText.setString("Points: " + scoreString);
+	ss1 << (statLevels[0] + 1) * 1000;
+	strengthString = ss1.str();
+	strengthCostText.setString("Cost:\n" + strengthString);
+	ss2 << (statLevels[1] + 1) * 1000;
+	intelligenceString = ss2.str();
+	intelligenceCostText.setString("Cost:\n" + intelligenceString);
+	ss3 << (statLevels[2] + 1) * 1000;
+	vitalityString = ss3.str();
+	vitalityCostText.setString("Cost:\n" + vitalityString);
+	ss4 << (statLevels[3] + 1) * 1000;
+	spiritString = ss4.str();
+	spiritCostText.setString("Cost:\n" + spiritString);
+	ss5 << (statLevels[4] + 1) * 1000;
+	agilityString = ss5.str();
+	agilityCostText.setString("Cost:\n" + agilityString);
+	ss6 << (statLevels[5] + 1) * 1000;
+	luckString = ss6.str();
+	luckCostText.setString("Cost:\n" + luckString);
+
 	w.draw(playerScoreText);
 	w.draw(strengthDescText);
 	w.draw(strengthStatsText);
@@ -324,6 +384,31 @@ void Shop::DrawShop(sf::RenderWindow &w)
 	w.draw(agilityStatsText);
 	w.draw(luckDescText);
 	w.draw(luckStatsText);
+
+	if (statLevels[0] != 5)
+	{
+		w.draw(strengthCostText);
+	}
+	if (statLevels[1] != 5)
+	{
+		w.draw(intelligenceCostText);
+	}
+	if (statLevels[2] != 5)
+	{
+		w.draw(vitalityCostText);
+	}
+	if (statLevels[3] != 5)
+	{
+		w.draw(spiritCostText);
+	}
+	if (statLevels[4] != 5)
+	{
+		w.draw(agilityCostText);
+	}
+	if (statLevels[5] != 5)
+	{
+		w.draw(luckCostText);
+	}
 	/*w.draw(*currentStatSprite);
 	w.draw(*strengthStatSprite);
 	w.draw(*intelligenceStatSprite);
@@ -455,4 +540,8 @@ std::vector<float>& Shop::GetUpgradeStats()
 
 int Shop::state(){
 	return GameStart;
+}
+
+void Shop::SetPlayerScore(int points){
+	//playerScore = points;
 }

@@ -24,6 +24,7 @@ class Game
 		sf::Clock* clock;
 
 	private:
+		sf::Texture* back;
 		Menu* theMenu;
 		Player* thePlayer;
 		Bullet* theBullets;

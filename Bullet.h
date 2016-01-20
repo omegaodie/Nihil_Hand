@@ -15,6 +15,8 @@
 #include "SFML/Graphics.hpp" 
 #include "SFML/OpenGL.hpp" 
 #include <iostream> 
+#include <istream>
+#include <sstream>
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include "Enemy.h"
@@ -35,6 +37,8 @@ public:
 	sf::Sprite playerBulletSprite;		// The player bullet sprite
 	sf::Sprite enemyBulletSprite;		// The enemy bullet sprite
 
+	sf::Vector2f bSource[2];
+	sf::Vector2f bVel[2];
 	sf::Vector2f playerBulletPosA[100];	// Array of bullet positions
 	sf::Vector2f playerBulletSource;		// Position of where the bullets get shot from
 	sf::Vector2f playerbulletSourceVel;		// Velocity for moving around the bullet source
@@ -47,7 +51,8 @@ public:
 
 	float fireRate;		// Rate that bullets can be shot
 	std::clock_t timeAtLastFire;	// Time the last bullet was shot
-	std::clock_t timeAtLastEnemyFire;
+	std::clock_t timeAtLastDroneFire;
+	std::clock_t timeAtLastSweepFire;
 	std::clock_t timeNow;			// Current time
 	int MAX_ENEMY_BULLETS;	// Max number of enemy bullets
 	int MAX_PLAYER_BULLETS;	// Max number of player bullets
@@ -55,9 +60,12 @@ public:
 	void Bullet::Update(sf::RenderWindow &w, POINT p);		// Update bullet positions, bullet source position, check if off-screen
 	void Bullet::Draw(sf::RenderWindow &w);					// Draw bullets
 	bool Bullet::FireBullet(sf::Vector2f bulletSource);		// Fire the bullets
-	bool Bullet::FireEnemyBullet();							// Fire enemy bullets
-	void Bullet::HitDetection();
-	void Bullet::EnemyHitDetection();						// Detect enemies hit by player bullets
-	void Bullet::PlayerHitDectection();						// Detect player hit by enemy bullets
 	float dx, dy, px, py, dlength;
+private:
+	sf::Font spellFont;
+	sf::Text spellText;
+	std::string spellString;
+
+	sf::Texture HUDSpellTexture;
+	sf::Sprite HUDSpellSprite;
 };

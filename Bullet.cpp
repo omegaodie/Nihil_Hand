@@ -7,15 +7,16 @@ Bullet::Bullet()
 
 Bullet::Bullet(float x, float y, bool alive, float speed)
 {
-	enemy = new Enemy();
-	player = new Player();
 	playerBulletTexture.loadFromFile("resources/shipSheet.png", sf::IntRect(134, 283, 3, 9));	// Set player bullet texture
 	enemyBulletTexture.loadFromFile("resources/shipSheet.png", sf::IntRect(210, 284, 8, 8));	// Set enemy bullet texture
+	HUDSpellTexture.loadFromFile("resources/HUDSpellsTexture.png");
 	playerBulletSprite.setTexture(playerBulletTexture);
 	enemyBulletSprite.setTexture(enemyBulletTexture);
+	HUDSpellSprite.setTexture(HUDSpellTexture); HUDSpellSprite.setPosition(120, 457);
 	playerBulletSource = sf::Vector2f(x, y);		// Set initial position of the bullet source
 	timeAtLastFire = std::clock();
-	timeAtLastEnemyFire = std::clock();
+	timeAtLastDroneFire = std::clock();
+	timeAtLastSweepFire = std::clock();
 	fireRate = 35;	// Set fire rate here
 	MAX_PLAYER_BULLETS = 100;		// Set max number of bullets here
 	MAX_ENEMY_BULLETS = 200;
@@ -25,6 +26,8 @@ Bullet::Bullet(float x, float y, bool alive, float speed)
 		enemyBulletFired[i] = alive;
 	}
 	shipSpeed = 5.0f * speed;
+	bVel[0] = sf::Vector2f(-1.5f, -15.0f); 
+	bVel[1] = sf::Vector2f(1.5f, -15.0f);
 }
 
 void Bullet::Update(sf::RenderWindow &w, POINT p)
@@ -54,8 +57,11 @@ void Bullet::Update(sf::RenderWindow &w, POINT p)
 	if (playerBulletSource.y > w.getSize().y - 30)
 		playerBulletSource.y = w.getSize().y - 30.0f;	// Prevents bullet source following cursor out the window
 
+	bSource[0] = sf::Vector2f(playerBulletSource.x - 4, playerBulletSource.y);
+	bSource[1] = sf::Vector2f(playerBulletSource.x + 4, playerBulletSource.y);	// Two sources for the bullets to shoot out of
+
 	FireBullet(playerBulletSource);	// Fire the bullets
-	FireEnemyBullet();
+
 	for (int i = 0; i < MAX_PLAYER_BULLETS; i++)
 	{
 		if (bulletFiredA[i] == true)
@@ -74,13 +80,7 @@ void Bullet::Update(sf::RenderWindow &w, POINT p)
 				enemyBulletFired[i] = false;	// If the bullets go off the top of the screen, they die
 		}
 	}
-	HitDetection();
-}
-
-void Bullet::HitDetection()
-{
-	EnemyHitDetection();
-	PlayerHitDectection();
+	Draw(w);
 }
 
 void Bullet::Draw(sf::RenderWindow &w)
@@ -101,6 +101,8 @@ void Bullet::Draw(sf::RenderWindow &w)
 			w.draw(enemyBulletSprite);
 		}
 	}
+	w.draw(spellText);
+	w.draw(HUDSpellSprite);
 }
 
 bool Bullet::FireBullet(sf::Vector2f bulletS)
@@ -108,93 +110,40 @@ bool Bullet::FireBullet(sf::Vector2f bulletS)
 	if (GetAsyncKeyState(VK_LBUTTON) < 0 && timeNow - timeAtLastFire >= fireRate)	// If left-click is pressed
 	{
 		timeAtLastFire = std::clock();
-		for (int i = 0; i < MAX_PLAYER_BULLETS; i++)
+		for (int b = 0; b < 2; b++)		// Fires two streams of bullets
 		{
-			if (bulletFiredA[i] == false)
+			for (int i = 0; i < MAX_PLAYER_BULLETS; i++)
 			{
-				bulletFiredA[i] = true; bulletFiredA[i + 1] = true;	// Shoot a pair of bullets
-				playerBulletPosA[i].x = playerBulletSource.x + 4; playerBulletPosA[i].y = playerBulletSource.y;		// Set bullet sources next to each other
-				playerBulletPosA[i + 1].x = playerBulletSource.x - 4; playerBulletPosA[i + 1].y = playerBulletSource.y;
-				playerBulletVelocityA[i] = sf::Vector2f(0, -15.0f); playerBulletVelocityA[i + 1] = sf::Vector2f(0, -15.f);	// Bullets fire in a straight line
-				return true;
-			}
-		}	
-	}
-	else if (GetAsyncKeyState(VK_RBUTTON) < 0 && timeNow - timeAtLastFire >= fireRate)	// If right-click is pressed
-	{
-		timeAtLastFire = std::clock();
-		for (int i = 0; i < MAX_PLAYER_BULLETS; i++)
-		{
-			if (bulletFiredA[i] == false)
-			{
-				bulletFiredA[i] = true; bulletFiredA[i + 1] = true;
-				playerBulletPosA[i].x = playerBulletSource.x + 4; playerBulletPosA[i].y = playerBulletSource.y;		// Set bullet sources next to each other
-				playerBulletPosA[i + 1].x = playerBulletSource.x - 4; playerBulletPosA[i + 1].y = playerBulletSource.y;
-				playerBulletVelocityA[i] = sf::Vector2f(1.5f, -15.0f); playerBulletVelocityA[i + 1] = sf::Vector2f(-1.5f, -15.0f); // Bullets fly off forward, at opposite angles, creates "V" shape
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
-bool Bullet::FireEnemyBullet()
-{
-	/*if (timeNow - timeAtLastEnemyFire >= 1000)
-	{
-		timeAtLastEnemyFire = std::clock();
-		for (int i = 0; i < 10; i++)
-		{
-			for (int b = 0; b < MAX_ENEMY_BULLETS; b++)
-			{
-				if (enemyBulletFired[b] == false)
-				//if (i <= 10)
+				if (bulletFiredA[i] == false)
 				{
-					enemyBulletFired[b] = true;
-					//enemyBulletSource[i] = enemy->enemyPosition[i];
-					enemyBulletPosA[i] = sf::Vector2f(100 + (50 * i), 50);
-					enemyBulletVelocityA[i] = sf::Vector2f(0, 1.5f);
+					bulletFiredA[i] = true; // Shoot a pair of bullets
+					playerBulletPosA[i] = bSource[b];	// Set bullet sources next to each other
+					playerBulletVelocityA[i] = sf::Vector2f(0, -15.0f);	// Bullets fire in a straight line
 					goto skip;
 				}
 			}
 		skip:;
-		}		
+		}
+		return true;
 	}
-	return true;*/
-	return true;
-}
-
-void Bullet::EnemyHitDetection()
-{
-	for (int b = 0; b < MAX_PLAYER_BULLETS; b++)	// Cycles through all bullets
+	else if (GetAsyncKeyState(VK_RBUTTON) < 0 && timeNow - timeAtLastFire >= fireRate)	// If right-click is pressed
 	{
-		if (bulletFiredA[b] == false)	// Checks if they're even alive first
+		timeAtLastFire = std::clock();
+		for (int b = 0; b < 2; b++)
 		{
-			for (int i = 0; i < 10; i++)	// Checks against all enemies
+			for (int i = 0; i < MAX_PLAYER_BULLETS; i++)
 			{
-				if (enemy->enemyAlive[i] == true	// Checks if the enemies alive, then if the bullets within the enemy
-					&& playerBulletPosA[b].x + 3 > enemy->enemyPosition[i].x && playerBulletPosA[b].x < enemy->enemyPosition[i].x + 28
-					&& playerBulletPosA[b].y + 9 > enemy->enemyPosition[i].y && playerBulletPosA[b].y < enemy->enemyPosition[i].y + 26)
+				if (bulletFiredA[i] == false)
 				{
-					enemy->enemyAlive[i] = false;	
-					bulletFiredA[b] = false;		// Kills the enemy and the bullet
+					bulletFiredA[i] = true;
+					playerBulletPosA[i] = bSource[b];	// Set bullet sources next to each other
+					playerBulletVelocityA[i] = bVel[b]; // Bullets fly off forward, at opposite angles, creates "V" shape
+					goto skipSplit;
 				}
 			}
+		skipSplit:;
 		}
+		return true;
 	}
-}
-
-void Bullet::PlayerHitDectection()
-{
-	for (int b = 0; b < MAX_ENEMY_BULLETS; b++)	// Cycles through all bullets
-	{
-		if (bulletFiredA[b] == false)	// Checks if they're even alive first
-		{
-			if (enemyBulletPosA[b].x + 8 > player->shipPos.x && enemyBulletPosA[b].x < player->shipPos.x + 39
-				&& enemyBulletPosA[b].y + 8 > player->shipPos.y && enemyBulletPosA[b].y < player->shipPos.y + 36)
-			{
-				// Damage the player
-			}
-		}
-	}
+	return false;
 }

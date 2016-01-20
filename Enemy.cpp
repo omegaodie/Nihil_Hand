@@ -1,37 +1,85 @@
 #include "Enemy.h"
 
 Enemy::Enemy(){
-	levelStarted = false;
-	gd = new GameData();
-	enemyTexture.loadFromFile("resources/shipSheet.png", sf::IntRect(156, 304, 28, 26));
-	enemySprite.setTexture(enemyTexture);
-	enemySprite.setRotation(180);
-	for (int i = 0; i < 10; i++)
-	{
-		enemyPosition[i] = sf::Vector2f(gd->enemySpawnWaveOne[i].x + 50, gd->enemySpawnWaveOne[i].y - 30);
-		enemyVelocity[i] = sf::Vector2f(0, 3.0f);
-		enemyHealth[i] = 40;
-		enemyAlive[i] = true;
-	}
-	kills = 0;
+	
 }
 
 Enemy::Enemy(int mode) {
+	gd = new GameData();
 	kills = 0;
+	currentWave = 1;
+	droneHP = 30;
+	sweeperHP = 30;
+	sentryHP = 50;
+	healthTypes[0] = droneHP; healthTypes[1] = sweeperHP; healthTypes[2] = sentryHP;
+	enemiesMade = 0;
+	enemyPosition.clear();
+	enemyVelocity.clear();
+	enemyHealth.clear();
+	enemyType.clear();
+	enemyWaveSpawns.clear();
+	droneOffSet.clear();
+	droneSideSpd.clear();
+	droneTexture.loadFromFile("resources/shipSheet.png", sf::IntRect(156, 304, 28, 26));
+	droneSprite.setTexture(droneTexture);
+	droneSprite.setRotation(180);
+
+	sweeperTexture.loadFromFile("resources/SweeperTexture.png");
+	sweeperSprite.setTexture(sweeperTexture);
+	sweeperSprite.setScale(sf::Vector2f(0.25f, 0.25f));
+
+	sentryTexture.loadFromFile("resources/SentryTexture.png");
+	sentrySprite.setTexture(sentryTexture);
+
+	
+
+	enemySprites[0] = droneSprite; enemySprites[1] = sweeperSprite; enemySprites[2] = sentrySprite;
 	if (mode == 2)
 	{
 		levelStarted = false;
-		gd = new GameData();
-		enemyTexture.loadFromFile("resources/shipSheet.png", sf::IntRect(156, 304, 28, 26));
-		enemySprite.setTexture(enemyTexture);
-		enemySprite.setRotation(180);
-		for (int i = 0; i < 10; i++)
+		
+		for (int i = 0; i < gd->numEnemies; i++)
 		{
-			enemyPosition[i] = sf::Vector2f(gd->enemySpawnWaveOne[i].x + 50, gd->enemySpawnWaveOne[i].y - 30);
-			enemyVelocity[i] = sf::Vector2f(0, 1.5f);
-			enemyHealth[i] = 30;
+			enemyPosition.push_back(gd->enemySpawnPos.at(i)); // Build vector for enemy spawn positions
+			enemyAlive[i] = false;
+		}
+
+		for (int i = 0; i < gd->numWaves; i++)
+		{
+			for (int w = enemiesMade; w < enemiesMade + gd->waveSizes.at(i); w++)
+			{
+				enemyVelocity.push_back(gd->enemyWaveVel.at(i));	// Build vector for enemy velocities based on their wave
+				if (gd->enemyTypes.at(i) == 0)		// If drone type, give enemy health of droneHP
+				{
+					enemyHealth.push_back(droneHP);
+					enemyType.push_back(0);
+					droneOffSet.push_back(0);
+					droneSideSpd.push_back(sf::Vector2f(2, 0));
+				}
+				if (gd->enemyTypes.at(i) == 1)		// if sweeper type, give enemy health of sweeperHP
+				{
+					enemyHealth.push_back(sweeperHP);
+					enemyType.push_back(1);
+				}
+				if (gd->enemyTypes.at(i) == 2)		// if sentry type, give enemy health of sentryHP
+				{
+					enemyHealth.push_back(sentryHP);
+					enemyType.push_back(2);
+				}
+			}
+			enemiesMade += gd->waveSizes.at(i);	// Keep track of enemies created so far
+			
+			enemyWaveSpawns.push_back(gd->waveSpawnTimes.at(i));	// Build vector for enemy wave spawn times
+
+			wavesSpawn[i] = false;
+		}
+
+		for (int i = 0; i < 5; i++)
+		{
+			enemyPosition.at(i) += enemyVelocity.at(i);
 			enemyAlive[i] = true;
 		}
+		enemiesSpawned = 5;
 	}
 
 	if (mode == 3)
@@ -39,17 +87,26 @@ Enemy::Enemy(int mode) {
 		pos = { 250, 40 };
 		vel = { 0, 0 };
 		levelStarted = false;
-		enemyTexture.loadFromFile("resources/shipSheet.png", sf::IntRect(156, 304, 28, 26));
-		enemySprite.setTexture(enemyTexture);
-		enemySprite.setRotation(180);
-		for (int i = 0; i < 5; i++)
+		enemiesMade = 1;
+
+		for (int i = 0; i < 100; i++)
 		{
-			enemyPosition[i] = sf::Vector2f(250 + (50 * i), 40);
-			enemyVelocity[i] = sf::Vector2f(0, 0);
-			enemyHealth[i] = 30;
-			enemyAlive[i] = true;
+			enemyAlive[i] = false;
 		}
-		FMOD::System_Create(&FMODsys);
+
+		for (int i = 0; i < enemiesMade; i++)
+		{
+			//enemyPosition.push_back(sf::Vector2f(390 + (50 * i), 40));
+			enemyPosition.push_back(sf::Vector2f(480, 100));
+			enemyVelocity.push_back(sf::Vector2f(0, 0));
+			enemyHealth.push_back(droneHP);
+			enemyType.push_back(0);
+			enemyAlive[i] = true;
+			droneOffSet.push_back(0);
+			droneSideSpd.push_back(sf::Vector2f(2, 0));
+			droneDir[i] = true;
+		}
+		/*FMOD::System_Create(&FMODsys);
 		FMODsys->init(100, FMOD_INIT_NORMAL, 0);
 		FMODsys->createReverb(&reverb);
 		prop1 = FMOD_PRESET_UNDERWATER;
@@ -71,6 +128,7 @@ Enemy::Enemy(int mode) {
 			&vel,
 			0,
 			0);
+		
 		FMODsys->setReverbAmbientProperties(&prop1);
 		enemyHumPlaying = false;
 		musicPlaying = false;
@@ -92,7 +150,7 @@ Enemy::Enemy(int mode) {
 			//musicChannel->setVolume(0.75f);
 
 			musicPlaying = true;
-		}
+		}*/
 	}
 }
 
@@ -119,39 +177,28 @@ void Enemy::Init()
 //
 //
 void Enemy::Draw(sf::RenderWindow &w, int mode){// animateion logic here
-	if (mode == 2)
+	//if (mode == 2)
 	{
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < enemiesMade; i++)
 		{
 			if (enemyAlive[i] == true)
 			{
-				enemySprite.setPosition(enemyPosition[i]);
-				w.draw(enemySprite);
-			}
-		}
-		if (timeNow - timeAtLastFire > gd->waveTwoSpawnTime)
-		{
-			for (int i = 5; i < 10; i++)
-			{
-				if (enemyAlive[i] == true)
-				{
-					enemySprite.setPosition(enemyPosition[i]);
-					w.draw(enemySprite);
-				}
+				enemySprites[enemyType.at(i)].setPosition(enemyPosition.at(i));
+				w.draw(enemySprites[enemyType.at(i)]);
 			}
 		}
 	}
-	if (mode == 3)
+	/*if (mode == 3)
 	{
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < enemiesMade; i++)
 		{
 			if (enemyAlive[i] == true)
 			{
-				enemySprite.setPosition(enemyPosition[i]);
-				w.draw(enemySprite);
+				enemySprites[enemyType.at(i)].setPosition(enemyPosition.at(i));
+				w.draw(enemySprites[enemyType.at(i)]);
 			}
 		}
-	}
+	}*/
 }
 
 void Enemy::Update(int mode)
@@ -164,27 +211,34 @@ void Enemy::Update(int mode)
 			timeAtLastFire = std::clock();
 			levelStarted = true;
 		}
-		for (int i = 0; i < 5; i++)
+		
+		if (timeNow - timeAtLastFire >= gd->waveSpawnTimes.at(currentWave) && wavesSpawn[currentWave] == false)
 		{
-			enemyPosition[i] += enemyVelocity[i];
-		}
-		if (timeNow - timeAtLastFire >= gd->waveTwoSpawnTime)
-		{
-			for (int i = 5; i < 10; i++)
+			wavesSpawn[currentWave] = true;
+			for (int i = enemiesSpawned; i < enemiesSpawned + gd->waveSizes.at(currentWave); i++)
 			{
-				enemyPosition[i] += enemyVelocity[i];
-			}
-		}
-		for (int i = 0; i < 10; i++)
-		{
-			if (enemyPosition[i].y > 600)
-			{
-				enemyPosition[i].y = -30;
 				enemyAlive[i] = true;
-				enemyHealth[i] = 40;
+				enemyPosition.at(i) += enemyVelocity.at(i);
 			}
-			if (enemyHealth[i] <= 0)
+			enemiesSpawned += gd->waveSizes.at(currentWave);
+			if (currentWave < gd->numWaves - 1)
+				currentWave++;
+		}
+		for (int i = 0; i < gd->numEnemies; i++)
+		{
+			if (enemyHealth.at(i) <= 0)
+			{
 				enemyAlive[i] = false;
+			}
+			if (enemyAlive[i] == true)
+			{
+				enemyPosition.at(i) += enemyVelocity.at(i);
+			}
+			if (enemyPosition.at(i).x > 750 || enemyPosition.at(i).x < -200 ||
+				enemyPosition.at(i).y > 550)
+			{
+				enemyAlive[i] = false;
+			}
 		}
 	}
 	if (mode == 3)
@@ -212,23 +266,55 @@ void Enemy::Update(int mode)
 
 			musicPlaying = true;
 		}*/
-		for (int i = 0; i < 5; i++)
+		for (int i = 0, d = 0; i < enemiesMade; i++)
 		{
-			if (enemyHealth[i] <= 0 && enemyAlive[i] == true)
+			if (enemyHealth.at(i) <= 0 && enemyAlive[i] == true)
 			{
 				enemyAlive[i] = false;
 				kills++;
 			}
-		}
-		if (kills >= 5)
-		{
-			kills = 0;
-			for (int i = 0; i < 5; i++)
+			if (enemyType.at(i) == 0)
 			{
-				enemyAlive[i] = true;
-				enemyHealth[i] = 30;
+				droneOffSet.at(d) += droneSideSpd.at(d).x;
+				if (droneOffSet.at(d) >= 125 || droneOffSet.at(d) <= -125)
+				{
+					droneOffSet.at(d) = 0;
+					droneSideSpd.at(d).x *= -1;
+				}
+				enemyPosition.at(i) += droneSideSpd.at(d);
+				d++;
 			}
 		}
+		if (kills >= enemiesMade)
+		{
+			kills = 0;
+			for (int i = 0; i < enemiesMade; i++)
+			{
+				enemyAlive[i] = true;
+				enemyHealth.at(i) = 30;
+			}
+		}
+	}
+}
+
+void Enemy::TrainingEnemies(int enemyNum)
+{
+	enemyPosition.clear();
+	enemyVelocity.clear();
+	enemyHealth.clear();
+	enemyType.clear();
+
+	for (int i = 0; i < enemiesMade; i++)
+	{
+		//enemyPosition.push_back(sf::Vector2f(390 + (50 * i), 40));
+		if (enemyNum != 0)
+			enemyPosition.push_back(sf::Vector2f(450, 70));
+		else 
+			enemyPosition.push_back(sf::Vector2f(480, 100));
+		enemyVelocity.push_back(sf::Vector2f(0, 0));
+		enemyHealth.push_back(healthTypes[enemyNum]);
+		enemyType.push_back(enemyNum);
+		enemyAlive[i] = true;
 	}
 }
 
