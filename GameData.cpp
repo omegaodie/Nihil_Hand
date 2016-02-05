@@ -12,14 +12,22 @@ void GameData::loadGameData()
 	json& mGameData = gamedata;
 
 	numEnemies = 0;
-	numWaves = 16;
+	numWaves = 5;
+	droneWaveNum = 4;
 
 	for (int w = 0; w < numWaves; w++)
 	{
 		std::stringstream ss;
 		ss << w + 1;			// Get current wave to create settings for
 		std::string wave = ss.str();
-		enemyTypes.push_back(mGameData["level_1"]["wave_" + wave]["enemyType"].as<int>());			// Enemy type in current wave
+		enemyType.push_back(mGameData["level_1"]["wave_" + wave]["enemyType"].as<int>());			// Enemy type in current wave
+		droneWaveSizes.push_back(mGameData["level_1"]["wave_" + wave]["enemy"].size());
+		droneSquadSplit.push_back(mGameData["level_1"]["wave_" + wave]["split"].as<int>());
+		droneSquadStart.push_back(mGameData["level_1"]["wave_" + wave]["startPos"].as<int>());
+		if (mGameData["level_1"]["wave_" + wave]["enemyType"].as<int>() == 0)
+		{
+			droneWaveNum++;
+		}
 		waveSizes.push_back(mGameData["level_1"]["wave_" + wave]["enemy"].size());					// Size of current wave	
 		numEnemies += mGameData["level_1"]["wave_" + wave]["enemy"].size();							// Add wave size to total number of enemies
 		waveSpawnTimes.push_back(mGameData["level_1"]["wave_" + wave]["spawn_time"].as<int>());		// Spawn time of current wave
@@ -31,4 +39,5 @@ void GameData::loadGameData()
 				mGameData["level_1"]["wave_" + wave]["enemy"][i]["y"].as<int>()));		// Spawn positions of current wave
 		}
 	}
+	int g = 0;
 }

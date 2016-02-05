@@ -11,15 +11,15 @@ Training::Training(Enemy* enemy)
 
 	testFloorTexture.loadFromFile("resources/TestFloorTexture.png");
 	testFloorSpr.setTexture(testFloorTexture);
-	testFloorSpr.setPosition(340, 0);
+	testFloorSpr.setPosition(260, 0);
 
 	wallDownTexture.loadFromFile("resources/WallDownTexture.png");
 	wallDownSpr.setTexture(wallDownTexture);
-	wallDownSpr.setPosition(330, 0);
+	wallDownSpr.setPosition(250, 0);
 
 	wallUpTexture.loadFromFile("resources/WallUpTexture.png");
 	wallUpSpr.setTexture(wallUpTexture);
-	wallUpSpr.setPosition(330, 280);
+	wallUpSpr.setPosition(250, 280);
 
 	arrowRightTexture.loadFromFile("resources/ArrowRightTexture.png");
 	arrowRightSpr.setTexture(arrowRightTexture);

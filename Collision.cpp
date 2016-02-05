@@ -52,7 +52,9 @@ Collision::Collision(Enemy* enemies, Bullet* bullets, Player* player, Training* 
 
 void Collision::CheckForCollision(sf::RenderWindow &w)
 {
+	//myEnemies->droneCenters.at(d) = sf::Vector2f(440 + (myEnemies->droneDis * d), 100);
 	//// Player bullets on enemy ship collision START ////
+	bool hit = false;
 	for (int b = 0; b < myBullets->MAX_PLAYER_BULLETS; b++)	// Cycles through all bullets
 	{
 		if (myBullets->bulletFiredA[b] == true)	// Checks if they're even alive first
@@ -69,8 +71,12 @@ void Collision::CheckForCollision(sf::RenderWindow &w)
 							myEnemies->enemyHealth.at(i) -= playerDmg * chargePower;
 						else
 							myEnemies->enemyHealth.at(i) -= playerDmg;
-						if (myEnemies->enemyHealth.at(i) <= 0)
+						if (myEnemies->enemyHealth.at(i) <= 0 && hit == false)
+						{
 							myPlayer->playerScore += 100;
+							myEnemies->DroneCentering(i);
+							hit = true;
+						}
 						myBullets->bulletFiredA[b] = false;		// Kills the enemy and the bullet
 					}
 				}
@@ -244,7 +250,7 @@ bool Collision::EnemyFiring() {
 	}
 	if (myMode == 3)
 	{
-		if (myPlayer->shipPos.x > 350)
+		if (myPlayer->shipPos.x > 270)
 		{
 			if (myBullets->timeNow - myBullets->timeAtLastDroneFire >= 1000)
 			{
@@ -259,7 +265,7 @@ bool Collision::EnemyFiring() {
 							{
 								myBullets->enemyBulletFired[b] = true;
 								myBullets->enemyBulletPosA[b] = sf::Vector2f(myEnemies->enemyPosition[i].x - 18, myEnemies->enemyPosition[i].y - 5);
-								myBullets->enemyBulletVelocityA[b] = sf::Vector2f(0, 2.5f + myEnemies->enemyVelocity[i].y);
+								myBullets->enemyBulletVelocityA[b] = sf::Vector2f(0, 2.5f);
 								goto skip2;
 							}
 						}
@@ -405,51 +411,51 @@ bool Collision::TrainingCollisions()
 
 bool Collision::TestWallCollisions()
 {
-	if (myPlayer->shipPos.x - 26 + 39 < 330 + 17 &&
-		myPlayer->shipPos.x - 26 + 39 > 330 && 
+	if (myPlayer->shipPos.x - 26 + 39 < 250 + 17 &&
+		myPlayer->shipPos.x - 26 + 39 > 250 && 
 		myPlayer->shipPos.y - 35 < 200 &&
 		myPlayer->shipVelocity.x > 0)
 	{
-		myPlayer->shipPos.x = 317;
+		myPlayer->shipPos.x = 237;
 	}
 
 
-	if (myPlayer->shipPos.x - 26 < 330 + 17 &&
-		myPlayer->shipPos.x - 26 > 330 &&
+	if (myPlayer->shipPos.x - 26 < 250 + 17 &&
+		myPlayer->shipPos.x - 26 > 250 &&
 		myPlayer->shipPos.y - 35 < 200 &&
 		myPlayer->shipVelocity.x < 0)
 	{
-		myPlayer->shipPos.x = 371;
+		myPlayer->shipPos.x = 291;
 	}
 
 	if (myPlayer->shipPos.y - 35 < 200 &&
-		myPlayer->shipPos.x - 26 + 39 > 330 &&
-		myPlayer->shipPos.x - 26 < 330 + 17 &&
+		myPlayer->shipPos.x - 26 + 39 > 250 &&
+		myPlayer->shipPos.x - 26 < 250 + 17 &&
 		myPlayer->shipVelocity.y < 0)
 	{
 		myPlayer->shipPos.y = 235;
 	}
 
-	if (myPlayer->shipPos.x - 26 + 39 < 330 + 17 &&
-		myPlayer->shipPos.x - 26 + 39 > 330 &&
+	if (myPlayer->shipPos.x - 26 + 39 < 250 + 17 &&
+		myPlayer->shipPos.x - 26 + 39 > 250 &&
 		myPlayer->shipPos.y - 35 + 36 > 280 &&
 		myPlayer->shipVelocity.x > 0)
 	{
-		myPlayer->shipPos.x = 317;
+		myPlayer->shipPos.x = 237;
 	}
 
-	if (myPlayer->shipPos.x - 26 < 330 + 17 &&
-		myPlayer->shipPos.x - 26 > 330 &&
+	if (myPlayer->shipPos.x - 26 < 250 + 17 &&
+		myPlayer->shipPos.x - 26 > 250 &&
 		myPlayer->shipPos.y - 35 + 36 > 280 &&
 		myPlayer->shipVelocity.x < 0)
 	{
-		myPlayer->shipPos.x = 371;
+		myPlayer->shipPos.x = 291;
 		return true;
 	}
 
 	if (myPlayer->shipPos.y - 35 + 36 > 280 &&
-		myPlayer->shipPos.x - 26 + 39 > 330 &&
-		myPlayer->shipPos.x - 26 < 330 + 17 &&
+		myPlayer->shipPos.x - 26 + 39 > 250 &&
+		myPlayer->shipPos.x - 26 < 250 + 17 &&
 		myPlayer->shipVelocity.y > 0)
 	{
 		myPlayer->shipPos.y = 279;
