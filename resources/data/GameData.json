@@ -769,7 +769,7 @@
 	},
 	"wave_3": {
 		"spawn_time": 120,
-		"enemyType": ,
+		"enemyType": 1,
 		"velocityX": -5,
 		"velocityY": -1,
 		"enemy": [
