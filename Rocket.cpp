@@ -100,6 +100,12 @@ void Rocket::update() {
 
 void Rocket::RandomlyExplode(){
 	dieSwitch = 1;
+	timeAtFired = time.getElapsedTime().asMilliseconds();
+	rSprite = new sf::Sprite();
+	rSprite->setOrigin(rExplosionTextures[0]->getSize().x / 2,
+		rExplosionTextures[0]->getSize().y / 2);
+	rSprite->setPosition(rPosition);
+	rSprite->setTexture(*rExplosionTextures[frame]);
 }
 
 void Rocket::Animate()
@@ -132,5 +138,10 @@ bool Rocket::getAlive()
 
 
 sf::Vector2f Rocket::getPosition(){
-	return rPosition;
+	if ((fireType == 1) && (dieSwitch != 1)){
+		return *actualLocation;
+	}
+	else{
+		return rPosition;
+	}
 }

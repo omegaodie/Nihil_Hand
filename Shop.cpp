@@ -305,7 +305,7 @@ void Shop::Run(sf::RenderWindow &w, sf::Event &eve){
 	DrawButtons(w, eve);
 
 
-	/*if (musicPlaying == false)
+	if (musicPlaying == false)
 	{
 		FMODsys->playSound(
 			shopMusic,
@@ -315,7 +315,7 @@ void Shop::Run(sf::RenderWindow &w, sf::Event &eve){
 		musicChannel->setVolume(0.75f);
 		
 		musicPlaying = true;
-	}*/
+	}
 	FMODsys->update();
 }
 

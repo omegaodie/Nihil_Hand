@@ -26,28 +26,68 @@ void GameData::loadGameData()
 
 	json& mGameData = gamedata;
 
-	numEnemies = 0;
+	numEnemiesLvLOne = 0;
+	numEnemiesLvLTwo = 0;
+	numEnemiesLvLThree = 0;
 	numWaves = 16;
-
+	numWavesLvLTwo = 16;
+	numWavesLvLThree = 5;
+	//////////LEVELONE///////////////////////////////
 	for (int w = 0; w < numWaves; w++)
 	{
 		std::stringstream ss;
 		ss << w + 1;			// Get current wave to create settings for
 		std::string wave = ss.str();
-		enemyTypes.push_back(mGameData["level_1"]["wave_" + wave]["enemyType"].as<int>());			// Enemy type in current wave
-		waveSizes.push_back(mGameData["level_1"]["wave_" + wave]["enemy"].size());					// Size of current wave	
-		numEnemies += mGameData["level_1"]["wave_" + wave]["enemy"].size();							// Add wave size to total number of enemies
-		waveSpawnTimes.push_back(mGameData["level_1"]["wave_" + wave]["spawn_time"].as<int>());		// Spawn time of current wave
+		enemyTypesLvLOne.push_back(mGameData["level_1"]["wave_" + wave]["enemyType"].as<int>());			// Enemy type in current wave
+		waveSizesLvLOne.push_back(mGameData["level_1"]["wave_" + wave]["enemy"].size());					// Size of current wave	
+		numEnemiesLvLOne += mGameData["level_1"]["wave_" + wave]["enemy"].size();							// Add wave size to total number of enemies
+		waveSpawnTimesLvLOne.push_back(mGameData["level_1"]["wave_" + wave]["spawn_time"].as<int>());		// Spawn time of current wave
 		enemyWaveVel.push_back(sf::Vector2f(mGameData["level_1"]["wave_" + wave]["velocityX"].as<int>(),	// Velocity of enemies in current wave
 			mGameData["level_1"]["wave_" + wave]["velocityY"].as<int>()));
-		for (int i = 0; i < waveSizes.at(w); i++)
+		for (int i = 0; i < waveSizesLvLOne.at(w); i++)
 		{
-			enemySpawnPos.push_back(sf::Vector2f(mGameData["level_1"]["wave_" + wave]["enemy"][i]["x"].as<int>(),	
+			enemySpawnPosLvLOne.push_back(sf::Vector2f(mGameData["level_1"]["wave_" + wave]["enemy"][i]["x"].as<int>(),
 				mGameData["level_1"]["wave_" + wave]["enemy"][i]["y"].as<int>()));		// Spawn positions of current wave
 		}
 	}
 	for (int i = 0; i < 4; i++) {
 		//bossWave.push_back(mGameData["level_1"]["boss_wave"][i][i].as<int>());
+	}
+	////////////////////LEVELTWO/////////////////////////////////////////////
+	for (int w = 0; w < numWavesLvLTwo; w++)
+	{
+		std::stringstream ss;
+		ss << w + 1;			// Get current wave to create settings for
+		std::string wave = ss.str();
+		enemyTypesLvLTwo.push_back(mGameData["level_2"]["wave_" + wave]["enemyType"].as<int>());			// Enemy type in current wave
+		waveSizesLvLTwo.push_back(mGameData["level_2"]["wave_" + wave]["enemy"].size());					// Size of current wave	
+		numEnemiesLvLTwo += mGameData["level_2"]["wave_" + wave]["enemy"].size();							// Add wave size to total number of enemies
+		waveSpawnTimesLvLTwo.push_back(mGameData["level_2"]["wave_" + wave]["spawn_time"].as<int>());		// Spawn time of current wave
+		enemyWaveVel.push_back(sf::Vector2f(mGameData["level_2"]["wave_" + wave]["velocityX"].as<int>(),	// Velocity of enemies in current wave
+			mGameData["level_2"]["wave_" + wave]["velocityY"].as<int>()));
+		for (int i = 0; i < waveSizesLvLTwo.at(w); i++)
+		{
+			enemySpawnPosLvLTwo.push_back(sf::Vector2f(mGameData["level_2"]["wave_" + wave]["enemy"][i]["x"].as<int>(),
+				mGameData["level_2"]["wave_" + wave]["enemy"][i]["y"].as<int>()));		// Spawn positions of current wave
+		}
+	}
+	////////////////////LEVELTHREE/////////////////////////////////////////////
+	for (int w = 0; w < numWavesLvLThree; w++)
+	{
+		std::stringstream ss;
+		ss << w + 1;			// Get current wave to create settings for
+		std::string wave = ss.str();
+		enemyTypesLvLThree.push_back(mGameData["level_3"]["wave_" + wave]["enemyType"].as<int>());			// Enemy type in current wave
+		waveSizesLvLThree.push_back(mGameData["level_3"]["wave_" + wave]["enemy"].size());					// Size of current wave	
+		numEnemiesLvLThree += mGameData["level_3"]["wave_" + wave]["enemy"].size();							// Add wave size to total number of enemies
+		waveSpawnTimesLvLThree.push_back(mGameData["level_3"]["wave_" + wave]["spawn_time"].as<int>());		// Spawn time of current wave
+		enemyWaveVel.push_back(sf::Vector2f(mGameData["level_3"]["wave_" + wave]["velocityX"].as<int>(),	// Velocity of enemies in current wave
+			mGameData["level_3"]["wave_" + wave]["velocityY"].as<int>()));
+		for (int i = 0; i < waveSizesLvLThree.at(w); i++)
+		{
+			enemySpawnPosLvLThree.push_back(sf::Vector2f(mGameData["level_3"]["wave_" + wave]["enemy"][i]["x"].as<int>(),
+				mGameData["level_3"]["wave_" + wave]["enemy"][i]["y"].as<int>()));		// Spawn positions of current wave
+		}
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////

@@ -36,7 +36,7 @@ public:
 
 	void LevelOneBoss::isHit(int);
 
-	Rocket* LevelOneBoss::getRockets();
+	Rocket* LevelOneBoss::getRockets(int i);
 
 private:
 	sf::Texture *leftArm;

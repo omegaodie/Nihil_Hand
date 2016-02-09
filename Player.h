@@ -23,6 +23,15 @@ public:
 	Player::Player();
 	Player::Player(float spawnX, float spawnY, float shieldDef, float HP, float speed, float hitBox, int points);
 	Player::~Player();
+	void Update(sf::RenderWindow &w, POINT p);
+	void Draw(sf::RenderWindow &w, int mode);
+	void SetStats(std::vector<float>& myStats);
+	int state(); 
+	void ReturnToShop(sf::Event &eve, int mode);
+	void QuitGameOver(sf::Event &eve);
+	void DrawGameOver(sf::RenderWindow &w);
+
+	int gameMode;
 	int playerHealth;
 	int playerScore;
 	float shipSpeed;
@@ -41,13 +50,7 @@ public:
 
 	std::string healthString, scoreString;
 	
-	void Update(sf::RenderWindow &w, POINT p);
-	void Draw(sf::RenderWindow &w, int mode);
-	void SetStats(std::vector<float>& myStats);
-	int state(); int gameMode;
-	void ReturnToShop(sf::Event &eve, int mode);
-	void QuitGameOver(sf::Event &eve);
-	void DrawGameOver(sf::RenderWindow &w);
+	
 };
 
 #endif

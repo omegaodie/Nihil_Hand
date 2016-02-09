@@ -52,12 +52,13 @@ bool Level::getOver() {
 
 void Level::RocketOnShipCollisions(){
 	for (int i = 0; i < 30; i++){
-		if (boss->getRockets()[i].getAlive() == true){
-			if (thePlayer->shipPos.x > boss->getRockets()[i].getPosition().x - 50 &&
-				thePlayer->shipPos.x < boss->getRockets()[i].getPosition().x + 50 &&
-				thePlayer->shipPos.y > boss->getRockets()[i].getPosition().y - 50 &&
-				thePlayer->shipPos.y < boss->getRockets()[i].getPosition().y + 50){
-				boss->getRockets()[i].RandomlyExplode();
+		if (boss->getRockets(i)->getAlive() == true){
+			if (thePlayer->shipPos.x > boss->getRockets(i)->getPosition().x - 50 &&
+				thePlayer->shipPos.x <  boss->getRockets(i)->getPosition().x + 50 &&
+				thePlayer->shipPos.y >  boss->getRockets(i)->getPosition().y - 50 &&
+				thePlayer->shipPos.y <  boss->getRockets(i)->getPosition().y + 50){
+				boss->getRockets(i)->RandomlyExplode();
+				thePlayer->playerHealth -= 50;
 			}
 		}
 	}

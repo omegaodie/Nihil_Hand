@@ -141,8 +141,8 @@ void LevelOneBoss::SectionControl() {
 }
 
 
-Rocket* LevelOneBoss::getRockets(){
-	return *rokets;
+Rocket* LevelOneBoss::getRockets(int i){
+	return rokets[i];
 }
 
 

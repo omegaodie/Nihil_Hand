@@ -34,6 +34,7 @@ private:
 	bool musicPlaying, muteMusic;
 	bool muteMusicToggle;
 	
+
 public:
 	Training::Training(Enemy* enemy);
 	Training::~Training();
@@ -43,6 +44,7 @@ public:
 	sf::Vector2f arrowLeftPos, arrowRightPos;
 	int currentEnemy;
 	float leftHits, rightHits;
+
 };
 
 #endif

@@ -21,8 +21,12 @@ public:
 	GameData::GameData();
 
 
-	int numEnemies;
+	int numEnemiesLvLOne;
+	int numEnemiesLvLTwo;
+	int numEnemiesLvLThree;
 	int numWaves;
+	int numWavesLvLTwo;
+	int numWavesLvLThree;
 	// Textures
 	std::string m_shipTextureFile;
 	std::string m_lvlOneBossTxtFileL;
@@ -61,13 +65,31 @@ public:
 	sf::Texture* m_Button2Texture;
 	sf::Texture* m_MenuBackgroundTexture;
 
-	// Enemy spawn positions
+	// Enemy spawn positions Level One
 	std::vector<sf::Vector2f> enemyWaveVel; // Velocities for enemies in each wave
-	std::vector<float> waveSpawnTimes; // Spawn times for enemy waves
-	std::vector<sf::Vector2f> enemySpawnPos; // Enemy spawn positions
-	std::vector<int> waveSizes;
-	std::vector<int> enemyTypes;
+	std::vector<float> waveSpawnTimesLvLOne; // Spawn times for enemy waves
+	std::vector<sf::Vector2f> enemySpawnPosLvLOne; // Enemy spawn positions
+	std::vector<int> waveSizesLvLOne;
+	std::vector<int> enemyTypesLvLOne;
 	std::vector<int> bossWave;
+	//////////////////////////////////////////////////
+	/////////LEVEL TWO/////////////////////////////
+	////////////////////////////////////////////////////
+	std::vector<float> waveSpawnTimesLvLTwo; // Spawn times for enemy waves
+	std::vector<sf::Vector2f> enemySpawnPosLvLTwo; // Enemy spawn positions
+	std::vector<int> waveSizesLvLTwo;
+	std::vector<int> enemyTypesLvLTwo;
+	//////////////////////////////////////////////////
+	/////////LEVEL THREE/////////////////////////////
+	////////////////////////////////////////////////////
+	std::vector<float> waveSpawnTimesLvLThree; // Spawn times for enemy waves
+	std::vector<sf::Vector2f> enemySpawnPosLvLThree; // Enemy spawn positions
+	std::vector<int> waveSizesLvLThree;
+	std::vector<int> enemyTypesLvLThree;
+
+
+
+
 
 
 	//player Spawn Location
