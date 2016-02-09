@@ -49,48 +49,123 @@ Enemy::Enemy(int mode, const GameData &gdata) : gd(gdata) {
 	if (mode == 2)
 	{
 		levelStarted = false;
-		
+
 		for (int i = 0; i < gd.numEnemiesLvLOne; i++)
 		{
 			enemyPosition.push_back(gd.enemySpawnPosLvLOne.at(i)); // Build vector for enemy spawn positions
 			enemyAlive[i] = false;
 		}
-		for (int w = enemiesMade, d = 0; w < enemiesMade + gd->waveSizes.at(i); w++, d++)
+		droneSideSpd.resize(gd.droneWaveNum);
+		droneDis.resize(gd.droneWaveNum);
+		droneGroupLength.resize(gd.droneWaveNum);
+		droneStartDead.resize(gd.droneWaveNum);
+		droneEndDead.resize(gd.droneWaveNum);
+		droneMaxOffSet.push_back(50);
+		droneFirstEnemy.push_back(0);
+		int p = 0;
+		int num = 0;
+		for (int i = 0, s = 0; i < gd.numWaves; i++)
 		{
-			enemyVelocity.push_back(gd->enemyWaveVel.at(i));	// Build vector for enemy velocities based on their wave
+			vector<sf::Vector2f> dC;
+			droneGroupAlive.push_back(gd.waveSizesLvLOne.at(i));
+			droneGroupSize.push_back(gd.waveSizesLvLOne.at(i));
+			droneGroupStart.push_back(gd.droneSquadStart.at(i));
+			num += gd.waveSizesLvLOne.at(i);
+			droneFirstEnemy.push_back(num);
+			droneGroupSplit.push_back(gd.droneSquadSplit.at(s));
+			for (int w = enemiesMade, d = 0; w < enemiesMade + gd.waveSizesLvLOne.at(i); w++, d++)
+			{
+				enemyVelocity.push_back(gd.enemyWaveVel.at(i));	// Build vector for enemy velocities based on their wave
 
-			if (gd->enemyType.at(i) == 0)		// If drone type, give enemy health of droneHP
-			{
-				droneGroupPos.push_back(p); p++;
-				enemyHealth.push_back(droneHP);
-				enemyType.push_back(0);
-				droneSideSpd.at(s) = 2.0f;
-				droneGroupNum.push_back(s);
-				//droneGroupSplit.push_back(gd->droneSquadSplit.at(s));
-				droneDis.at(s) = gd->droneSquadSplit.at(s);
-				droneGroupLength.at(s) = gd->droneSquadSplit.at(s) * ((droneGroupSize.at(s) - 1));
-				droneStartDead.at(s) = 0;
-				droneEndDead.at(s) = 0;
-				droneDir[i] = false;
-				droneCentered[w] = true;
-				droneSide[w] = false;
-				dC.push_back(sf::Vector2f(gd->droneSquadStart.at(s) + (droneGroupSplit.at(s) * d), 100));
+				if (gd.enemyTypesLvLOne.at(i) == 0)		// If drone type, give enemy health of droneHP
+				{
+					droneGroupPos.push_back(p); p++;
+					enemyHealth.push_back(droneHP);
+					enemyType.push_back(0);
+					droneSideSpd.at(s) = 2.0f;
+					droneGroupNum.push_back(s);
+					//droneGroupSplit.push_back(gd->droneSquadSplit.at(s));
+					droneDis.at(s) = gd.droneSquadSplit.at(s);
+					droneGroupLength.at(s) = gd.droneSquadSplit.at(s) * ((droneGroupSize.at(s) - 1));
+					droneStartDead.at(s) = 0;
+					droneEndDead.at(s) = 0;
+					droneDir[i] = false;
+					droneCentered[w] = true;
+					droneSide[w] = false;
+					dC.push_back(sf::Vector2f(gd.droneSquadStart.at(s) + (droneGroupSplit.at(s) * d), 100));
+				}
+				if (gd.enemyTypesLvLOne.at(i) == 1)		// if sweeper type, give enemy health of sweeperHP
+				{
+					enemyHealth.push_back(sweeperHP);
+					enemyType.push_back(1);
+					droneGroupNum.push_back(s);
+					droneGroupPos.push_back(0);
+				}
+				if (gd.enemyTypesLvLOne.at(i) == 2)		// if sentry type, give enemy health of sentryHP
+				{
+					enemyHealth.push_back(sentryHP);
+					enemyType.push_back(2);
+					droneGroupNum.push_back(s);
+					droneGroupPos.push_back(0);
+				}
 			}
-			if (gd->enemyType.at(i) == 1)		// if sweeper type, give enemy health of sweeperHP
+			if (gd.enemyTypesLvLOne.at(i) == 0)
 			{
-				enemyHealth.push_back(sweeperHP);
-				enemyType.push_back(1);
-				droneGroupNum.push_back(s);
-				droneGroupPos.push_back(0);
+				s++;
+				droneCentersVec.push_back(dC);
 			}
-			if (gd->enemyType.at(i) == 2)		// if sentry type, give enemy health of sentryHP
+			if (gd.enemyTypesLvLOne.at(i) != 0)
 			{
-				enemyHealth.push_back(sentryHP);
-				enemyType.push_back(2);
-				droneGroupNum.push_back(s);
-				droneGroupPos.push_back(0);
+				s++;
+				vector<sf::Vector2f> empty;
+				droneCentersVec.push_back(empty);
 			}
+			enemiesMade += gd.waveSizesLvLOne.at(i);	// Keep track of enemies created so far
+
+			enemyWaveSpawns.push_back(gd.waveSpawnTimesLvLOne.at(i));	// Build vector for enemy wave spawn times
+
+			wavesSpawn[i] = false;
+			p = 0;
 		}
+	}
+
+	if (mode == 3)
+	{
+		pos = { 250, 40 };
+		vel = { 0, 0 };
+		levelStarted = false;
+		enemiesMade = 5;
+		droneGroupSplit.push_back(60);
+		droneGroupStart.push_back(340);
+		droneGroupSize.push_back(enemiesMade);
+		droneSideSpd.push_back(1.0f);
+		droneMaxOffSet.push_back(40);
+		droneDis.push_back(droneGroupSplit.at(0));
+		droneFirstEnemy.push_back(0);
+		droneStartDead.push_back(0);
+		droneEndDead.push_back(0);
+		droneGroupAlive.push_back(enemiesMade);
+		droneGroupLength.push_back(droneGroupSplit.at(0) * ((droneGroupSize.at(0) - 1)));
+
+		for (int i = 0; i < 100; i++)
+		{
+			enemyAlive[i] = false;
+		}
+
+		for (int i = 0; i < enemiesMade; i++)
+		{
+			enemyAlive[i] = true;
+			enemyPosition.push_back(sf::Vector2f(400 + (droneGroupSplit.at(0) * i), 100));
+			enemyHealth.push_back(droneHP);
+			enemyType.push_back(0);
+			enemyAlive[i] = true;
+			droneDir[i] = false;
+			droneGroupPos.push_back(i);
+			droneCentered[i] = true;
+			droneCenters.push_back(sf::Vector2f(droneGroupStart.at(0) + (droneGroupSplit.at(0) * i), 100));
+			droneGroupNum.push_back(0);
+		}
+		droneCentersVec.push_back(droneCenters);
 
 		for (int i = 0; i < gd.numWaves; i++)
 		{
@@ -223,17 +298,16 @@ void Enemy::Draw(sf::RenderWindow &w, int mode){// animateion logic here
 			}
 		}
 	}
-	/*if (mode == 3)
+	w.draw(HUDSideSprite);
+	w.draw(HUDSpellSprite);
+	for (int i = 0; i < 100; i++)
 	{
-		for (int i = 0; i < enemiesMade; i++)
+		if (moneyAlive[i])
 		{
-			if (enemyAlive[i] == true)
-			{
-				enemySprites[enemyType.at(i)].setPosition(enemyPosition.at(i));
-				w.draw(enemySprites[enemyType.at(i)]);
-			}
+			moneySprite.setPosition(moneyPos.at(i));
+			w.draw(moneySprite);
 		}
-	}*/
+	}
 }
 
 void Enemy::Update(int mode)

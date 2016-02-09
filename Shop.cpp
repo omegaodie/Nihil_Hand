@@ -289,7 +289,7 @@ Shop::Shop()
 		moveSpeed[i] = (100 + (i * 40)) / 100.0f;
 		hitBoxSize[i] = (50 - (i * 10)) / 100.0f;
 		dropRate[i] = 1.0f + (i * 0.1f);
-		magnetChance[i] = (i * 20) / 100.0f;
+		magnetRange[i] = (i * 20) / 100.0f;
 	}
 
 	GameStart = 0;
@@ -527,6 +527,7 @@ void Shop::CreateShip()
 		dropRate[statLevels[5]], magnetChance[statLevels[5]]);*/
 }
 
+
 std::vector<float>& Shop::GetUpgradeStats()
 {
 	shipStatsVector = { shotDamage[statLevels[0]], blastDamage[statLevels[0]],
@@ -534,9 +535,12 @@ std::vector<float>& Shop::GetUpgradeStats()
 		maxHP[statLevels[2]], mercyInvuln[statLevels[2]],
 		maxBombs[statLevels[3]], luckRate[statLevels[3]],
 		moveSpeed[statLevels[4]], hitBoxSize[statLevels[4]],
-		dropRate[statLevels[5]], magnetChance[statLevels[5]] };
+		dropRate[statLevels[5]], magnetRange[statLevels[5]] };
 	return shipStatsVector;
 }
+
+
+
 
 int Shop::state(){
 	return GameStart;

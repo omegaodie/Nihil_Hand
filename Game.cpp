@@ -40,7 +40,7 @@ void Game::Run(sf::RenderWindow &w){
 		if ((eve.type == sf::Event::KeyPressed) && (eve.key.code == sf::Keyboard::Escape))
 			w.close();
 		if (gameState == SHOP_RUNNING) { theShop->MuteSounds(eve); }
-		if (gameState == GAME_RUNNING || gameState == TRAINING_MODE) { theCollisions->FireSpell(eve); }
+		if (gameState == GAME_RUNNING || gameState == TRAINING_MODE) { /*theCollisions->FireSpell(eve);*/ }
 		if (gameState != MENU_RUNNING && gameState != SHOP_RUNNING) {
 			//if (thePlayer->playerHealth <= 0) { 
 			//	thePlayer->QuitGameOver(eve); 

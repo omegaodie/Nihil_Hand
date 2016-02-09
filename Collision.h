@@ -15,6 +15,7 @@
 #include "SFML/Graphics.hpp" 
 #include "SFML/OpenGL.hpp" 
 #include <iostream> 
+#include <sstream>
 #define _USE_MATH_DEFINES
 #include "GameData.h"
 #include <math.h>
@@ -24,6 +25,8 @@
 #include "Player.h"
 #include "Training.h"
 #include "LevelOneBoss.h"
+
+using namespace std;
 
 class Collision
 {
@@ -36,7 +39,12 @@ private:
 	Training* myTest;
 	float playerDmg, shieldPower, chargePower;
 	bool mercyInvuln, shieldActive, chargeActive;
-	int spells, blastPower, mercyPower, myMode;
+	int spells, blastPower, mercyPower, myMode, luckyChance, dropRate, magnetDis;
+	std::clock_t mercyTimeActivated;
+	std::clock_t shieldTimer, shieldTimeActivated;
+	std::clock_t chargeTimer, chargeTimeActivated;
+
+	std::clock_t timeNow;
 	sf::Font spellFont;
 	sf::Text spellText;
 	std::string spellString;
@@ -59,8 +67,13 @@ private:
 public:
 	void Collision::RunExplosions(sf::RenderWindow &w);
 	Collision::Collision(const GameData &gd);
-	Collision::Collision(Enemy* enemies, Bullet* bullets, Player* player, Training* test, int mode, float playerDamage, int blastDamage, float chargeStat, float shieldStat, float mercyStat, int maxSpells, const GameData &gd, LevelOneBoss *lb);
+	Collision::Collision(Enemy* enemies, Bullet* bullets, Player* player, Training* test, int mode,
+		float playerDamage, int blastDamage, float chargeStat, float shieldStat, float mercyStat,
+		int maxSpells, float luckStat, int dropStat, int magnetRange, const GameData &gd, LevelOneBoss *lb);
 	Collision::~Collision();
+
+	void Collision::CollectMoney();
+	bool Collision::DropMoney(int enemy);
 
 	const GameData& gd;
 

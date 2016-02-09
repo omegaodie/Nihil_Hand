@@ -67,9 +67,9 @@ private:
 	int statLevels[6];
 	int statPrices[6];
 
-	float shotDamage[6], blastDamage[6], chargeBonus[6], shieldDefense[6], 
-		maxHP[6], mercyInvuln[6], maxBombs[6], luckRate[6], 
-		moveSpeed[6], hitBoxSize[6], dropRate[6], magnetChance[6];
+	float shotDamage[6], blastDamage[6], chargeBonus[6], shieldDefense[6],
+		maxHP[6], mercyInvuln[6], maxBombs[6], luckRate[6],
+		moveSpeed[6], hitBoxSize[6], dropRate[6], magnetRange[6];
 
 	std::vector<float> shipStatsVector;
 

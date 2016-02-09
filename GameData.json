@@ -128,6 +128,8 @@
         "wave_1": {
             "spawn_time": 0,
             "enemyType": 0,
+            "split": 100,
+            "startPos": 150,
             "velocityX": 0,
             "velocityY": 3,
             "enemy": [
@@ -154,10 +156,12 @@
             ]
         },
         "wave_2": {
-            "spawn_time": 600,
+            "spawn_time": 2000,
             "enemyType": 0,
+            "split": 100,
+            "startPos": 150,
             "velocityX": 0,
-            "velocityY": 3,
+            "velocityY": 2,
             "enemy": [
                 {
                     "x": 150,
@@ -182,18 +186,20 @@
             ]
         },
         "wave_3": {
-            "spawn_time": 2000,
+            "spawn_time": 4000,
             "enemyType": 0,
+            "split": 100,
+            "startPos": 150,
             "velocityX": 0,
-            "velocityY": 3,
+            "velocityY": 2,
             "enemy": [
                 {
                     "x": 150,
-                    "y": 0
+                    "y": -200
                 },
                 {
                     "x": 250,
-                    "y": -50
+                    "y": -150
                 },
                 {
                     "x": 350,
@@ -206,30 +212,16 @@
                 {
                     "x": 550,
                     "y": -200
-                },
-                {
-                    "x": 150,
-                    "y": -200
-                },
-                {
-                    "x": 250,
-                    "y": -150
-                },
-                {
-                    "x": 450,
-                    "y": -50
-                },
-                {
-                    "x": 550,
-                    "y": 0
                 }
             ]
         },
         "wave_4": {
-            "spawn_time": 4000,
+            "spawn_time": 7000,
             "enemyType": 0,
+            "split": 30,
+            "startPos": 100,
             "velocityX": 0,
-            "velocityY": 3,
+            "velocityY": 2,
             "enemy": [
                 {
                     "x": 100,
@@ -246,63 +238,17 @@
                 {
                     "x": 190,
                     "y": 0
-                },
-                {
-                    "x": 300,
-                    "y": 0
-                },
-                {
-                    "x": 330,
-                    "y": 0
-                },
-                {
-                    "x": 360,
-                    "y": 0
-                },
-                {
-                    "x": 390,
-                    "y": 0
-                },
-                {
-                    "x": 500,
-                    "y": 0
-                },
-                {
-                    "x": 530,
-                    "y": 0
-                },
-                {
-                    "x": 560,
-                    "y": 0
-                },
-                {
-                    "x": 590,
-                    "y": 0
                 }
             ]
         },
         "wave_5": {
-            "spawn_time": 5000,
+            "spawn_time": 7000,
             "enemyType": 0,
+            "split": 30,
+            "startPos": 400,
             "velocityX": 0,
-            "velocityY": 3,
+            "velocityY": 2,
             "enemy": [
-                {
-                    "x": 200,
-                    "y": 0
-                },
-                {
-                    "x": 230,
-                    "y": 0
-                },
-                {
-                    "x": 260,
-                    "y": 0
-                },
-                {
-                    "x": 290,
-                    "y": 0
-                },
                 {
                     "x": 400,
                     "y": 0
@@ -322,8 +268,62 @@
             ]
         },
         "wave_6": {
-            "spawn_time": 6000,
+            "spawn_time": 10000,
+            "enemyType": 0,
+            "split": 30,
+            "startPos": 200,
+            "velocityX": 0,
+            "velocityY": 3,
+            "enemy": [
+                {
+                    "x": 200,
+                    "y": 0
+                },
+                {
+                    "x": 230,
+                    "y": 0
+                },
+                {
+                    "x": 260,
+                    "y": 0
+                },
+                {
+                    "x": 290,
+                    "y": 0
+                }
+            ]
+        },
+        "wave_7": {
+            "spawn_time": 12000,
+            "enemyType": 0,
+            "split": 30,
+            "startPos": 400,
+            "velocityX": 0,
+            "velocityY": 3,
+            "enemy": [
+                {
+                    "x": 400,
+                    "y": 0
+                },
+                {
+                    "x": 430,
+                    "y": 0
+                },
+                {
+                    "x": 460,
+                    "y": 0
+                },
+                {
+                    "x": 490,
+                    "y": 0
+                }
+            ]
+        },
+        "wave_8": {
+            "spawn_time": 13000,
             "enemyType": 1,
+            "split": 30,
+            "startPos": 400,
             "velocityX": 3,
             "velocityY": 0,
             "enemy": [
@@ -341,9 +341,11 @@
                 }
             ]
         },
-        "wave_7": {
-            "spawn_time": 6000,
+        "wave_9": {
+            "spawn_time": 14500,
             "enemyType": 1,
+            "split": 30,
+            "startPos": 400,
             "velocityX": -3,
             "velocityY": 0,
             "enemy": [
@@ -361,9 +363,11 @@
                 }
             ]
         },
-        "wave_8": {
-            "spawn_time": 8000,
+        "wave_10": {
+            "spawn_time": 17000,
             "enemyType": 0,
+            "split": 50,
+            "startPos": 150,
             "velocityX": 0,
             "velocityY": 5,
             "enemy": [
@@ -374,7 +378,17 @@
                 {
                     "x": 200,
                     "y": 0
-                },
+                }
+            ]
+        },
+        "wave_11": {
+            "spawn_time": 17000,
+            "enemyType": 0,
+            "split": 50,
+            "startPos": 350,
+            "velocityX": 0,
+            "velocityY": 5,
+            "enemy": [
                 {
                     "x": 350,
                     "y": 0
@@ -382,7 +396,17 @@
                 {
                     "x": 400,
                     "y": 0
-                },
+                }
+            ]
+        },
+        "wave_12": {
+            "spawn_time": 17000,
+            "enemyType": 0,
+            "split": 50,
+            "startPos": 550,
+            "velocityX": 0,
+            "velocityY": 5,
+            "enemy": [
                 {
                     "x": 550,
                     "y": 0
@@ -393,9 +417,11 @@
                 }
             ]
         },
-        "wave_9": {
-            "spawn_time": 10000,
+        "wave_13": {
+            "spawn_time": 20000,
             "enemyType": 1,
+            "split": 0,
+            "startPos": 0,
             "velocityX": -2,
             "velocityY": 2,
             "enemy": [
@@ -413,9 +439,11 @@
                 }
             ]
         },
-        "wave_10": {
-            "spawn_time": 10000,
+        "wave_14": {
+            "spawn_time": 21000,
             "enemyType": 1,
+            "split": 150,
+            "startPos": 150,
             "velocityX": 2,
             "velocityY": 2,
             "enemy": [
@@ -433,9 +461,11 @@
                 }
             ]
         },
-        "wave_11": {
-            "spawn_time": 10500,
+        "wave_15": {
+            "spawn_time": 24000,
             "enemyType": 0,
+            "split": 150,
+            "startPos": 150,
             "velocityX": 0,
             "velocityY": 1,
             "enemy": [
@@ -450,7 +480,17 @@
                 {
                     "x": 450,
                     "y": 0
-                },
+                }
+            ]
+        },
+        "wave_16": {
+            "spawn_time": 24000,
+            "enemyType": 0,
+            "split": 150,
+            "startPos": 150,
+            "velocityX": 0,
+            "velocityY": 1,
+            "enemy": [
                 {
                     "x": 150,
                     "y": -50
@@ -465,9 +505,11 @@
                 }
             ]
         },
-        "wave_12": {
-            "spawn_time": 11500,
+        "wave_17": {
+            "spawn_time": 26000,
             "enemyType": 1,
+            "split": 150,
+            "startPos": 150,
             "velocityX": 0,
             "velocityY": 2,
             "enemy": [
@@ -497,9 +539,11 @@
                 }
             ]
         },
-        "wave_13": {
-            "spawn_time": 15000,
+        "wave_18": {
+            "spawn_time": 28000,
             "enemyType": 1,
+            "split": 150,
+            "startPos": 150,
             "velocityX": 4,
             "velocityY": 0,
             "enemy": [
@@ -517,9 +561,11 @@
                 }
             ]
         },
-        "wave_14": {
-            "spawn_time": 15000,
+        "wave_19": {
+            "spawn_time": 29000,
             "enemyType": 1,
+            "split": 150,
+            "startPos": 150,
             "velocityX": -4,
             "velocityY": 0,
             "enemy": [
@@ -537,9 +583,11 @@
                 }
             ]
         },
-        "wave_15": {
-            "spawn_time": 15500,
+        "wave_20": {
+            "spawn_time": 31000,
             "enemyType": 0,
+            "split": 40,
+            "startPos": 250,
             "velocityX": 0,
             "velocityY": 3,
             "enemy": [
@@ -565,9 +613,11 @@
                 }
             ]
         },
-        "wave_16": {
-            "spawn_time": 19500,
+        "wave_21": {
+            "spawn_time": 33000,
             "enemyType": 2,
+            "split": 150,
+            "startPos": 150,
             "velocityX": 0,
             "velocityY": 2,
             "enemy": [

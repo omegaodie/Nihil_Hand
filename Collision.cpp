@@ -6,7 +6,9 @@ Collision::Collision(const GameData &gdata)
 {
 }
 
-Collision::Collision(Enemy* enemies, Bullet* bullets, Player* player, Training* test, int mode, float playerDamage, int blastDamage, float chargeStat, float shieldStat, float mercyStat, int maxSpells, const GameData &gdata, LevelOneBoss *lb)
+Collision::Collision(Enemy* enemies, Bullet* bullets, Player* player, Training* test, int mode, float playerDamage, int blastDamage, float chargeStat, 
+	float shieldStat, float mercyStat, int maxSpells, float luckStat, int dropStat, int magnetRange,
+	const GameData &gdata, LevelOneBoss *lb)
 : gd(gdata)
 {
 	for (int i = 0; i < 200; i++){
@@ -21,12 +23,17 @@ Collision::Collision(Enemy* enemies, Bullet* bullets, Player* player, Training* 
 	playerDmg = playerDamage;
 	blastPower = blastDamage;
 	shieldPower = 1 - shieldStat;
-	mercyPower = mercyStat;
+	mercyPower = mercyStat * 1000;
 	chargePower = chargeStat;
-	spells = maxSpells;
+	spells = 20;
 	shieldActive = false;
 	chargeActive = false;
 	mercyInvuln = false;
+	chargeTimer = 5000;
+	shieldTimer = 5000;
+	luckyChance = luckStat * 100;
+	magnetDis = magnetRange;
+	dropRate = 10 * dropStat;
 	droneExplosionSprite = new sf::Sprite();
 	for (int i = 0; i < 81; i++) {
 		droneExplosionTexture[i] = gd.m_RocketAnimTextures[i];
@@ -218,7 +225,7 @@ void Collision::CheckForCollision(sf::RenderWindow &w)
 
 	EnemyFiring();
 	CleanBullets();
-	w.draw(spellText);
+	//w.draw(spellText);
 	RunExplosions(w);
 	if (myMode == 3)
 	{
@@ -226,6 +233,52 @@ void Collision::CheckForCollision(sf::RenderWindow &w)
 		//TestWallCollisions();
 	}
 }
+
+
+void Collision::CollectMoney()
+{
+	std::cout << myPlayer->shipPos.x << std::endl;
+	for (int m = 0; m < 100; m++)
+	{
+		if (myEnemies->moneyAlive[m])
+		{
+			if (myPlayer->shipPos.x - 26 < myEnemies->moneyPos.at(m).x + 36 && myPlayer->shipPos.x - 26 + 36 > myEnemies->moneyPos.at(m).x
+				&& myPlayer->shipPos.y - 32 < myEnemies->moneyPos.at(m).y + 34 && myPlayer->shipPos.y - 35 + 33 > myEnemies->moneyPos.at(m).y)
+			{
+				myPlayer->playerScore += 50;
+				myEnemies->moneyAlive[m] = false;
+			}
+			sf::Vector2f vec = sf::Vector2f(myEnemies->moneyPos.at(m).x - myPlayer->shipPos.x, myEnemies->moneyPos.at(m).y - myPlayer->shipPos.y);
+			float dis = sqrt((vec.x * vec.x) + (vec.y * vec.y));
+			std::cout << "Dis: " << dis << " Magnet: " << magnetDis << std::endl;
+			if (dis <= magnetDis)
+			{
+				sf::Vector2f dir = sf::Vector2f(myEnemies->moneyPos.at(m).x - myPlayer->shipPos.x, myEnemies->moneyPos.at(m).y - myPlayer->shipPos.y);
+				float l = sqrt((dir.x * dir.x) + (dir.y * dir.y));
+				if (l == 0) { l = 0.001f; }
+				dir = dir / l;
+				myEnemies->moneyPos.at(m).x -= dir.x * 0.5;
+				myEnemies->moneyPos.at(m).y -= dir.y * 0.5;
+			}
+		}
+	}
+}
+
+bool Collision::DropMoney(int e)
+{
+	for (int m = 0; m < 100; m++)
+	{
+		if (myEnemies->moneyAlive[m] == false)
+		{
+			myEnemies->moneyPos.at(m) = sf::Vector2f(myEnemies->enemyPosition.at(e).x - 24, myEnemies->enemyPosition.at(e).y - 24);
+			myEnemies->moneyAlive[m] = true;
+			return true;
+		}
+	}
+	return false;
+}
+
+
 
 bool Collision::EnemyFiring() {
 	if (myMode == 2)
@@ -365,7 +418,7 @@ void Collision::CleanBullets()
 
 void Collision::FireSpell(sf::Event &eve)
 {
-	/*std::stringstream ss;
+	std::stringstream ss;
 	ss << spells;
 	spellString = ss.str();
 	spellText.setString("Spells: " + spellString);
@@ -394,30 +447,42 @@ void Collision::FireSpell(sf::Event &eve)
 		spells > 0 && chargeActive == false)
 	{
 		spells--; chargeActive = true;
+		chargeTimeActivated = clock();
 	}
 	if (eve.type == sf::Event::KeyPressed && (eve.key.code == sf::Keyboard::D || eve.key.code == sf::Keyboard::Down) &&
 		spells > 0 && shieldActive == false)
 	{
 		spells--; shieldActive = true;
+		shieldTimeActivated = clock();
 	}
 	if (eve.type == sf::Event::KeyPressed && (eve.key.code == sf::Keyboard::F || eve.key.code == sf::Keyboard::Right) &&
 		spells > 0 && mercyInvuln == false)
 	{
 		spells--; mercyInvuln = true;
-	}*/
+		mercyTimeActivated = clock();
+	}
 }
 
 void Collision::DrawShield(sf::RenderWindow &w)
 {
+	timeNow = clock();
 	if (shieldActive)
 	{
 		shieldSprite->setPosition(sf::Vector2f(myPlayer->shipPos.x - 31, myPlayer->shipPos.y - 40));
 		w.draw(*shieldSprite);
+		if (timeNow - shieldTimeActivated > shieldTimer)
+		{
+			shieldActive = false;
+		}
 	}
 	if (mercyInvuln)
 	{
 		invulnSprite->setPosition(sf::Vector2f(myPlayer->shipPos.x - 31, myPlayer->shipPos.y - 40));
 		w.draw(*invulnSprite);
+		if (timeNow - mercyTimeActivated > mercyPower)
+		{
+			mercyInvuln = false;
+		}
 	}
 }
 

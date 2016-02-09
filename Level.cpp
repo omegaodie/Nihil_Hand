@@ -1,9 +1,6 @@
 #include "Level.h"
 int thingy = 0;
 
-//Level::~Level(){
-//
-//}
 
 
 Level::Level(const GameData &gdata) :
@@ -73,11 +70,13 @@ void Level::GetStats(std::vector<float> playerStats){
 	trainingRoom = new Training(theEnemies);
 	trainingRoom->musicChannel->setMute(false);
 	cM = new Collision(theEnemies, theBullets, thePlayer, trainingRoom, 3, playerStats.at(0),
-		playerStats.at(1), playerStats.at(2), playerStats.at(3), playerStats.at(5), playerStats.at(6), gd, boss);
+		playerStats.at(1), playerStats.at(2), playerStats.at(3), playerStats.at(5), playerStats.at(6), 
+		playerStats.at(7), playerStats.at(10), playerStats.at(11), gd, boss);
 }
 
 void Level::Run(sf::RenderWindow &w, POINT p){
 	draw(w);
+	//cM->FireSpell(eve);
 	if (clock->getElapsedTime().asMilliseconds() > bossSpawn){
 		if (bossIniated == false){
 			boss->Init();

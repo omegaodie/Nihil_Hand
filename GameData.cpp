@@ -38,7 +38,12 @@ void GameData::loadGameData()
 		std::stringstream ss;
 		ss << w + 1;			// Get current wave to create settings for
 		std::string wave = ss.str();
+		droneWaveNum++;
+		//enemyTypesLvLOne.push_back(mGameData["level_1"]["wave_" + wave]["enemyType"].as<int>());			// Enemy type in current wave
 		enemyTypesLvLOne.push_back(mGameData["level_1"]["wave_" + wave]["enemyType"].as<int>());			// Enemy type in current wave
+		droneWaveSizes.push_back(mGameData["level_1"]["wave_" + wave]["enemy"].size());
+		droneSquadSplit.push_back(mGameData["level_1"]["wave_" + wave]["split"].as<int>());
+		droneSquadStart.push_back(mGameData["level_1"]["wave_" + wave]["startPos"].as<int>());
 		waveSizesLvLOne.push_back(mGameData["level_1"]["wave_" + wave]["enemy"].size());					// Size of current wave	
 		numEnemiesLvLOne += mGameData["level_1"]["wave_" + wave]["enemy"].size();							// Add wave size to total number of enemies
 		waveSpawnTimesLvLOne.push_back(mGameData["level_1"]["wave_" + wave]["spawn_time"].as<int>());		// Spawn time of current wave

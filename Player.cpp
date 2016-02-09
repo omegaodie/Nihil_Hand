@@ -86,7 +86,7 @@ void Player::Draw(sf::RenderWindow &w, int mode)
 	shipSprite.setPosition(shipPos);
 	w.draw(shipSprite);
 
-	std::stringstream ss1;
+	/*std::stringstream ss1;
 	ss1 << playerHealth;
 	healthString = ss1.str();
 	HUDplayerHealth.setString("HP: " + healthString);
@@ -96,7 +96,7 @@ void Player::Draw(sf::RenderWindow &w, int mode)
 	ss2 << playerScore;
 	scoreString = ss2.str();
 	HUDplayerScore.setString("Score: " + scoreString);
-	w.draw(HUDplayerScore);
+	w.draw(HUDplayerScore);*/
 
 	if (mode == 3 && shipPos.x > 0 && shipPos.x < 130 && shipPos.y > 430 && shipPos.y < 430 + 122)
 	{

@@ -11,6 +11,8 @@ using jsoncons::json_exception;
 using jsoncons::pretty_print;
 using jsoncons::json_deserializer;
 
+using namespace std;
+
 class GameData {
 private:
 	json gamedata;
@@ -72,6 +74,12 @@ public:
 	std::vector<int> waveSizesLvLOne;
 	std::vector<int> enemyTypesLvLOne;
 	std::vector<int> bossWave;
+
+	int droneWaveNum; // Number of drone waves
+	vector<int> droneWaveSizes; // Size of each drone wave
+	vector<int> droneSquadSplit; // Default distance between drones in a squad
+	vector<float> droneSquadStart; // X-Position of first drone in drone wave
+
 	//////////////////////////////////////////////////
 	/////////LEVEL TWO/////////////////////////////
 	////////////////////////////////////////////////////
