@@ -459,7 +459,7 @@
         }
     },
     "level_2": {
-	"lvltwoBack": "lvl_1_bckG.png",
+	"lvltwoBack": "lvl_2_bckG.png",
 	"wave_1": {
 		"spawn_time": 0,
 		"enemyType": 0,
@@ -726,7 +726,7 @@
 	}
     },
     "level_3": {
-	"lvlthreeBack": "lvl_1_bckG.png",
+	"lvlthreeBack": "lvl_3_bckG.png",
 	"wave_1": {
 		"spawn_time": 0,
 		"enemyType": 0,
