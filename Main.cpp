@@ -8,7 +8,7 @@ int main(){
 	sf::RenderWindow window(sf::VideoMode(920, 1020), "SFML Application");//where we draw things
 	window.setFramerateLimit(60);
 	Game *the_Game = new Game();//our game, everything happens here
-	
+	srand(time(NULL));
 	while (window.isOpen()){
 		window.clear();
 		

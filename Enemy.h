@@ -25,6 +25,8 @@ private:
 
 	int trainingCurrentType; // Current enemy type in training
 
+
+
 	sf::Texture HUDSpellTexture, HUDSideTexture;
 	sf::Sprite HUDSpellSprite, HUDSideSprite;
 
@@ -32,12 +34,13 @@ private:
 	sf::Sprite moneySprite;
 
 public:
-
+	int level;
 	const GameData& gd;
 
 	Enemy::Enemy(float x, float y, const GameData &gdata);
 	Enemy::Enemy(const GameData &gdata);
-	Enemy::Enemy(int mode, const GameData &gdata); int kills;
+	Enemy::Enemy(int mode, const GameData &gdata, int cl); 
+	int kills;
 	Enemy::~Enemy();
 
 	void Enemy::Draw(sf::RenderWindow &w, int mode);

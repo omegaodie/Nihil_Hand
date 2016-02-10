@@ -6,7 +6,7 @@ LevelOneBoss::LevelOneBoss(const GameData &gd) : Boss(gd)
 }
 
 void LevelOneBoss::Init(){
-	for (int i = 0; i < 30; i++) {
+	for (int i = 0; i < 100; i++) {
 		rokets[i] = new Rocket(gd);
 	}
 	leftArm = gd.m_LvlOneBossLeftArmTxt;
@@ -15,19 +15,19 @@ void LevelOneBoss::Init(){
 	lArm = new sf::Sprite();
 	rArm = new sf::Sprite();
 	bDy = new sf::Sprite();
-
+	slowDownTimer = 0;
 	for (int i = 0; i < 81; i++) {
 		rExplosionTextures[i] = gd.m_RocketAnimTextures[i];
 	}
 
-
+	fireRate = 20;
 
 	lA = true;
 	rA = true;
 
 	lHp = 1000;
 	rHp = 1000;
-	bHp = 1000;
+	bHealth = 5000;
 	mDirectionX = 1;
 	mDirectionY = 1;
 
@@ -37,7 +37,7 @@ void LevelOneBoss::Init(){
 
 	bVelocity;
 	bPosition = new sf::Vector2f(300, 50);
-	tesster = 51;
+	speed = 1;
 	lArm->setTexture(*leftArm);
 	rArm->setTexture(*rightArm);
 	bDy->setTexture(*body);
@@ -61,7 +61,7 @@ void LevelOneBoss::update(sf::RenderWindow &w) {
 	ArtificialIntelligence();
 	SectionControl();
 	Draw(w);
-	for (int i = 0; i < 30; i++) {
+	for (int i = 0; i < 100; i++) {
 		if (rokets[i]->getAlive()) {
 			rokets[i]->update();
 			rokets[i]->Draw(w);
@@ -75,15 +75,14 @@ bool LevelOneBoss::getAlive() {
 
 void LevelOneBoss::Draw(sf::RenderWindow &w){
 	setSpritepositions();
-	tesster++;
 	if (lA == true) {
 		w.draw(*lArm);
 	}
-	if (bAlive) {
+	if (bAlive == true) {
 		w.draw(*bDy);
 
 	}
-	if (rA) {
+	if (rA == true) {
 		w.draw(*rArm);
 
 	}
@@ -94,11 +93,11 @@ void LevelOneBoss::ArtificialIntelligence(){
 		//move right
 		mDirectionX = 1;
 	}
-	if (bPosition->x > 920) {
+	if (bPosition->x > 440) {
 		//move left
 		mDirectionX = -1;
 	}
-	if (bPosition->y > 120) {
+	if (bPosition->y > 420) {
 		//move up
 		mDirectionY = -1;
 	}
@@ -107,14 +106,14 @@ void LevelOneBoss::ArtificialIntelligence(){
 		mDirectionY = 1;
 	}
 	int currentRockets = 0;
-	bPosition->x += mDirectionX * 2;
-	bPosition->y += mDirectionY * 2;
-	for (int i = 0; i < 30; i++) {
+	bPosition->x += mDirectionX * speed;
+	bPosition->y += mDirectionY * speed;
+	for (int i = 0; i < 100; i++) {
 		if (rokets[i]->getAlive()) {
 			currentRockets++;
 		}
 	}
-	if ((currentRockets < 25) && (timelastfired + 750 < time.getElapsedTime().asMilliseconds())) {
+	if ((currentRockets < fireRate) && (timelastfired + 300 < time.getElapsedTime().asMilliseconds())) {
 		//fireRocket if time elapsed is greater than 1.5 secs
 		FireRockets();
 		timelastfired = time.getElapsedTime().asMilliseconds();
@@ -135,7 +134,7 @@ void LevelOneBoss::SectionControl() {
 	if (rHp <= 0) {
 		rA = false;
 	}
-	if (rHp <= 0) {
+	if (bHealth <= 0) {
 		bAlive = false;
 	}
 }
@@ -147,9 +146,9 @@ Rocket* LevelOneBoss::getRockets(int i){
 
 
 void LevelOneBoss::FireRockets() {
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < fireRate; i++) {
 		if (rokets[i]->getAlive() == false) {
-			int a = rand() % 40;
+			int a = rand() % 20;
 			if (a < 10) {
 				a = 0;
 			}
@@ -183,14 +182,33 @@ void LevelOneBoss::isHit(int part){
 	if (part == 1){
 		//left arm
 		lHp -= 50;
+		if (lHp < 100){
+			if (slowDownTimer + 250 > time.getElapsedTime().asMilliseconds()){
+				SpeedUp();
+				slowDownTimer = time.getElapsedTime().asMilliseconds();
+			}
+		}
 	}
 	if (part == 2){
 		//right arm
 		rHp -= 50;
+		if (rHp < 100){
+			if (slowDownTimer + 250 > time.getElapsedTime().asMilliseconds()){
+				SpeedUp();
+				slowDownTimer = time.getElapsedTime().asMilliseconds();
+			}
+		}
 	}
 	if (part == 3){//body
 		if (lA == false && rA == false){
-			bHealth -= 5;
+			bHealth -= 50;
 		}
+	}
+}
+
+void LevelOneBoss::SpeedUp(){
+	if (fireRate < 100){
+		fireRate += 1;
+		speed += 5;
 	}
 }

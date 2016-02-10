@@ -632,7 +632,7 @@
             ]
         },
 		"Boss": {
-            "spawn_time": 22000,
+            "spawn_time": 34500,
             "type": 1
         }
     },

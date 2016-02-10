@@ -54,7 +54,7 @@ Shop::Shop()
 
 	shopFont.loadFromFile("C:\\Windows\\Fonts\\GARA.TTF");
 
-	strengthDescText.setString("Strength: All attacks become more powerful.");
+	/*strengthDescText.setString("Strength: All attacks become more powerful.");
 	strengthDescText.setFont(shopFont);
 	strengthDescText.setCharacterSize(16);
 	strengthDescText.setColor(sf::Color::White);
@@ -154,7 +154,109 @@ Shop::Shop()
 	playerScoreText.setFont(shopFont);
 	playerScoreText.setCharacterSize(20);
 	playerScoreText.setColor(sf::Color::White);
-	playerScoreText.setPosition(10, 0);
+	playerScoreText.setPosition(10, 0);*/
+
+strengthDescText.setString("Strength: All attacks become more powerful.");
+strengthDescText.setFont(shopFont);
+strengthDescText.setCharacterSize(16);
+strengthDescText.setColor(sf::Color::White);
+strengthDescText.setPosition(110, 125);
+strengthStatsText.setString("Shot Damage:\nBlast Damage:");
+strengthStatsText.setFont(shopFont);
+strengthStatsText.setCharacterSize(16);
+strengthStatsText.setColor(sf::Color::White);
+strengthStatsText.setPosition(110, 145);
+strengthCostText.setString("Cost:\n0");
+strengthCostText.setFont(shopFont);
+strengthCostText.setCharacterSize(14);
+strengthCostText.setColor(sf::Color::White);
+strengthCostText.setPosition(700, 147);
+
+intelligenceDescText.setString("Intelligence: Non-offensive Spells become more effective");
+intelligenceDescText.setFont(shopFont);
+intelligenceDescText.setCharacterSize(16);
+intelligenceDescText.setColor(sf::Color::White);
+intelligenceDescText.setPosition(110, 195);
+intelligenceStatsText.setString("Charge Bonus:\nShield Defense:");
+intelligenceStatsText.setFont(shopFont);
+intelligenceStatsText.setCharacterSize(16);
+intelligenceStatsText.setColor(sf::Color::White);
+intelligenceStatsText.setPosition(110, 215);
+intelligenceCostText.setString("Cost:\n0");
+intelligenceCostText.setFont(shopFont);
+intelligenceCostText.setCharacterSize(14);
+intelligenceCostText.setColor(sf::Color::White);
+intelligenceCostText.setPosition(700, 217);
+
+vitalityDescText.setString("Vitality: Life capacity and mercy invincibility duration increases.");
+vitalityDescText.setFont(shopFont);
+vitalityDescText.setCharacterSize(16);
+vitalityDescText.setColor(sf::Color::White);
+vitalityDescText.setPosition(110, 265);
+vitalityStatsText.setString("Maximum HP:\nMercy Invuln. (secs):");
+vitalityStatsText.setFont(shopFont);
+vitalityStatsText.setCharacterSize(16);
+vitalityStatsText.setColor(sf::Color::White);
+vitalityStatsText.setPosition(110, 285);
+vitalityCostText.setString("Cost:\n0");
+vitalityCostText.setFont(shopFont);
+vitalityCostText.setCharacterSize(14);
+vitalityCostText.setColor(sf::Color::White);
+vitalityCostText.setPosition(700, 287);
+
+spiritDescText.setString("Spirit: Spell capacity and chance of surviving a hit with 1 HP increases.");
+spiritDescText.setFont(shopFont);
+spiritDescText.setCharacterSize(16);
+spiritDescText.setColor(sf::Color::White);
+spiritDescText.setPosition(110, 335);
+spiritStatsText.setString("Maximum Bombs:\nLucky Endure Rate:");
+spiritStatsText.setFont(shopFont);
+spiritStatsText.setCharacterSize(16);
+spiritStatsText.setColor(sf::Color::White);
+spiritStatsText.setPosition(110, 355);
+spiritCostText.setString("Cost:\n0");
+spiritCostText.setFont(shopFont);
+spiritCostText.setCharacterSize(14);
+spiritCostText.setColor(sf::Color::White);
+spiritCostText.setPosition(700, 357);
+
+agilityDescText.setString("Agility: Movement speed increases and hitbox size decreases.");
+agilityDescText.setFont(shopFont);
+agilityDescText.setCharacterSize(16);
+agilityDescText.setColor(sf::Color::White);
+agilityDescText.setPosition(110, 405);
+agilityStatsText.setString("Move Speed:\nHitbox Size:");
+agilityStatsText.setFont(shopFont);
+agilityStatsText.setCharacterSize(16);
+agilityStatsText.setColor(sf::Color::White);
+agilityStatsText.setPosition(110, 425);
+agilityCostText.setString("Cost:\n0");
+agilityCostText.setFont(shopFont);
+agilityCostText.setCharacterSize(14);
+agilityCostText.setColor(sf::Color::White);
+agilityCostText.setPosition(700, 427);
+
+luckDescText.setString("Luck: Drop rate increases and items may float towards the player.");
+luckDescText.setFont(shopFont);
+luckDescText.setCharacterSize(16);
+luckDescText.setColor(sf::Color::White);
+luckDescText.setPosition(110, 475);
+luckStatsText.setString("Drop Rate:\nMagnetism Chance:");
+luckStatsText.setFont(shopFont);
+luckStatsText.setCharacterSize(16);
+luckStatsText.setColor(sf::Color::White);
+luckStatsText.setPosition(110, 495);
+luckCostText.setString("Cost:\n0");
+luckCostText.setFont(shopFont);
+luckCostText.setCharacterSize(14);
+luckCostText.setColor(sf::Color::White);
+luckCostText.setPosition(700, 497);
+
+playerScoreText.setString("Points: 0");
+playerScoreText.setFont(shopFont);
+playerScoreText.setCharacterSize(20);
+playerScoreText.setColor(sf::Color::White);
+playerScoreText.setPosition(10, 0);
 
 	buy_image = new sf::Image();
 	sell_image = new sf::Image();
@@ -200,7 +302,7 @@ Shop::Shop()
 	agilityStatTexture->loadFromFile("resources/AgilityStatTexture.png");
 	luckStatTexture->loadFromFile("resources/LuckStatTexture.png");
 
-	statLevelTexture->loadFromFile("resources/StatLevelTexture.png");
+	/*statLevelTexture->loadFromFile("resources/StatLevelTexture.png");
 	statBoughtTexture->loadFromFile("resources/StatBoughtTexture.png");
 	sf::Vector2f* buyPos = new sf::Vector2f(480, 50);
 	sf::Vector2f* sellPos = new sf::Vector2f(560, 50);
@@ -259,6 +361,67 @@ Shop::Shop()
 		for (int s = 0; s < 6; s++, t++)
 		{
 			statBoughtPos[t] = sf::Vector2f(150 + (s * 38) + s, 45 + (i * 70));
+		}
+	}*/
+	statLevelTexture->loadFromFile("resources/StatLevelTexture.png");
+	statBoughtTexture->loadFromFile("resources/StatBoughtTexture.png");
+	sf::Vector2f* buyPos = new sf::Vector2f(780, 150);
+	sf::Vector2f* sellPos = new sf::Vector2f(760, 150);
+
+	buyTexture->loadFromImage(*buy_image);
+	buySprite->setTexture(*buyTexture);
+	buySprite->setPosition(*buyPos);
+
+	sellTexture->loadFromImage(*sell_image);
+	sellSprite->setTexture(*sellTexture);
+	sellSprite->setPosition(*sellPos);
+
+	playSprite->setTexture(*playTexture);
+	playButtonPos = sf::Vector2f(768, 545);
+	playSprite->setPosition(playButtonPos);
+
+	testSprite->setTexture(*testTexture);
+	testButtonPos = sf::Vector2f(700, 545);
+	testSprite->setPosition(testButtonPos);
+
+	currentStatSprite->setTexture(*currentStatTexture);
+	currentStatSprite->setPosition(sf::Vector2f(235, 150));
+
+	strengthStatSprite->setTexture(*strengthStatTexture);
+	strengthStatSprite->setPosition(sf::Vector2f(100, 150));
+
+	intelligenceStatSprite->setTexture(*intelligenceStatTexture);
+	intelligenceStatSprite->setPosition(sf::Vector2f(100, 220));
+
+	vitalityStatSprite->setTexture(*vitalityStatTexture);
+	vitalityStatSprite->setPosition(sf::Vector2f(100, 290));
+
+	spiritStatSprite->setTexture(*spiritStatTexture);
+	spiritStatSprite->setPosition(sf::Vector2f(100, 360));
+
+	agilityStatSprite->setTexture(*agilityStatTexture);
+	agilityStatSprite->setPosition(sf::Vector2f(100, 430));
+
+	luckStatSprite->setTexture(*luckStatTexture);
+	luckStatSprite->setPosition(sf::Vector2f(100, 500));
+
+	statLevelSprite->setTexture(*statLevelTexture);
+
+	statBoughtSprite->setTexture(*statBoughtTexture);
+
+	for (int i = 0; i < 6; i++)
+	{
+		buyBtnPos[i] = sf::Vector2f(585, 148 + (i * 70));
+		sellBtnPos[i] = sf::Vector2f(665, 148 + (i * 70));
+		statLevelsPos[i] = sf::Vector2f(250, 145 + (i * 70));
+		statLevels[i] = 0;
+	}
+	int t = 0;
+	for (int i = 0; i < 6; i++)
+	{
+		for (int s = 0; s < 6; s++, t++)
+		{
+			statBoughtPos[t] = sf::Vector2f(250 + (s * 38) + s, 145 + (i * 70));
 		}
 	}
 	//buyBtn->Init("Buy", buyPos, buy_image, buy_image);

@@ -20,6 +20,7 @@ public:
 
 	bool getAlive();
 
+
 	void LevelOneBoss::Draw(sf::RenderWindow &w);
 
 	void LevelOneBoss::ImageStuff();
@@ -38,6 +39,10 @@ public:
 
 	Rocket* LevelOneBoss::getRockets(int i);
 
+	void LevelOneBoss::SpeedUp();
+
+	bool lA, rA;
+
 private:
 	sf::Texture *leftArm;
 	sf::Texture *rightArm;
@@ -47,11 +52,14 @@ private:
 
 	sf::Texture* rExplosionTextures[81];
 
-	int tesster;
+	int speed;
+
+	int fireRate;
+	float slowDownTimer;
 
 	float timelastfired;
 
-	Rocket* rokets[30];
+	Rocket* rokets[100];
 
 	int mDirectionX, mDirectionY;
 
@@ -60,7 +68,7 @@ private:
 	sf::Sprite *bDy;
 
 	float lHp, rHp, bHp;
-	bool lA, rA;
+	
 
 };
 

@@ -68,6 +68,4 @@ private:
 	sf::Text spellText;
 	std::string spellString;
 
-	sf::Texture HUDSpellTexture;
-	sf::Sprite HUDSpellSprite;
 };

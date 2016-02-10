@@ -31,6 +31,12 @@ class Game
 
 	private:
 		Level* theLevel;
+		Enemy* trainNMe;
+		Bullet* trainBlt;
+
+
+
+
 		sf::Texture* back;
 		Menu* theMenu;
 		Player* thePlayer;
@@ -41,6 +47,9 @@ class Game
 		Training* trainingRoom;
 		Collision* theCollisions;
 		int gameState;
+		int CurrentLevel;
+		bool canReturn;
+		Collision *testCollision;
 		enum GameState { MENU_RUNNING = 0, SHOP_RUNNING = 1, GAME_RUNNING = 2, TRAINING_MODE = 3, END = 4, };
 };
 

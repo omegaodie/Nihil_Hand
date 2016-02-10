@@ -20,7 +20,7 @@ Player::Player(float spawnX, float spawnY, float shieldDef, float HP, float spee
 	HUDplayerHealth.setFont(HUDFont);
 	HUDplayerHealth.setCharacterSize(16);
 	HUDplayerHealth.setColor(sf::Color::White);
-	HUDplayerHealth.setPosition(5, 457);
+	HUDplayerHealth.setPosition(720, 537);
 
 	gameOverTexture.loadFromFile("resources/gameOverText.png");
 	gameOverSprite.setTexture(gameOverTexture);
@@ -36,13 +36,13 @@ Player::Player(float spawnX, float spawnY, float shieldDef, float HP, float spee
 	HUDplayerScore.setFont(HUDFont);
 	HUDplayerScore.setCharacterSize(16);
 	HUDplayerScore.setColor(sf::Color::White);
-	HUDplayerScore.setPosition(500, 457);
+	HUDplayerScore.setPosition(720, 487);
 
 	returnToShopText.setString("Press ENTER to enter the shop.");
 	returnToShopText.setFont(HUDFont);
 	returnToShopText.setCharacterSize(20);
 	returnToShopText.setColor(sf::Color::White);
-	returnToShopText.setPosition(150, 430);
+	returnToShopText.setPosition(720, 507);
 	drawText = false;
 
 	gameMode = 0;
@@ -86,7 +86,7 @@ void Player::Draw(sf::RenderWindow &w, int mode)
 	shipSprite.setPosition(shipPos);
 	w.draw(shipSprite);
 
-	/*std::stringstream ss1;
+	std::stringstream ss1;
 	ss1 << playerHealth;
 	healthString = ss1.str();
 	HUDplayerHealth.setString("HP: " + healthString);
@@ -96,7 +96,7 @@ void Player::Draw(sf::RenderWindow &w, int mode)
 	ss2 << playerScore;
 	scoreString = ss2.str();
 	HUDplayerScore.setString("Score: " + scoreString);
-	w.draw(HUDplayerScore);*/
+	w.draw(HUDplayerScore);
 
 	if (mode == 3 && shipPos.x > 0 && shipPos.x < 130 && shipPos.y > 430 && shipPos.y < 430 + 122)
 	{
@@ -120,7 +120,7 @@ int Player::state(){
 	return gameMode;
 }
 
-void Player::ReturnToShop(sf::Event &eve, int mode)
+bool Player::ReturnToShop(sf::Event &eve, int mode)
 {
 	if (mode == 3 && eve.type == sf::Event::KeyPressed && eve.key.code == sf::Keyboard::Return &&
 		shipPos.x > 0 && shipPos.x < 130 && shipPos.y > 430 && shipPos.y < 430 + 122)
@@ -134,10 +134,10 @@ void Player::ReturnToShop(sf::Event &eve, int mode)
 			musicChannel->setMute(false); muteMusic = false; muteMusicToggle = false;
 		}*/
 		gameMode = 2;
+		return true;
 	}
-	if (eve.type == sf::Event::KeyReleased && eve.key.code == sf::Keyboard::Return)
-	{
-
+	else{
+		return false;
 	}
 		//muteMusicToggle = true;
 }

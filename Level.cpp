@@ -14,6 +14,7 @@ gd(gdata){
 	//theMenu = new Menu(gd);
 	thePlayer = new Player();
 	struck = false;
+
 	boss = new LevelOneBoss(gd);
 	//thePlayer = new Player(308.5f, 334);
 	//theBullets = new Bullet(300, 300, false);
@@ -30,17 +31,36 @@ gd(gdata){
 	l_BckSprite->setPosition(0, 4000);
 }
 
-void Level::initLevel(){
-	bckX = 0;
-	bckY = 0;
-	bossIniated = false;
-	bossSpawn = gd.BossSpawnTime;
-	clock = new sf::Clock();
-	thePlayer = new Player();
-	struck = false;
-	boss = new LevelOneBoss(gd);
-	theEnemies = new Enemy(gd);
-	theShop = new Shop();
+void Level::initLevel(int current, Shop* s){
+	theShop = s;
+	theLevel = current;
+	if (current == 0){
+		bckX = 0;
+		bckY = 0;
+		bossIniated = false;
+		bossSpawn = gd.BossSpawnTime;
+		clock = new sf::Clock();
+		thePlayer = new Player();
+		struck = false;
+		boss = new LevelOneBoss(gd);
+		theEnemies = new Enemy(2, gd, theLevel);
+	}
+	if (current == 1){
+		bckX = 0;
+		bckY = 0;
+		bossIniated = false;
+		bossSpawn = gd.BossSpawnTime;
+		clock = new sf::Clock();
+		thePlayer = new Player();
+		struck = false;
+		boss = new LevelOneBoss(gd);
+		theEnemies = new Enemy(2, gd, theLevel);
+	}
+	else{
+
+	}
+
+	
 }
 
 bool Level::getOver() {
@@ -48,14 +68,14 @@ bool Level::getOver() {
 }
 
 void Level::RocketOnShipCollisions(){
-	for (int i = 0; i < 30; i++){
-		if (boss->getRockets(i)->getAlive() == true){
-			if (thePlayer->shipPos.x > boss->getRockets(i)->getPosition().x - 50 &&
-				thePlayer->shipPos.x <  boss->getRockets(i)->getPosition().x + 50 &&
-				thePlayer->shipPos.y >  boss->getRockets(i)->getPosition().y - 50 &&
-				thePlayer->shipPos.y <  boss->getRockets(i)->getPosition().y + 50){
+	for (int i = 0; i < 100; i++){
+		if (boss->getRockets(i)->getAlive() == true && boss->getRockets(i)->dieSwitch != 1){
+			if (thePlayer->shipPos.x > boss->getRockets(i)->getPosition().x - 20 &&
+				thePlayer->shipPos.x <  boss->getRockets(i)->getPosition().x + 20 &&
+				thePlayer->shipPos.y >  boss->getRockets(i)->getPosition().y - 25 &&
+				thePlayer->shipPos.y <  boss->getRockets(i)->getPosition().y + 25){
 				boss->getRockets(i)->RandomlyExplode();
-				thePlayer->playerHealth -= 50;
+				thePlayer->playerHealth -= 30;
 			}
 		}
 	}
@@ -66,10 +86,10 @@ void Level::GetStats(std::vector<float> playerStats){
 	bossIniated = false;
 	thePlayer = new Player(308.5f, 334, playerStats.at(3), playerStats.at(4), playerStats.at(8), playerStats.at(9), theShop->playerScore);
 	theBullets = new Bullet(300, 300, false, playerStats.at(8), gd);
-	theEnemies = new Enemy(2, gd);
-	trainingRoom = new Training(theEnemies);
-	trainingRoom->musicChannel->setMute(false);
-	cM = new Collision(theEnemies, theBullets, thePlayer, trainingRoom, 3, playerStats.at(0),
+	theEnemies = new Enemy(2, gd, theLevel);
+	//trainingRoom = new Training(theEnemies);
+	//trainingRoom->musicChannel->setMute(false);
+	cM = new Collision(theEnemies, theBullets, thePlayer, trainingRoom, 2, playerStats.at(0),
 		playerStats.at(1), playerStats.at(2), playerStats.at(3), playerStats.at(5), playerStats.at(6), 
 		playerStats.at(7), playerStats.at(10), playerStats.at(11), gd, boss);
 }
@@ -116,8 +136,18 @@ void Level::draw(sf::RenderWindow &w){
 
 void Level::Reset() {
 	struck = false;
-	theLevel = 1;
-	initLevel();
+	theLevel = 0;
+	initLevel(theLevel, theShop);
+}
+
+
+bool Level::getPlayerAlive(){
+	if (thePlayer->playerHealth <= 0){
+		return false;
+	}
+	else{
+		return true;
+	}
 }
 
 void Level::collisionDetection(){

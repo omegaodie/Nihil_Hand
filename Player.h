@@ -27,7 +27,7 @@ public:
 	void Draw(sf::RenderWindow &w, int mode);
 	void SetStats(std::vector<float>& myStats);
 	int state(); 
-	void ReturnToShop(sf::Event &eve, int mode);
+	bool ReturnToShop(sf::Event &eve, int mode);
 	void QuitGameOver(sf::Event &eve);
 	void DrawGameOver(sf::RenderWindow &w);
 

@@ -7,6 +7,7 @@ Rocket::Rocket(const GameData &gdata) : gd(gdata) {
 	rVelocityTwo = new sf::Vector2f(0, 2.5);
 	rPosition = sf::Vector2f();
 	countdown = 100;
+	hp = 500;
 	//rPosition = new sf::
 }
 
@@ -54,18 +55,30 @@ void Rocket::update() {
 			rPosition.y += rVelocityOne->y;
 			r_PosOnRadius -= incrementA;
 			r_CurrentRadius += incrementB;
-			if (r_Theta < 10) {
+			if (actualLocation->y <= 200) {
 				incrementA = 0.05;
 				incrementB = 0.5;
 				r_Theta += 0.1;
+				rSprite->setRotation((r_Theta * r_Theta * 15) + 90);
+				actualLocation->x = rPosition.x + (((r_CurrentRadius + r_PosOnRadius) * r_Theta) * cos(r_Theta));
+				actualLocation->y = rPosition.y + (((r_CurrentRadius + r_PosOnRadius) * r_Theta) * sin(r_Theta));
 			}
-			else if (r_Theta < 20) {
+			else if (actualLocation->y <= 600) {
 				r_Theta += 0.05;
 				incrementA = 0.25;
 				incrementB = 0.25;
+				rSprite->setRotation((r_Theta * r_Theta * 15) + 90);
+				actualLocation->x = rPosition.x + (((r_CurrentRadius + r_PosOnRadius) * r_Theta) * cos(r_Theta));
+				actualLocation->y = rPosition.y + (((r_CurrentRadius + r_PosOnRadius) * r_Theta) * sin(r_Theta));
 			}
-			else if ((r_Theta < 60) && (dieSwitch != 1)) {
+			else{
+				rSprite->setRotation(180);
+				actualLocation->y += 3;
+
+			}
+			if ((actualLocation->y >= 800)) {
 				dieSwitch = 1;
+				rSprite->setRotation(180);
 				timeAtFired = time.getElapsedTime().asMilliseconds();
 				rSprite = new sf::Sprite();
 				rSprite->setOrigin(rExplosionTextures[0]->getSize().x / 2,
@@ -73,13 +86,12 @@ void Rocket::update() {
 				rSprite->setTexture(*rExplosionTextures[frame]);
 			}
 			deltaTime = time.getElapsedTime().asMilliseconds() - timeAtFired;
-			actualLocation->x = rPosition.x + (((r_CurrentRadius + r_PosOnRadius) * r_Theta) * cos(r_Theta));
-			actualLocation->y = rPosition.y + (((r_CurrentRadius + r_PosOnRadius) * r_Theta) * sin(r_Theta));
+			
 			rSprite->setPosition(*actualLocation);
-			rSprite->setRotation((r_Theta * r_Theta * 15) + 90);
+			
 		}
 		else {
-			if (rPosition.y < 720) {
+			if (rPosition.y < 820) {
 				rSprite->setRotation(180);
 				rPosition.y += rVelocityTwo->y;
 				rSprite->setPosition(rPosition);
@@ -99,13 +111,19 @@ void Rocket::update() {
 
 
 void Rocket::RandomlyExplode(){
-	dieSwitch = 1;
-	timeAtFired = time.getElapsedTime().asMilliseconds();
-	rSprite = new sf::Sprite();
-	rSprite->setOrigin(rExplosionTextures[0]->getSize().x / 2,
-		rExplosionTextures[0]->getSize().y / 2);
-	rSprite->setPosition(rPosition);
-	rSprite->setTexture(*rExplosionTextures[frame]);
+	if (hp <= 0){
+		dieSwitch = 1;
+		timeAtFired = time.getElapsedTime().asMilliseconds();
+		rSprite = new sf::Sprite();
+		rSprite->setOrigin(rExplosionTextures[0]->getSize().x / 2,
+			rExplosionTextures[0]->getSize().y / 2);
+		rSprite->setPosition(rPosition);
+		rSprite->setTexture(*rExplosionTextures[frame]);
+	}
+	else{
+		hp--;
+	}
+	
 }
 
 void Rocket::Animate()

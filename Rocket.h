@@ -31,6 +31,7 @@ public:
 	sf::Vector2f Rocket::getPosition();
 
 	int fireType;
+	int hp;
 
 	const GameData& gd;
 

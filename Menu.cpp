@@ -12,7 +12,7 @@ void Menu::Init(){
 	m_sprite = new sf::Sprite();
 	btn1 = new Button(gd);
 	/////this will be replaced by calls to JSonloader////////////
-	sf::Vector2f* posBt = new sf::Vector2f(200, 200);
+	sf::Vector2f* posBt = new sf::Vector2f(285, 480);
 	/////this will be replaced by calls to JSonloader////////////
 	btn1->Init("Holo", posBt, btnClik, btnNotClik);
 }

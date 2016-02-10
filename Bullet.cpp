@@ -7,20 +7,24 @@ Bullet::Bullet(const GameData& gdata) : gd(gdata)
 
 Bullet::Bullet(float x, float y, bool alive, float speed, const GameData& gdata) : gd(gdata)
 {
-	playerBulletTexture.loadFromFile("resources/shipSheet.png", sf::IntRect(134, 283, 3, 9));	// Set player bullet texture
-	enemyBulletTexture.loadFromFile("resources/shipSheet.png", sf::IntRect(210, 284, 8, 8));	// Set enemy bullet texture
-	HUDSpellTexture.loadFromFile("resources/HUDSpellsTexture.png");
+	playerBulletTexture = sf::Texture(*gd.m_PlayerBulletTexture);
+	enemyBulletTexture = sf::Texture(*gd.m_EnemyBulletTexture);
+
+
+	//playerBulletTexture.loadFromFile("resources/shipSheet.png", sf::IntRect(134, 283, 3, 9));	// Set player bullet texture
+	//enemyBulletTexture.loadFromFile("resources/shipSheet.png", sf::IntRect(210, 284, 8, 8));	// Set enemy bullet texture
+	playerBulletSprite = sf::Sprite();
+	enemyBulletSprite = sf::Sprite();
 	playerBulletSprite.setTexture(playerBulletTexture);
 	enemyBulletSprite.setTexture(enemyBulletTexture);
-	HUDSpellSprite.setTexture(HUDSpellTexture); HUDSpellSprite.setPosition(120, 457);
 	playerBulletSource = sf::Vector2f(x, y);		// Set initial position of the bullet source
 	timeAtLastFire = std::clock();
 	timeAtLastDroneFire = std::clock();
 	timeAtLastSweepFire = std::clock();
 	
-	fireRate = 35;	// Set fire rate here
+	fireRate = 90;	// Set fire rate here
 	MAX_PLAYER_BULLETS = 100;		// Set max number of bullets here
-	MAX_ENEMY_BULLETS = 200;
+	MAX_ENEMY_BULLETS = 2000;
 	for (int i = 0; i < MAX_PLAYER_BULLETS; i++)
 	{
 		bulletFiredA[i] = alive;	// Set all bullets to not alive
@@ -77,7 +81,7 @@ void Bullet::Update(sf::RenderWindow &w, POINT p)
 		if (enemyBulletFired[i] == true)
 		{
 			enemyBulletPosA[i] += enemyBulletVelocityA[i];	// Update position of living bullets
-			if (enemyBulletPosA[i].y > 600)
+			if (enemyBulletPosA[i].y > 920)
 				enemyBulletFired[i] = false;	// If the bullets go off the top of the screen, they die
 		}
 	}
@@ -102,8 +106,6 @@ void Bullet::Draw(sf::RenderWindow &w)
 			w.draw(enemyBulletSprite);
 		}
 	}
-	w.draw(spellText);
-	w.draw(HUDSpellSprite);
 }
 
 bool Bullet::FireBullet(sf::Vector2f bulletS)

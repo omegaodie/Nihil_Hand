@@ -20,7 +20,7 @@ public:
 	Level::Level(const GameData &gd);
 	//Level::~Level();
 
-	void Level::initLevel();
+	void Level::initLevel(int cl, Shop* s);
 	void Level::Run(sf::RenderWindow &w, POINT p);
 
 	void Level::draw(sf::RenderWindow &w);
@@ -29,13 +29,14 @@ public:
 
 	bool Level::getOver();
 	void Level::Reset();
+	bool Level::getPlayerAlive();
 
 	void Level::RocketOnShipCollisions();
 
 	void Level::RunBackground(sf::RenderWindow &w);
 
 	void Level::GetStats(std::vector<float> playerStats);
-
+	Collision * cM;
 private:
 	void Level::collisionDetection();
 	const GameData & gd;
@@ -50,7 +51,7 @@ private:
 	sf::Clock theClock;
 	sf::Texture* l_BackGround;
 	sf::Sprite* l_BckSprite;
-	Collision * cM;
+	
 	int theLevel, bckX, bckY, bossSpawn; //maybe change to ENUM later
 	bool struck; 
 	bool bossIniated;

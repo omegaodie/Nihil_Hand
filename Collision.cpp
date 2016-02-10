@@ -63,7 +63,7 @@ Collision::Collision(Enemy* enemies, Bullet* bullets, Player* player, Training* 
 	spellText.setFont(spellFont);
 	spellText.setCharacterSize(16);
 	spellText.setColor(sf::Color::White);
-	spellText.setPosition(275, 457);
+	spellText.setPosition(720, 417);
 }
 
 void Collision::CheckForCollision(sf::RenderWindow &w)
@@ -74,17 +74,27 @@ void Collision::CheckForCollision(sf::RenderWindow &w)
 		if (myBullets->bulletFiredA[b] == true)	// Checks if they're even alive first
 		{
 			if (theBoss->getAlive() == true){
-				if (myBullets->playerBulletPosA[b].x < theBoss->getPosition()->x && myBullets->playerBulletPosA[b].x + 3 >
+				if ((myBullets->playerBulletPosA[b].x < theBoss->getPosition()->x && myBullets->playerBulletPosA[b].x + 3 >
 					theBoss->getPosition()->x - 56
 					&& myBullets->playerBulletPosA[b].y < theBoss->getPosition()->y && myBullets->playerBulletPosA[b].y + 9 >
-					theBoss->getPosition()->y - 89)
+					theBoss->getPosition()->y - 89) && (theBoss->lA == true))
 				{
 					theBoss->isHit(1);
 					myBullets->bulletFiredA[b] = false;
 					theExplosions[b]->Init(myBullets->playerBulletPosA[b]);
 				}
+				else if ((myBullets->playerBulletPosA[b].x < theBoss->getPosition()->x + 228 && myBullets->playerBulletPosA[b].x + 3 >
+					theBoss->getPosition()->x
+					&& myBullets->playerBulletPosA[b].y < theBoss->getPosition()->y && myBullets->playerBulletPosA[b].y + 9 >
+					theBoss->getPosition()->y - 89) && (theBoss->rA == true))
+				{
+					//rightarm hit Arm Hit 
+					theBoss->isHit(2);
+					myBullets->bulletFiredA[b] = false;
+					theExplosions[b]->Init(myBullets->playerBulletPosA[b]);
+				}
 				else if (myBullets->playerBulletPosA[b].x < theBoss->getPosition()->x + 172 && myBullets->playerBulletPosA[b].x + 3 >
-					theBoss->getPosition()->x 
+					theBoss->getPosition()->x
 					&& myBullets->playerBulletPosA[b].y < theBoss->getPosition()->y && myBullets->playerBulletPosA[b].y + 9 >
 					theBoss->getPosition()->y - 125)
 				{
@@ -93,16 +103,7 @@ void Collision::CheckForCollision(sf::RenderWindow &w)
 					myBullets->bulletFiredA[b] = false;
 					theExplosions[b]->Init(myBullets->playerBulletPosA[b]);
 				}
-				else if (myBullets->playerBulletPosA[b].x < theBoss->getPosition()->x + 228 && myBullets->playerBulletPosA[b].x + 3 >
-					theBoss->getPosition()->x 
-					&& myBullets->playerBulletPosA[b].y < theBoss->getPosition()->y && myBullets->playerBulletPosA[b].y + 9 >
-					theBoss->getPosition()->y - 89)
-				{
-					//rightarm hit Arm Hit 
-					theBoss->isHit(2);
-					myBullets->bulletFiredA[b] = false;
-					theExplosions[b]->Init(myBullets->playerBulletPosA[b]);
-				}
+				
 			}
 			for (int i = 0; i < myEnemies->enemiesMade; i++)	// Checks against all enemies
 			{
@@ -117,9 +118,20 @@ void Collision::CheckForCollision(sf::RenderWindow &w)
 						else
 							myEnemies->enemyHealth.at(i) -= playerDmg;
 						if (myEnemies->enemyHealth.at(i) <= 0)
+						{
+							int luck = rand() % 100 + 1;
+							if (luck < dropRate)
+							{
+								DropMoney(i);
+							}
 							myPlayer->playerScore += 100;
+							if (myEnemies->level != 1){
+								myEnemies->DroneCentering(i);
+							}
+						}
+							
 						myBullets->bulletFiredA[b] = false;		// Kills the enemy and the bullet
-						theExplosions[b + 100]->Init(myBullets->playerBulletPosA[i]);
+						theExplosions[b + 100]->Init(myEnemies->enemyPosition.at(i));
 					}
 				}
 				if (myEnemies->enemyType.at(i) == 1)
@@ -135,7 +147,7 @@ void Collision::CheckForCollision(sf::RenderWindow &w)
 						if (myEnemies->enemyHealth.at(i) <= 0)
 							myPlayer->playerScore += 200;
 						myBullets->bulletFiredA[b] = false;		// Kills the enemy and the bullet
-						theExplosions[b + 100]->Init(myBullets->playerBulletPosA[b]);
+						theExplosions[b + 100]->Init(myEnemies->enemyPosition.at(i));
 					}
 				}
 				if (myEnemies->enemyType.at(i) == 2)
@@ -151,7 +163,19 @@ void Collision::CheckForCollision(sf::RenderWindow &w)
 						if (myEnemies->enemyHealth.at(i) <= 0)
 							myPlayer->playerScore += 300;
 						myBullets->bulletFiredA[b] = false;		// Kills the enemy and the bullet
-						theExplosions[b + 100]->Init(myBullets->playerBulletPosA[b]);
+						theExplosions[b + 100]->Init(myEnemies->enemyPosition.at(i));
+					}
+				}
+				if (theBoss->getAlive()){
+					for (int j = 0; j < 30; j++){
+						if (theBoss->getRockets(j)->getAlive() == true && theBoss->getRockets(j)->dieSwitch != 1){
+							if (myBullets->playerBulletPosA[b].x < theBoss->getRockets(j)->getPosition().x + 20 && myBullets->playerBulletPosA[b].x + 3 > theBoss->getRockets(j)->getPosition().x
+								&& myBullets->playerBulletPosA[b].y < theBoss->getRockets(j)->getPosition().y + 40 && myBullets->playerBulletPosA[b].y + 9 > theBoss->getRockets(j)->getPosition().y)
+							{
+								myBullets->bulletFiredA[b] = false;
+								theBoss->getRockets(j)->RandomlyExplode();
+							}
+						}
 					}
 				}
 			}
@@ -222,16 +246,34 @@ void Collision::CheckForCollision(sf::RenderWindow &w)
 		}
 	}
 	//// Player ship on enemy ship collision END ////
-
+	CollectMoney();
 	EnemyFiring();
 	CleanBullets();
-	//w.draw(spellText);
+	//DrawShield(w);
+	w.draw(spellText);
 	RunExplosions(w);
 	if (myMode == 3)
 	{
 		TrainingCollisions();
 		//TestWallCollisions();
 	}
+}
+
+
+
+
+bool Collision::DropMoney(int e)
+{
+	for (int m = 0; m < 100; m++)
+	{
+		if (myEnemies->moneyAlive[m] == false)
+		{
+			myEnemies->moneyPos.at(m) = sf::Vector2f(myEnemies->enemyPosition.at(e).x - 24, myEnemies->enemyPosition.at(e).y - 24);
+			myEnemies->moneyAlive[m] = true;
+			return true;
+		}
+	}
+	return false;
 }
 
 
@@ -263,21 +305,6 @@ void Collision::CollectMoney()
 		}
 	}
 }
-
-bool Collision::DropMoney(int e)
-{
-	for (int m = 0; m < 100; m++)
-	{
-		if (myEnemies->moneyAlive[m] == false)
-		{
-			myEnemies->moneyPos.at(m) = sf::Vector2f(myEnemies->enemyPosition.at(e).x - 24, myEnemies->enemyPosition.at(e).y - 24);
-			myEnemies->moneyAlive[m] = true;
-			return true;
-		}
-	}
-	return false;
-}
-
 
 
 bool Collision::EnemyFiring() {
@@ -381,7 +408,7 @@ bool Collision::EnemyFiring() {
 					{
 						for (int s = 0; s < 8; s++)
 						{
-							for (int b = 0; b < myBullets->MAX_ENEMY_BULLETS; b++)
+							for (int b = 0; b < 200; b++)
 							{
 								if (myBullets->enemyBulletFired[b] == false)
 								{
@@ -405,12 +432,12 @@ bool Collision::EnemyFiring() {
 
 void Collision::CleanBullets()
 {
-	for (int i = 0; i < myBullets->MAX_ENEMY_BULLETS; i++)
+	for (int i = 0; i < 200; i++)
 	{
 		if (myBullets->enemyBulletFired[i] == true)
 		{
 			if (myBullets->enemyBulletPosA[i].x > 660 || myBullets->enemyBulletPosA[i].x < -30 ||
-				myBullets->enemyBulletPosA[i].y > 520 || myBullets->enemyBulletPosA[i].y < -20)
+				myBullets->enemyBulletPosA[i].y > 920 || myBullets->enemyBulletPosA[i].y < -20)
 				myBullets->enemyBulletFired[i] = false;		// Remove bullets if they are alive and go off-screen
 		}
 	}
@@ -488,7 +515,7 @@ void Collision::DrawShield(sf::RenderWindow &w)
 
 bool Collision::TrainingCollisions()
 {
-	for (int b = 0; b < myBullets->MAX_PLAYER_BULLETS; b++)	// Cycles through all bullets
+	for (int b = 0; b < 100; b++)	// Cycles through all bullets
 	{
 		if (myBullets->bulletFiredA[b] == true)	// Checks if they're even alive first
 		{
